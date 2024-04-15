@@ -7,13 +7,13 @@ import (
     "github.com/joho/godotenv"
     "gorm.io/gorm"
     "gorm.io/driver/postgres"
-    "hackathon.com/leariningApp/domain"
+    "Brilliant/domain"
 )
 
 var db *gorm.DB
 var once sync.Once
 
-func GetDB() *gorm.DB {
+func GetDb() *gorm.DB {
     once.Do(func() {
         // Load environment variables from .env file
         err := godotenv.Load()

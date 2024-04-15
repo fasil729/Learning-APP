@@ -2,7 +2,8 @@ package repositories
 
 import (
     "gorm.io/gorm"
-    "hackathon.com/leariningApp/domain"
+    "Brilliant/domain"
+    "errors"
 )
 
 type UserRepository struct {
@@ -29,4 +30,21 @@ func (repository *UserRepository) GetByUsername(username string) (*domain.User, 
         return nil, err
     }
     return &user, nil
+}
+
+
+func (repository *UserRepository) FindByUsernameOrEmail(username, email string) (*domain.User, error) {
+    user := &domain.User{}
+    result := repository.database.Where("username = ? OR email = ?", username, email).First(user)
+    if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+        return nil, nil
+    }
+    if result.Error != nil {
+        return nil, result.Error
+    }
+    return user, nil
+}
+
+func (repository *UserRepository) UpdateRefreshToken(userID uint, refreshToken string) error {
+    return repository.database.Model(&domain.User{}).Where("id = ?", userID).Update("refresh_token", refreshToken).Error
 }

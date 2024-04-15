@@ -28,7 +28,7 @@ func (repository *GenericRepository[T]) GetAll() ([]*T, error) {
 	return result, nil
 }
 
-func (repository *GenericRepository[T]) GetById(id string) (*T, error) {
+func (repository *GenericRepository[T]) GetById(id uint) (*T, error) {
 	var result T
 	if err := repository.database.First(&result, id).Error; err != nil {
 		return nil, err
