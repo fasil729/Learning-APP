@@ -20,6 +20,7 @@ type User struct {
     Password    string      `json:"password" binding:"required"`
     Email       string      `json:"email" binding:"required"`
     Role        UserRole    `json:"role" binding:"required" gorm:"type:user_role"`
+    RefreshToken  string `json:"refreshToken,omitempty"`
     Topics      []Topic
     Notes       []Note
     Experiments []Experiment
