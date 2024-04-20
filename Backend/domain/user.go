@@ -13,7 +13,6 @@ const (
     Admin   UserRole = "admin"
 )
 
-// User model
 type User struct {
     gorm.Model
     Username    string      `json:"username" binding:"required"`
@@ -21,10 +20,8 @@ type User struct {
     Email       string      `json:"email" binding:"required"`
     Role        UserRole    `json:"role" binding:"required" gorm:"type:user_role"`
     RefreshToken  string `json:"refreshToken,omitempty"`
-    Topics      []Topic
-    Notes       []Note
-    Experiments []Experiment
-    Quizzes     []Quiz
+    Subjects      []Subject  `gorm:"foreignKey:UserID"`
+
 }
 
 // TableName specifies the table name for the User model
