@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { IoAdd, IoSearch } from "react-icons/io5";
 
 export default function TopHeader() {
-        return   <div className="bg-white h-[6.2rem] flex justify-between items-center px-14 ">
+        return   <div className="ml-[18%] bg-white h-[6.2rem] flex justify-between items-center px-14 ">
                     <Input type="email" className="w-1/5" placeholder="Search Anything"></Input>
                     <div className="flex gap-9">
                         <Button className="bg-mainColor flex gap-2"><IoAdd className="text-white" size="1.5rem"/> Create</Button>
