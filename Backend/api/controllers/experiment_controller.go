@@ -23,6 +23,10 @@ func NewExperimentController(experimentService *services.ExperimentService) *Exp
 // @Summary Get experiments for a chapter
 // @Description Get a list of experiments for a specific chapter
 // @Param chapterID path integer true "Chapter ID"
+// @securityDefinitions.apiKey token
+// @Param Authorization header string true "Authorization header" default(Bearer )
+// @name Authorization
+// @Security JWT
 // @Tags experiments
 // @Produce json
 // @Success 200 {array} dtos.ExperimentDTO
@@ -48,6 +52,7 @@ func (controller *ExperimentController) GetExperimentsPerChapter(ctx *gin.Contex
 // GetExperimentsPerSubject godoc
 // @Summary Get experiments for a subject
 // @Description Get a list of experiments for a specific subject
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param subjectID path integer true "Subject ID"
 // @Tags experiments
 // @Produce json
@@ -75,6 +80,7 @@ func (controller *ExperimentController) GetExperimentsPerSubject(ctx *gin.Contex
 // GetExperimentContent godoc
 // @Summary Get content for an experiment
 // @Description Get the content for a specific experiment
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param experimentID path integer true "Experiment ID"
 // @Tags experiments
 // @Produce json
@@ -101,6 +107,7 @@ func (controller *ExperimentController) GetExperimentContent(ctx *gin.Context) {
 // GenerateExperimentsPerChapter godoc
 // @Summary Generate experiments for a chapter
 // @Description Generate experiments for a specific chapter based on provided criteria
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param generateDTO body dtos.GenerateExperimentDTO true "Generate experiment criteria"
 // @Tags experiments
 // @Accept json
@@ -127,6 +134,7 @@ func (controller *ExperimentController) GenerateExperimentsPerChapter(ctx *gin.C
 // AddExperiment godoc
 // @Summary Add a new experiment
 // @Description Add a new experiment to the database
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param addDTO body dtos.ExperimentDTO true "New experiment data"
 // @Tags experiments
 // @Accept json
@@ -153,6 +161,7 @@ func (controller *ExperimentController) AddExperiment(ctx *gin.Context) {
 // UpdateExperiment godoc
 // @Summary Update an existing experiment
 // @Description Update an existing experiment in the database
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param experimentID path integer true "Experiment ID"
 // @Param updateDTO body dtos.ExperimentDTO true "Updated experiment data"
 // @Tags experiments
@@ -187,6 +196,7 @@ func (controller *ExperimentController) UpdateExperiment(ctx *gin.Context) {
 // DeleteExperiment godoc
 // @Summary Delete an experiment
 // @Description Delete an experiment from the database
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param experimentID path integer true "Experiment ID"
 // @Tags experiments
 // @Produce json

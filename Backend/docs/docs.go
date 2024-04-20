@@ -37,6 +37,14 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.GenerateExamPrepDTO"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -70,6 +78,14 @@ const docTemplate = `{
                 "summary": "Add a new experiment",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "New experiment data",
                         "name": "addDTO",
                         "in": "body",
@@ -97,6 +113,11 @@ const docTemplate = `{
         },
         "/experiments/chapter/{chapterID}": {
             "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "description": "Get a list of experiments for a specific chapter",
                 "produces": [
                     "application/json"
@@ -111,6 +132,14 @@ const docTemplate = `{
                         "description": "Chapter ID",
                         "name": "chapterID",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -141,6 +170,14 @@ const docTemplate = `{
                 ],
                 "summary": "Get content for an experiment",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Experiment ID",
@@ -176,6 +213,14 @@ const docTemplate = `{
                 ],
                 "summary": "Delete an experiment",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Experiment ID",
@@ -214,6 +259,14 @@ const docTemplate = `{
                 ],
                 "summary": "Generate experiments for a chapter",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Generate experiment criteria",
                         "name": "generateDTO",
@@ -255,6 +308,14 @@ const docTemplate = `{
                 "summary": "Get experiments for a subject",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Subject ID",
                         "name": "subjectID",
@@ -295,6 +356,14 @@ const docTemplate = `{
                 ],
                 "summary": "Update an existing experiment",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Experiment ID",
@@ -343,6 +412,14 @@ const docTemplate = `{
                 "summary": "Generate a quiz",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Generate quiz criteria",
                         "name": "generateDTO",
                         "in": "body",
@@ -386,6 +463,14 @@ const docTemplate = `{
                 "summary": "Register a new admin user",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Admin user registration information",
                         "name": "user",
                         "in": "body",
@@ -422,6 +507,14 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a user",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "User ID",
@@ -522,6 +615,16 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "Get user profile details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "user profile details",
@@ -586,6 +689,14 @@ const docTemplate = `{
                 ],
                 "summary": "Update user information",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "User ID",
@@ -660,7 +771,21 @@ const docTemplate = `{
             }
         },
         "dtos.GenerateExamPrepDTO": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "prompt": {
+                    "type": "string"
+                },
+                "readTime": {
+                    "type": "integer"
+                },
+                "topics": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
         },
         "dtos.GenerateExperimentDTO": {
             "type": "object",

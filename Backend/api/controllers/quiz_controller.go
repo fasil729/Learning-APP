@@ -20,6 +20,7 @@ func NewQuizController(quizService *services.QuizService) *QuizController {
 // GenerateQuiz godoc
 // @Summary Generate a quiz
 // @Description Generate a quiz based on the provided topics and prompt
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param generateDTO body dtos.GenerateQuizDTO true "Generate quiz criteria"
 // @Tags quiz
 // @Accept json

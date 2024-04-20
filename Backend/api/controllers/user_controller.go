@@ -48,6 +48,7 @@ func (controller *UserController) RegisterUser(ctx *gin.Context) {
 // RegisterAdmin godoc
 // @Summary Register a new admin user
 // @Description Register a new admin user with the provided information
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param user body dtos.RegisterDTO true "Admin user registration information"
 // @Tags users
 // @Accept json
@@ -74,6 +75,7 @@ func (controller *UserController) RegisterAdmin(ctx *gin.Context) {
 // GetMe godoc
 // @Summary Get user profile details
 // @Description Retrieve the profile details of the currently authenticated user
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags users
 // @Produce json
 // @Success 200 {string} string "user profile details"
@@ -111,6 +113,7 @@ func (controller *UserController) SignIn(ctx *gin.Context) {
 // UpdateUser godoc
 // @Summary Update user information
 // @Description Update the information of the currently authenticated user
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param id path integer true "User ID"
 // @Param user body dtos.UpdateUserDTO true "User update information"
 // @Tags users
@@ -140,6 +143,7 @@ func (controller *UserController) UpdateUser(ctx *gin.Context) {
 // DeleteUser godoc
 // @Summary Delete a user
 // @Description Delete a user by ID
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Param id path integer true "User ID"
 // @Tags users
 // @Produce json

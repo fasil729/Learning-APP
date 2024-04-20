@@ -19,7 +19,7 @@ func (eps *ExamPrepService) GenerateExamPrepMaterial(dto *dtos.GenerateExamPrepD
 	}
 
 	// Sample content generation
-	content := fmt.Sprintf("# Exam Preparation Material\n\n**Prompt:** %s\n\n**Read Time:** %s\n\n", dto.Prompt, dto.ReadTime.String())
+	content := fmt.Sprintf("# Exam Preparation Material\n\n**Prompt:** %s\n\n**Read Time:** %d\n\n", dto.Prompt, dto.ReadTime)
 	for _, topic := range dto.Topics {
 		content += fmt.Sprintf("## %s\n\n", topic)
 		content += "### Sample Explanation:\n\n"
