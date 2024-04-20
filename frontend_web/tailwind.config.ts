@@ -17,8 +17,18 @@ const config = {
         "2xl": "1400px",
       },
     },
+    fontSize: {
+
+    },
     extend: {
       colors: {
+        primaryShade: '#F5F7F9',
+        mainColor: '#4C6FFF',
+        secondayColor: '#FF7800',
+        paragraphColor: '#767278',
+        grayShade: '#F8F8FB',
+        secondaryShade: '#FFEFE0',
+        titleColor: '#102844',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
