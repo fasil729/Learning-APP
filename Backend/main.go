@@ -1,13 +1,13 @@
 package main
 
 import (
-	route "hackathon.com/leariningApp/api/routes"
-	"hackathon.com/leariningApp/config"
-	_ "hackathon.com/leariningApp/docs"
-	"hackathon.com/leariningApp/persistence/migration"
+	route "Brilliant/api/routes"
+	"Brilliant/config"
+	"Brilliant/persistence/migrations"
+	_ "Brilliant/docs"
 
-	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/files"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -28,6 +28,7 @@ func main() {
 	getDb := migrations.GetDb
 
 	router := gin.Default()
+
 
 	// Global CORS configuration
 	config := cors.DefaultConfig()
