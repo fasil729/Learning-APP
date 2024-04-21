@@ -7,7 +7,7 @@ import (
     "github.com/joho/godotenv"
     "gorm.io/gorm"
     "gorm.io/driver/postgres"
-    "Brilliant/domain"
+    // "Brilliant/domain"
 )
 
 var db *gorm.DB
@@ -31,7 +31,7 @@ func GetDb() *gorm.DB {
         }
 
         // Auto-migrate the model
-        db.AutoMigrate(&domain.User{}, &domain.Topic{}, &domain.Experiment{}, &domain.Quiz{})
+        // db.AutoMigrate(&domain.User{}, &domain.Subject{}, &domain.Experiment{}, &domain.Chapter{}, domain.Lesson{}, domain.Note{})
     })
     return db
 }
