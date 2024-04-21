@@ -27,7 +27,7 @@ func NewExamPrepController(examPrepService *services.ExamPrepService) *ExamPrepC
 // @Produce json
 // @Success 200 {string} string "Markdown formatted exam preparation material"
 // @Failure 400 {object} dtos.ErrorResponse
-// @Router /exam-prep/generate [post]
+// @Router /examprep/generate [post]
 func (controller *ExamPrepController) GenerateExamPrepMaterial(ctx *gin.Context) {
 	var generateDTO dtos.GenerateExamPrepDTO
 	if err := ctx.ShouldBindJSON(&generateDTO); err != nil {
