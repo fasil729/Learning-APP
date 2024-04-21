@@ -1,8 +1,8 @@
 package services
 
 import (
-	"hackathon.com/leariningApp/application/contracts"
-	"hackathon.com/leariningApp/domain"
+	"Brilliant/application/contracts"
+	"Brilliant/domain"
 )
 
 type SubjectService struct {

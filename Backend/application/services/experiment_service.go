@@ -115,6 +115,3 @@ func (service *ExperimentService) DeleteExperiment(experimentID uint) error {
 
     return nil
 }
-
-
-

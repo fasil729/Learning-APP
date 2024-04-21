@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"gorm.io/gorm"
-	"hackathon.com/leariningApp/domain"
-	"hackathon.com/leariningApp/persistence/migrations"
+	"Brilliant/domain"
+	"Brilliant/persistence/migrations"
 	// "log"
 )
 

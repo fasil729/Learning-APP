@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"hackathon.com/leariningApp/application/services"
-	"hackathon.com/leariningApp/domain"
+	"Brilliant/application/services"
+	"Brilliant/domain"
 	"net/http"
 	"strconv"
 )

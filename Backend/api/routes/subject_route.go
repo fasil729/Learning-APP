@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"hackathon.com/leariningApp/Backend/config"
-	"hackathon.com/leariningApp/api/middlewares"
-	"hackathon.com/leariningApp/application/services"
-	repositories "hackathon.com/leariningApp/persistence/repository"
-	"hackathon.com/learningApp/Backend/api/controllers"
+	"Brilliant/Backend/config"
+	"Brilliant/api/middlewares"
+	"Brilliant/application/services"
+	repositories "Brilliant/persistence/repository"
+	"Brilliant/Backend/api/controllers"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

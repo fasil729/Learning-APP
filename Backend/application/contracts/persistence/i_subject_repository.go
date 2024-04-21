@@ -1,7 +1,7 @@
 package contracts
 
 import (
-	"hackathon.com/leariningApp/domain"
+	"Brilliant/domain"
 )
 
 type ISubjectRepository interface {

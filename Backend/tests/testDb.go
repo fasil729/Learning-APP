@@ -2,9 +2,9 @@ package main
 
 import (
     "log"
-	"hackathon.com/leariningApp/persistence/migrations"
+	"Brilliant/persistence/migrations"
      
-    "hackathon.com/leariningApp/domain"
+    "Brilliant/leariningApp/domain"
 )
 
 func InitDB() {
