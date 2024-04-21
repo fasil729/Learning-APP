@@ -31,7 +31,7 @@ func GetDB() *gorm.DB {
 		}
 
 		// Auto-migrate the model
-		db.AutoMigrate(&domain.User{}, &domain.Topic{}, &domain.Experiment{}, &domain.Quiz{})
+		db.AutoMigrate(&domain.User{}, &domain.Subject{}, &domain.Experiment{}, &domain.Quiz{})
 	})
 	return db
 }
