@@ -4,7 +4,6 @@ import "github.com/jinzhu/gorm"
 
 type Note struct {
 	gorm.Model
-  
-	ChapterID uint
-	contentLink string
+	ChapterID   uint
+	ContentLink string
 }

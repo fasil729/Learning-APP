@@ -28,7 +28,7 @@ func main() {
 	getDb := migrations.GetDb
 
 	router := gin.Default()
-    
+
 
 	// Global CORS configuration
 	config := cors.DefaultConfig()
@@ -43,7 +43,6 @@ func main() {
 
 	// Setup routes
 	route.Setup(env, getDb, router)
-
 
 	router.Run()
 }

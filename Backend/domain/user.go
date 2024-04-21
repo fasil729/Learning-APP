@@ -1,17 +1,19 @@
 package domain
 
 import (
-    "github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 // UserRole custom type for user roles
 type UserRole string
 
 const (
-    Teacher UserRole = "teacher"
-    Student UserRole = "student"
-    Admin   UserRole = "admin"
+	Teacher UserRole = "teacher"
+	Student UserRole = "student"
+	Admin   UserRole = "admin"
 )
+
+// User model
 
 type User struct {
     gorm.Model
@@ -26,5 +28,5 @@ type User struct {
 
 // TableName specifies the table name for the User model
 func (User) TableName() string {
-    return "users"
+	return "users"
 }
