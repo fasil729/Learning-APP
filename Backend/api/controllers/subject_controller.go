@@ -1,18 +1,18 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
 	"Brilliant/application/services"
 	"Brilliant/domain"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 type SubjectController struct {
-	subjectService services.SubjectService
+	subjectService *services.SubjectService
 }
 
-func NewSubjectController(subjectService services.SubjectService) *SubjectController {
+func NewSubjectController(subjectService *services.SubjectService) *SubjectController {
 	return &SubjectController{subjectService: subjectService}
 }
 

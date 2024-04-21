@@ -1,22 +1,24 @@
 package repositories
 
 import (
+	contracts "Brilliant/application/contracts/persistence"
 	"os"
 	"path/filepath"
 	"strconv"
 
+	"Brilliant/domain"
 	"gorm.io/gorm"
-	"hackathon.com/leariningApp/domain"
 	// "log"
 )
 
 type LessonRepository struct {
 	*GenericRepository[domain.Lesson]
+	database *gorm.DB
 }
 
-func NewLessonRepository(GetDb func() *gorm.DB) *SubjectRepository {
-	return &SubjectRepository{
-		GenericRepository: NewGenericRepository[domain.Subject](GetDb),
+func NewLessonRepository(GetDb func() *gorm.DB) contracts.ILessonRepository {
+	return &LessonRepository{
+		database: GetDb(),
 	}
 }
 

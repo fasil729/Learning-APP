@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"Brilliant/Backend/config"
+	"Brilliant/api/controllers"
 	"Brilliant/api/middlewares"
 	"Brilliant/application/services"
+	"Brilliant/config"
 	repositories "Brilliant/persistence/repository"
-	"Brilliant/Backend/api/controllers"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

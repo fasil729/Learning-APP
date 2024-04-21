@@ -1,23 +1,26 @@
 package repositories
 
 import (
-	"gorm.io/gorm"
+	contracts "Brilliant/application/contracts/persistence"
 	"Brilliant/domain"
 	"Brilliant/persistence/migrations"
+
+	"gorm.io/gorm"
 	// "log"
 )
 
 type SubjectRepository struct {
 	*GenericRepository[domain.Subject]
+	database *gorm.DB
 }
 
-type UserRepository struct {
-	*GenericRepository[domain.User]
-}
+// type UserRepository struct {
+// 	*GenericRepository[domain.User]
+// }
 
-func NewSubjectRepository(GetDb func() *gorm.DB) *SubjectRepository {
+func NewSubjectRepository(GetDb func() *gorm.DB) contracts.ISubjectRepository {
 	return &SubjectRepository{
-		GenericRepository: NewGenericRepository[domain.Subject](GetDb),
+		database: GetDb(),
 	}
 }
 
@@ -36,10 +39,10 @@ func (repository *SubjectRepository) CreateSubject(SubjectName string, UserID ui
 	return createdSubject, nil
 }
 
-func searchSubjectsByName(query string) ([]*domain.Subject, error) {
+func (repository *SubjectRepository) SearchSubjectsByName(query string) ([]*domain.Subject, error) {
 	var searchedTopics []*domain.Subject
 
-	response := migrations.GetDB().Where("TopicName LIKE ?", "%"+query+"%").Find(&searchedTopics)
+	response := migrations.GetDb().Where("TopicName LIKE ?", "%"+query+"%").Find(&searchedTopics)
 	error := response.Error
 
 	if error != nil {

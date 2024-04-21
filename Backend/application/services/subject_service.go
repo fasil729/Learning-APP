@@ -1,7 +1,7 @@
 package services
 
 import (
-	"Brilliant/application/contracts"
+	"Brilliant/application/contracts/persistence"
 	"Brilliant/domain"
 )
 
