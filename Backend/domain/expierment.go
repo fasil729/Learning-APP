@@ -6,7 +6,6 @@ import "github.com/jinzhu/gorm"
 type Experiment struct {
 	gorm.Model
 	ExperimentName string `json:"experiment_name" binding:"required"`
-	Description    string `json:"description" binding:"required"`
-	UserID         uint   `json:"-"`
-	TopicID        uint   `json:"-"`
+	SubjectID      uint   `json:"topic_id"`
+	ChapterID      uint   `json:"chapter_id"`
 }
