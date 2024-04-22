@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 )
 
 type Env struct {
@@ -19,10 +19,10 @@ type Env struct {
 
 func Load() (*Env, error) {
 	// Load the environment variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	return &Env{
 		DatabaseURL:            os.Getenv("DATABASE_URL"),
 		Port:                   os.Getenv("PORT"),
