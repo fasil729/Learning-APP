@@ -134,7 +134,7 @@ info:
   title: Brilliant Learning APP API
   version: "1.0"
 paths:
-  /exam-prep/generate:
+  /examprep/generate:
     post:
       consumes:
       - application/json

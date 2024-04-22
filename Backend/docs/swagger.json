@@ -8,7 +8,7 @@
     },
     "host": "learning-app-idt8.onrender.com",
     "paths": {
-        "/exam-prep/generate": {
+        "/examprep/generate": {
             "post": {
                 "description": "Generate exam preparation material based on the provided topics and prompt",
                 "consumes": [

@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/exam-prep/generate": {
+        "/examprep/generate": {
             "post": {
                 "description": "Generate exam preparation material based on the provided topics and prompt",
                 "consumes": [
