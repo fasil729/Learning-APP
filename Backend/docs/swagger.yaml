@@ -127,7 +127,7 @@ definitions:
       username:
         type: string
     type: object
-host: https://learning-app-idt8.onrender.com/
+host: learning-app-idt8.onrender.com
 info:
   contact: {}
   description: This is the API for the Brilliant application

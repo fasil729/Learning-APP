@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "https://learning-app-idt8.onrender.com/",
+    "host": "learning-app-idt8.onrender.com",
     "paths": {
         "/exam-prep/generate": {
             "post": {
