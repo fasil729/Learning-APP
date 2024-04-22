@@ -23,9 +23,6 @@ func (service *UserService) RegisterUser(dto *dtos.RegisterDTO) (*dtos.UserDTO, 
 
 	// Check if there is already a user with the given username or email
 	existingUser, err := service.userRepository.FindByUsernameOrEmail(dto.Username, dto.Email)
-	if err != nil {
-		return nil, err
-	}
 	if existingUser != nil {
 		return nil, errors.New("username or email already exists")
 	}
