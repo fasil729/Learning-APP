@@ -16,7 +16,7 @@ import (
 // @title Brilliant Learning APP API
 // @version 1.0
 // @description This is the API for the Brilliant application
-// @host localhost:8080
+// @host https://learning-app-idt8.onrender.com/
 func main() {
 	// Load environment variables
 	env, err := config.Load()
