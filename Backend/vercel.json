@@ -3,9 +3,9 @@
     "rewrites":
     [
       {
-        "source": "./(.*)",
-        "destination": "./main.go"
+        "source": "(.*)",
+        "destination": "main.go"
       }
     ]
-  }
+}
   
