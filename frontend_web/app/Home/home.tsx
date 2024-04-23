@@ -1,7 +1,6 @@
-import Topics from "../Topics/page";
+import Topics from "../topics/page";
 
 export default function HomePage() {
     return <div>
-        <Topics></Topics>
-    </div>
+        </div>
 }

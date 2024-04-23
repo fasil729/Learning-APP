@@ -18,7 +18,11 @@ const config = {
       },
     },
     fontSize: {
-
+      xs: ['1rem', '1.375rem'],
+      sm: ['1.125rem', '1.375rem'],
+      base: ['1.375rem', '1.375rem'],
+      lg: ['1.75rem', '2.75rem'],
+      xl: ['2.125rem', '3.75rem'],
     },
     extend: {
       colors: {

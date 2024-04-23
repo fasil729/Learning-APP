@@ -1,5 +1,5 @@
 export default function Card(props: any) {
-    return <div className="relative flex w-full max-w-[18rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
+    return <div className="relative flex w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
         <div
         className="relative mx-3 mt-3 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
         <img
@@ -22,7 +22,7 @@ export default function Card(props: any) {
         </div>
         <div className="px-5 py-6">
             <div className="flex items-center justify-between">
-                <h5 className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900">
+                <h5 className="block font-sans text-base antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {props.title}
                 </h5>
                 <p
@@ -38,7 +38,7 @@ export default function Card(props: any) {
             </div>
         <div className="flex items-center justify-between mt-5 pb-3 group">
             <p>{props.lessons}</p>
-           <p className="text-secondayColor">{props.price}</p>
+           <p className="text-secondayColor">${props.price}</p>
         </div>
         </div>
   </div> 
