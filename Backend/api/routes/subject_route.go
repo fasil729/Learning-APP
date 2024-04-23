@@ -13,14 +13,18 @@ import (
 
 func NewSubjectRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGroup) {
 	subjectRepository := repositories.NewSubjectRepository(getDb)
-	subjectService := services.NewSubjectService(subjectRepository)
+	chapterRepository := repositories.NewChapterRepository(getDb)
+	lessonRepository := repositories.NewLessonRepository(getDb)
+	subjectService := services.NewSubjectService(subjectRepository, chapterRepository, lessonRepository)
 	subjectController := controllers.NewSubjectController(subjectService)
 
 	authMiddleware := middlewares.AuthMiddleware(env.AccessTokenSecret)
 
 	subjectGroup := group.Group("/subjects", authMiddleware)
 	{
-		subjectGroup.POST("", subjectController.CreateSubject)
-		// Add more routes as needed
+		subjectGroup.POST("/Create", subjectController.CreateSubject)
+		subjectGroup.POST("/GenerateSubject", subjectController.GenerateRoadMap)
+
+		// Add other routes as needed
 	}
 }

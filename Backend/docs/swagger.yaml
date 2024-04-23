@@ -1,4 +1,6 @@
 definitions:
+  domain.Subject:
+    type: object
   domain.UserRole:
     enum:
     - teacher
@@ -9,6 +11,13 @@ definitions:
     - Teacher
     - Student
     - Admin
+  dtos.ChapterDTO:
+    properties:
+      chapterName:
+        type: string
+      id:
+        type: integer
+    type: object
   dtos.ErrorResponse:
     properties:
       error:
@@ -56,6 +65,31 @@ definitions:
           type: string
         type: array
     type: object
+  dtos.GenerateSubjectDTO:
+    properties:
+      chapterId:
+        type: integer
+      subjectId:
+        type: integer
+      subjectName:
+        type: string
+      userId:
+        type: integer
+    required:
+    - chapterId
+    - subjectId
+    - subjectName
+    - userId
+    type: object
+  dtos.LessonDTO:
+    properties:
+      chapterName:
+        type: string
+      contentLink:
+        type: string
+      id:
+        type: integer
+    type: object
   dtos.Option:
     properties:
       is_answer:
@@ -100,6 +134,25 @@ definitions:
     - password
     - username
     type: object
+  dtos.SubjectDTO:
+    properties:
+      chapters:
+        items:
+          $ref: '#/definitions/dtos.ChapterDTO'
+        type: array
+      id:
+        type: integer
+      referenceBooksLinks:
+        items:
+          type: string
+        type: array
+      subjectName:
+        type: string
+      textBookLink:
+        type: string
+      userId:
+        type: integer
+    type: object
   dtos.SuccessResponse:
     properties:
       message:
@@ -134,6 +187,87 @@ info:
   title: Brilliant Learning APP API
   version: "1.0"
 paths:
+  /chapters:
+    post:
+      consumes:
+      - application/json
+      description: Create a new chapter with the provided information
+      parameters:
+      - description: Chapter information
+        in: body
+        name: chapter
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ChapterDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new chapter
+      tags:
+      - chapters
+  /chapters/{chapterID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a chapter by ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete a chapter
+      tags:
+      - chapters
+    put:
+      consumes:
+      - application/json
+      description: Update the information of a chapter by ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - description: Chapter information
+        in: body
+        name: chapter
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ChapterDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update a chapter
+      tags:
+      - chapters
   /exam-prep/generate:
     post:
       consumes:
@@ -390,6 +524,112 @@ paths:
       summary: Update an existing experiment
       tags:
       - experiments
+  /lessons:
+    post:
+      consumes:
+      - application/json
+      description: Create a new lesson with the provided information
+      parameters:
+      - description: Lesson information
+        in: body
+        name: lesson
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.LessonDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new lesson
+      tags:
+      - lessons
+  /lessons/{lessonID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a lesson by ID
+      parameters:
+      - description: Lesson ID
+        in: path
+        name: lessonID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successfully deleted the lesson
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete a lesson
+      tags:
+      - lessons
+    put:
+      consumes:
+      - application/json
+      description: Update the information of a lesson by ID
+      parameters:
+      - description: Lesson ID
+        in: path
+        name: lessonID
+        required: true
+        type: integer
+      - description: Lesson information
+        in: body
+        name: lesson
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.LessonDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update a lesson
+      tags:
+      - lessons
+  /lessons/{lessonID}/content:
+    get:
+      consumes:
+      - application/json
+      description: Get the content of a lesson by ID
+      parameters:
+      - description: Lesson ID
+        in: path
+        name: lessonID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get lesson content
+      tags:
+      - lessons
   /quiz/generate:
     post:
       consumes:
@@ -424,6 +664,88 @@ paths:
       summary: Generate a quiz
       tags:
       - quiz
+  /subjects/create/{userID}:
+    post:
+      consumes:
+      - application/json
+      description: Create a new subject with the provided information
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      - description: Subject creation information
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Subject'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SubjectDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new subject
+      tags:
+      - subjects
+  /subjects/roadmap:
+    post:
+      consumes:
+      - application/json
+      description: Generate a roadmap for a subject
+      parameters:
+      - description: Subject information
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Subject'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GenerateSubjectDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Generate a roadmap for a subject
+      tags:
+      - subjects
+  /subjects/search:
+    get:
+      description: Search for subjects by name
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.SubjectDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Search subjects by name
+      tags:
+      - subjects
   /users/admin/register:
     post:
       consumes:

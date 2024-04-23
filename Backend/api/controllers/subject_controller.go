@@ -1,11 +1,10 @@
 package controllers
 
 import (
+	"Brilliant/application/dtos/subject"
 	"Brilliant/application/services"
-	"Brilliant/domain"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 type SubjectController struct {
@@ -16,21 +15,25 @@ func NewSubjectController(subjectService *services.SubjectService) *SubjectContr
 	return &SubjectController{subjectService: subjectService}
 }
 
+// CreateSubject godoc
+// @Summary Create a new subject
+// @Description Create a new subject with the provided information
+// @Param userID path integer true "User ID"
+// @Param subject body domain.Subject true "Subject creation information"
+// @Tags subjects
+// @Accept json
+// @Produce json
+// @Success 200 {object} dtos.SubjectDTO
+// @Failure 400 {object} dtos.ErrorResponse
+// @Router /subjects/create/{userID} [post]
 func (controller *SubjectController) CreateSubject(ctx *gin.Context) {
-	userIDStr := ctx.Param("userID")
-	userID, err := strconv.ParseUint(userIDStr, 10, 64)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return
-	}
-
-	var subject *domain.Subject
-	if err := ctx.ShouldBindJSON(&subject); err != nil {
+	var subjectDTO *dtos.SubjectDTO
+	if err := ctx.ShouldBindJSON(&subjectDTO); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	subject, err = controller.subjectService.CreateSubject(subject.SubjectName, uint(userID))
+	subject, err := controller.subjectService.CreateSubject(subjectDTO)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -39,6 +42,15 @@ func (controller *SubjectController) CreateSubject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, subject)
 }
 
+// SearchSubjectsByName godoc
+// @Summary Search subjects by name
+// @Description Search for subjects by name
+// @Param query query string true "Search query"
+// @Tags subjects
+// @Produce json
+// @Success 200 {array} dtos.SubjectDTO
+// @Failure 500 {object} dtos.ErrorResponse
+// @Router /subjects/search [get]
 func (controller *SubjectController) SearchSubjectsByName(ctx *gin.Context) {
 	query := ctx.Query("query")
 	subjects, err := controller.subjectService.SearchSubjectsByName(query)
@@ -50,18 +62,28 @@ func (controller *SubjectController) SearchSubjectsByName(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, subjects)
 }
 
+// GenerateRoadMap godoc
+// @Summary Generate a roadmap for a subject
+// @Description Generate a roadmap for a subject
+// @Param subject body domain.Subject true "Subject information"
+// @Tags subjects
+// @Accept json
+// @Produce json
+// @Success 200 {object} dtos.GenerateSubjectDTO
+// @Failure 400 {object} dtos.ErrorResponse
+// @Router /subjects/roadmap [post]
 func (controller *SubjectController) GenerateRoadMap(ctx *gin.Context) {
-	var subject domain.Subject
-	if err := ctx.ShouldBindJSON(&subject); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	var GenerateSubjectDTO *dtos.GenerateSubjectDTO
+	if err := ctx.ShouldBindJSON(&GenerateSubjectDTO); err != nil {
+		ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 		return
 	}
 
-	chapters, lessons, err := controller.subjectService.GenerateRoadMap(&subject)
+	chapters, lessons, err := controller.subjectService.GenerateRoadMap(GenerateSubjectDTO)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"chapters": chapters, "lessons": lessons})
+	ctx.JSON(http.StatusOK, map[string]interface{}{"chapters": chapters, "lessons": lessons})
 }
