@@ -1,8 +1,6 @@
-import SideBar from "../../components/shared/sideBar/sideBar";
-import TopHeader from "../../components/shared/top_header/top_header";
+import Topics from "../topics/page";
 
 export default function HomePage() {
     return <div>
-        
-    </div>
+        </div>
 }
