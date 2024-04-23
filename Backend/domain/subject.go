@@ -8,5 +8,5 @@ type Subject struct {
 	UserID              uint
 	Chapters            []Chapter `gorm:"foreignKey:SubjectID"`
 	TextBookLink        string
-	ReferenceBooksLinks []string
+	ReferenceBookLink string
 }

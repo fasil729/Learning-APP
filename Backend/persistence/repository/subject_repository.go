@@ -10,7 +10,7 @@ import (
 )
 
 type SubjectRepository struct {
-	*GenericRepository[domain.Subject]
+	GenericRepository[domain.Subject]
 	database *gorm.DB
 }
 
@@ -18,9 +18,11 @@ type SubjectRepository struct {
 // 	*GenericRepository[domain.User]
 // }
 
-func NewSubjectRepository(GetDb func() *gorm.DB) contracts.ISubjectRepository {
+func NewSubjectRepository(getDb func() *gorm.DB) contracts.ISubjectRepository {
+	db := getDb()
 	return &SubjectRepository{
-		database: GetDb(),
+		GenericRepository: GenericRepository[domain.Subject]{database: db},
+		database:          db,
 	}
 }
 

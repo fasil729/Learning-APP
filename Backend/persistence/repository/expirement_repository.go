@@ -8,14 +8,16 @@ import (
 )
 
 type ExperimentRepository struct {
-	*GenericRepository[domain.Experiment]
+	GenericRepository[domain.Experiment]
 	database *gorm.DB
 	
 }
 
 func NewExperimentRepository(getDb func() *gorm.DB) contracts.IExperimentRepository  {
+	db := getDb()
 	return &ExperimentRepository{
-		database: getDb(),
+		GenericRepository: GenericRepository[domain.Experiment]{database: db},
+		database:          db,
 	}
 }
 func (r *ExperimentRepository) GetByChapterID(chapterID uint) ([]*domain.Experiment, error) {
