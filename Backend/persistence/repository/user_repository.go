@@ -14,10 +14,13 @@ type UserRepository struct {
 }
 
 func NewUserRepository(getDb func() *gorm.DB) contracts.IUserRepository {
+	db := getDb()
 	return &UserRepository{
-		database: getDb(),
+		GenericRepository: GenericRepository[domain.User]{database: db},
+		database: db,
 	}
 }
+
 
 func (repository *UserRepository) GetByEmail(email string) (*domain.User, error) {
 	var user domain.User

@@ -12,13 +12,15 @@ import (
 )
 
 type LessonRepository struct {
-	*GenericRepository[domain.Lesson]
+	GenericRepository[domain.Lesson]
 	database *gorm.DB
 }
 
-func NewLessonRepository(GetDb func() *gorm.DB) contracts.ILessonRepository {
+func NewLessonRepository(getDb func() *gorm.DB) contracts.ILessonRepository {
+  db := getDb()
 	return &LessonRepository{
-		database: GetDb(),
+		GenericRepository: GenericRepository[domain.Lesson]{database: db},
+		database:          db,
 	}
 }
 
