@@ -2,8 +2,6 @@ package repositories
 
 import (
 	contracts "Brilliant/application/contracts/persistence"
-	"fmt"
-
 	"gorm.io/gorm"
 )
 
@@ -12,13 +10,9 @@ type GenericRepository[T any] struct {
 }
 
 func (repository *GenericRepository[T]) Create(data *T) (*T, error) {
-	// debugging
-	fmt.Println("here before creating data")
 	if err := repository.database.Create(data).Error; err != nil {
 		return nil, err
 	}
-	// debugging
-	fmt.Println("here after creating data")
 	return data, nil
 }
 
