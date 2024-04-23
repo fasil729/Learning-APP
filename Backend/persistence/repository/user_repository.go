@@ -9,7 +9,7 @@ import (
 )
 
 type UserRepository struct {
-	*GenericRepository[domain.User]
+	GenericRepository[domain.User]
 	database *gorm.DB
 }
 

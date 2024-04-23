@@ -8,7 +8,7 @@ import (
 )
 
 type ExperimentRepository struct {
-	*GenericRepository[domain.Experiment]
+	GenericRepository[domain.Experiment]
 	database *gorm.DB
 	
 }
