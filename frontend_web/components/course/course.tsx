@@ -13,7 +13,7 @@ import VideoComponent from '../video';
 import { CiLock } from "react-icons/ci";
 import CourseDescribe from './courseDescribe';
 const CourseDetailComponent = () => {
-  return (<div className="bg-[#e5e5e5] min-h-screen w-full flex xl:p-20 gap-2 lg:justify-center">
+  return (<div className=" min-h-screen w-full flex xl:p-20 gap-2 lg:justify-center">
 
     <div className="w-full  lg:w-8/12  flex   justify-center px-10">
 
