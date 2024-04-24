@@ -2,9 +2,16 @@ module Brilliant
 
 go 1.22.1
 
-require github.com/jinzhu/gorm v1.9.16
+require (
+	github.com/jinzhu/gorm v1.9.16
+	github.com/stretchr/testify v1.9.0
+)
 
-require github.com/google/go-cmp v0.5.9 // indirect
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+)
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect

@@ -3,10 +3,9 @@ package controllers
 import (
 	"Brilliant/application/dtos/user"
 	"Brilliant/application/services"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {
@@ -27,7 +26,7 @@ func NewUserController(userService *services.UserService) *UserController {
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.UserDTO
-// @Failure 400 {object} dtos.ErrorResponse  
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /users/register [post]
 func (controller *UserController) RegisterUser(ctx *gin.Context) {
 	var registerDTO dtos.RegisterDTO
@@ -54,7 +53,7 @@ func (controller *UserController) RegisterUser(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.UserDTO
-// @Failure 400 {object} dtos.ErrorResponse 
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /users/admin/register [post]
 func (controller *UserController) RegisterAdmin(ctx *gin.Context) {
 	var registerDTO dtos.RegisterDTO
@@ -92,7 +91,7 @@ func (controller *UserController) GetMe(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.UserDTO
-// @Failure 400 {object} dtos.ErrorResponse  
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /users/login [post]
 func (controller *UserController) SignIn(ctx *gin.Context) {
 	var signInDTO dtos.SignInDTO
@@ -120,7 +119,7 @@ func (controller *UserController) SignIn(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.UserDTO
-// @Failure 400 {object} dtos.ErrorResponse 
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /users/update/{id} [put]
 func (controller *UserController) UpdateUser(ctx *gin.Context) {
 	userID, _ := ctx.Get("userID")
@@ -136,7 +135,6 @@ func (controller *UserController) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	
 	ctx.JSON(http.StatusOK, userDTO)
 }
 
@@ -148,7 +146,7 @@ func (controller *UserController) UpdateUser(ctx *gin.Context) {
 // @Tags users
 // @Produce json
 // @Success 200 {object} dtos.SuccessResponse
-// @Failure 400 {object} dtos.ErrorResponse  
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /users/delete/{id} [delete]
 func (controller *UserController) DeleteUser(ctx *gin.Context) {
 	userID := ctx.Param("id")
@@ -168,7 +166,7 @@ func (controller *UserController) DeleteUser(ctx *gin.Context) {
 // @Tags users
 // @Produce json
 // @Success 200 {object} dtos.SuccessResponse
-// @Failure 400 {object} dtos.ErrorResponse  
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /users/logout [post]
 func (controller *UserController) Logout(ctx *gin.Context) {
 	refreshToken, _ := ctx.Get("refresh_token")
@@ -185,5 +183,3 @@ func (controller *UserController) Logout(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "User logged out successfully"})
 }
-
-
