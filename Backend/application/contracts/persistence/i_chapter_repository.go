@@ -6,5 +6,5 @@ import (
 
 type IChapterRepository interface {
 	IGenericRepository[domain.Chapter]
-	CreateChapter(chapter *domain.Chapter) (*domain.Chapter, error)
+	CreateChapter(chapterName string, subjectID uint) (*domain.Chapter, error)
 }

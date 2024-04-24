@@ -19,8 +19,8 @@ func NewLessonService(lessonRepository contracts.ILessonRepository) *LessonServi
 
 func (service *LessonService) CreateLesson(lessonDTO *dtos.LessonDTO) (*domain.Lesson, error) {
 	lesson := &domain.Lesson{
-		LessonName: lessonDTO.LessonName,
-		ChapterID:  lessonDTO.ChapterID,
+		Name:      lessonDTO.LessonName,
+		ChapterID: lessonDTO.ChapterID,
 	}
 
 	lesson, err := service.LessonRepository.Create(lesson)
@@ -37,7 +37,7 @@ func (service *LessonService) UpdateLesson(lessonId uint, lessonDTO *dtos.Lesson
 		return nil, err
 	}
 
-	lesson.LessonName = lessonDTO.LessonName
+	lesson.Name = lessonDTO.LessonName
 
 	lesson, err = service.LessonRepository.Update(lesson)
 	if err != nil {
@@ -100,8 +100,8 @@ func (service *LessonService) GenerateLessons(chapterID uint) ([]*domain.Lesson,
 	var lessons []*domain.Lesson
 	for _, lessonName := range lessonNames {
 		lesson := domain.Lesson{
-			LessonName: lessonName,
-			ChapterID:  chapterID,
+			Name:      lessonName,
+			ChapterID: chapterID,
 		}
 
 		createdLesson, err := service.LessonRepository.Create(&lesson)

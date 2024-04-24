@@ -8,21 +8,24 @@ import (
 )
 
 type ChapterRepository struct {
-	*GenericRepository[domain.Chapter]
-	db *gorm.DB
+	GenericRepository[domain.Chapter]
+	database *gorm.DB
 }
 
-func NewChapterRepository(db func() *gorm.DB) contracts.IChapterRepository {
+func NewChapterRepository(getDb func() *gorm.DB) contracts.IChapterRepository {
+	db := getDb()
 	return &ChapterRepository{
-		db: db(),
+		GenericRepository: GenericRepository[domain.Chapter]{database: db},
+		database:          db,
 	}
 }
 
-func (repository *ChapterRepository) CreateChapter(chapter *domain.Chapter) (*domain.Chapter, error) {
-	createdChapter := &domain.Chapter{
-		ChapterName: chapter.ChapterName,
+func (repository *ChapterRepository) CreateChapter(chapterName string, subjectID uint) (*domain.Chapter, error) {
+	chapter := &domain.Chapter{
+		Name:      chapterName,
+		SubjectID: subjectID,
 	}
-	err := repository.db.Create(createdChapter).Error
+	createdChapter, err := repository.Create(chapter)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +44,7 @@ func (repository *ChapterRepository) UpdateChapter(chapter *domain.Chapter) (*do
 }
 
 func (repository *ChapterRepository) DeleteChapter(chapter *domain.Chapter) error {
-	err := repository.db.Delete(chapter).Error
+	_, err := repository.Delete(chapter)
 	if err != nil {
 		return err
 	}

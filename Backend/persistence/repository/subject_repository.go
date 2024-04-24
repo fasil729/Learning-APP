@@ -28,8 +28,8 @@ func NewSubjectRepository(getDb func() *gorm.DB) contracts.ISubjectRepository {
 
 func (repository *SubjectRepository) CreateSubject(SubjectName string, UserID uint) (*domain.Subject, error) {
 	subject := domain.Subject{
-		SubjectName: SubjectName,
-		UserID:      UserID,
+		Name:   SubjectName,
+		UserID: UserID,
 	}
 
 	createdSubject, err := repository.Create(&subject)

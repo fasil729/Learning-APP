@@ -13,7 +13,7 @@ type LessonRepository struct {
 }
 
 func NewLessonRepository(getDb func() *gorm.DB) contracts.ILessonRepository {
-  db := getDb()
+	db := getDb()
 	return &LessonRepository{
 		GenericRepository: GenericRepository[domain.Lesson]{database: db},
 		database:          db,
@@ -28,9 +28,10 @@ func (repository *LessonRepository) GetLessonsByChapterId(chapterID uint) ([]*do
 	return lessons, nil
 }
 
-func (repository *LessonRepository) CreateLesson(lessonName string) (*domain.Lesson, error) {
+func (repository *LessonRepository) CreateLesson(chapterID uint, lessonName string) (*domain.Lesson, error) {
 	Lesson := &domain.Lesson{
-		LessonName: lessonName,
+		Name:      lessonName,
+		ChapterID: chapterID,
 	}
 	createdLesson, err := repository.Create(Lesson)
 	if err != nil {

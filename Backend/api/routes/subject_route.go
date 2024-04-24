@@ -22,8 +22,8 @@ func NewSubjectRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterG
 
 	subjectGroup := group.Group("/subjects", authMiddleware)
 	{
-		subjectGroup.POST("/Create", subjectController.CreateSubject)
-		subjectGroup.POST("/GenerateSubject", subjectController.GenerateRoadMap)
+		subjectGroup.POST("/create", subjectController.CreateSubject)
+		subjectGroup.GET("/search", subjectController.SearchSubjectsByName)
 
 		// Add other routes as needed
 	}

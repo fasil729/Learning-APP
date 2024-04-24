@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Chapter struct {
 	gorm.Model
-	ChapterName string       `json:"name" binding:"required"`
+	Name        string       `json:"name" binding:"required"`
 	SubjectID   uint         `json:"subject_id"`
 	Note        Note         `gorm:"foreignKey:ChapterID"`
 	Lessons     []Lesson     `gorm:"foreignKey:ChapterID"`

@@ -1,6 +1,4 @@
 definitions:
-  domain.Subject:
-    type: object
   domain.UserRole:
     enum:
     - teacher
@@ -17,6 +15,11 @@ definitions:
         type: string
       id:
         type: integer
+    type: object
+  dtos.CreateSubjectDTO:
+    properties:
+      subjectName:
+        type: string
     type: object
   dtos.ErrorResponse:
     properties:
@@ -64,22 +67,6 @@ definitions:
         items:
           type: string
         type: array
-    type: object
-  dtos.GenerateSubjectDTO:
-    properties:
-      chapterId:
-        type: integer
-      subjectId:
-        type: integer
-      subjectName:
-        type: string
-      userId:
-        type: integer
-    required:
-    - chapterId
-    - subjectId
-    - subjectName
-    - userId
     type: object
   dtos.LessonDTO:
     properties:
@@ -142,15 +129,14 @@ definitions:
         type: array
       id:
         type: integer
-      referenceBooksLinks:
-        items:
-          type: string
-        type: array
+      referenceBookLink:
+        type: string
       subjectName:
         type: string
       textBookLink:
         type: string
       userId:
+        description: The ID of the user who created the subject
         type: integer
     type: object
   dtos.SuccessResponse:
@@ -187,6 +173,87 @@ info:
   title: Brilliant Learning APP API
   version: "1.0"
 paths:
+  /chapters:
+    post:
+      consumes:
+      - application/json
+      description: Create a new chapter with the provided information
+      parameters:
+      - description: Chapter information
+        in: body
+        name: chapter
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ChapterDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new chapter
+      tags:
+      - chapters
+  /chapters/{chapterID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a chapter by ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete a chapter
+      tags:
+      - chapters
+    put:
+      consumes:
+      - application/json
+      description: Update the information of a chapter by ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - description: Chapter information
+        in: body
+        name: chapter
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ChapterDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update a chapter
+      tags:
+      - chapters
   /examprep/generate:
     post:
       consumes:
@@ -194,18 +261,18 @@ paths:
       description: Generate exam preparation material based on the provided topics
         and prompt
       parameters:
-      - description: Generate exam preparation material criteria
-        in: body
-        name: generateDTO
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.GenerateExamPrepDTO'
       - default: Bearer
         description: Authorization header
         in: header
         name: Authorization
         required: true
         type: string
+      - description: Generate exam preparation material criteria
+        in: body
+        name: generateDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GenerateExamPrepDTO'
       produces:
       - application/json
       responses:
@@ -583,23 +650,24 @@ paths:
       summary: Generate a quiz
       tags:
       - quiz
-  /subjects/create/{userID}:
+  /subjects/create:
     post:
       consumes:
       - application/json
       description: Create a new subject with the provided information
       parameters:
-      - description: User ID
-        in: path
-        name: userID
-        required: true
-        type: integer
       - description: Subject creation information
         in: body
         name: subject
         required: true
         schema:
-          $ref: '#/definitions/domain.Subject'
+          $ref: '#/definitions/dtos.CreateSubjectDTO'
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -612,32 +680,6 @@ paths:
           schema:
             $ref: '#/definitions/dtos.ErrorResponse'
       summary: Create a new subject
-      tags:
-      - subjects
-  /subjects/roadmap:
-    post:
-      consumes:
-      - application/json
-      description: Generate a roadmap for a subject
-      parameters:
-      - description: Subject information
-        in: body
-        name: subject
-        required: true
-        schema:
-          $ref: '#/definitions/domain.Subject'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.GenerateSubjectDTO'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/dtos.ErrorResponse'
-      summary: Generate a roadmap for a subject
       tags:
       - subjects
   /subjects/search:

@@ -15,6 +15,129 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/chapters": {
+            "post": {
+                "description": "Create a new chapter with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chapters"
+                ],
+                "summary": "Create a new chapter",
+                "parameters": [
+                    {
+                        "description": "Chapter information",
+                        "name": "chapter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ChapterDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully created the chapter",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/chapters/{chapterID}": {
+            "put": {
+                "description": "Update the information of a chapter by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chapters"
+                ],
+                "summary": "Update a chapter",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chapter ID",
+                        "name": "chapterID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Chapter information",
+                        "name": "chapter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ChapterDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated the chapter",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a chapter by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chapters"
+                ],
+                "summary": "Delete a chapter",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chapter ID",
+                        "name": "chapterID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted the chapter",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/examprep/generate": {
             "post": {
                 "description": "Generate exam preparation material based on the provided topics and prompt",
@@ -30,6 +153,14 @@ const docTemplate = `{
                 "summary": "Generate exam preparation material",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Generate exam preparation material criteria",
                         "name": "generateDTO",
                         "in": "body",
@@ -37,14 +168,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.GenerateExamPrepDTO"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "default": "Bearer",
-                        "description": "Authorization header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -609,7 +732,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/subjects/create/{userID}": {
+        "/subjects/create": {
             "post": {
                 "description": "Create a new subject with the provided information",
                 "consumes": [
@@ -624,20 +747,21 @@ const docTemplate = `{
                 "summary": "Create a new subject",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userID",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
                         "description": "Subject creation information",
                         "name": "subject",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.Subject"
+                            "$ref": "#/definitions/dtos.CreateSubjectDTO"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -645,46 +769,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.SubjectDTO"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/subjects/roadmap": {
-            "post": {
-                "description": "Generate a roadmap for a subject",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "subjects"
-                ],
-                "summary": "Generate a roadmap for a subject",
-                "parameters": [
-                    {
-                        "description": "Subject information",
-                        "name": "subject",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.Subject"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.GenerateSubjectDTO"
                         }
                     },
                     "400": {
@@ -1018,9 +1102,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "domain.Subject": {
-            "type": "object"
-        },
         "domain.UserRole": {
             "type": "string",
             "enum": [
@@ -1042,6 +1123,14 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "dtos.CreateSubjectDTO": {
+            "type": "object",
+            "properties": {
+                "subjectName": {
+                    "type": "string"
                 }
             }
         },
@@ -1115,29 +1204,6 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
-                }
-            }
-        },
-        "dtos.GenerateSubjectDTO": {
-            "type": "object",
-            "required": [
-                "chapterId",
-                "subjectId",
-                "subjectName",
-                "userId"
-            ],
-            "properties": {
-                "chapterId": {
-                    "type": "integer"
-                },
-                "subjectId": {
-                    "type": "integer"
-                },
-                "subjectName": {
-                    "type": "string"
-                },
-                "userId": {
-                    "type": "integer"
                 }
             }
         },
@@ -1233,11 +1299,8 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "referenceBooksLinks": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "referenceBookLink": {
+                    "type": "string"
                 },
                 "subjectName": {
                     "type": "string"
@@ -1246,6 +1309,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userId": {
+                    "description": "The ID of the user who created the subject",
                     "type": "integer"
                 }
             }

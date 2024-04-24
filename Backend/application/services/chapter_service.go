@@ -18,8 +18,8 @@ func NewChapterService(chapterRepository contracts.IChapterRepository) *ChapterS
 
 func (service *ChapterService) CreateChapter(chapterDTO *dtos.ChapterDTO) (*domain.Chapter, error) {
 	chapter := &domain.Chapter{
-		ChapterName: chapterDTO.ChapterName,
-		SubjectID:   chapterDTO.SubjectID,
+		Name:      chapterDTO.ChapterName,
+		SubjectID: chapterDTO.SubjectID,
 	}
 
 	chapter, err := service.ChapterRepository.Create(chapter)
@@ -35,7 +35,7 @@ func (service *ChapterService) UpdateChapter(chapterId uint, chapterDTO *dtos.Ch
 		return nil, err
 	}
 
-	chapter.ChapterName = chapterDTO.ChapterName
+	chapter.Name = chapterDTO.ChapterName
 
 	chapter, err = service.ChapterRepository.Update(chapter)
 	if err != nil {
