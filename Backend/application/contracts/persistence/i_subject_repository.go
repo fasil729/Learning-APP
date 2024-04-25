@@ -7,5 +7,5 @@ import (
 type ISubjectRepository interface {
 	IGenericRepository[domain.Subject]
 	CreateSubject(SubjectName string, UserID uint) (*domain.Subject, error)
-	SearchSubjectsByName(query string) ([]*domain.Subject, error)
+	SearchSubjectsByName(userId uint, query string) ([]*domain.Subject, error)
 }

@@ -9,8 +9,13 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/fatih/color v1.9.0 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/radovskyb/watcher v1.0.7 // indirect
 )
 
 require (

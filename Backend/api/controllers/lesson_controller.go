@@ -18,6 +18,7 @@ func NewLessonController(lessonService *services.LessonService) *LessonControlle
 
 // @Summary Get lesson content
 // @Description Get the content of a lesson by ID
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags lessons
 // @Accept  json
 // @Produce  json
@@ -29,21 +30,24 @@ func (controller *LessonController) GetLessonContent(ctx *gin.Context) {
 	lessonIDstr := ctx.Param("lessonID")
 	lessonID, err := strconv.ParseUint(lessonIDstr, 10, 64)
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(400, gin.H{"error": "Invalid lesson ID format"})
 		return
 	}
 
-	lesson, err := controller.lessonService.GetLessonContent(uint(lessonID))
+	lessonContent, err := controller.lessonService.GetLessonContent(uint(lessonID))
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err.Error()})
+		ctx.JSON(500, gin.H{"error": "Could not retrieve lesson content. Please try again later."})
 		return
 	}
 
-	ctx.JSON(200, lesson)
+	// If content is text, set the appropriate headers
+	ctx.Header("Content-Type", "text/plain")
+	ctx.String(200, string(lessonContent))
 }
 
 // @Summary Create a new lesson
 // @Description Create a new lesson with the provided information
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags lessons
 // @Accept  json
 // @Produce  json
@@ -69,6 +73,7 @@ func (controller *LessonController) AddLesson(ctx *gin.Context) {
 
 // @Summary Update a lesson
 // @Description Update the information of a lesson by ID
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags lessons
 // @Accept  json
 // @Produce  json
@@ -102,6 +107,7 @@ func (controller *LessonController) UpdateLesson(ctx *gin.Context) {
 
 // @Summary Delete a lesson
 // @Description Delete a lesson by ID
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags lessons
 // @Accept  json
 // @Produce  json

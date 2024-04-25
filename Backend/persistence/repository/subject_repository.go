@@ -14,10 +14,6 @@ type SubjectRepository struct {
 	database *gorm.DB
 }
 
-// type UserRepository struct {
-// 	*GenericRepository[domain.User]
-// }
-
 func NewSubjectRepository(getDb func() *gorm.DB) contracts.ISubjectRepository {
 	db := getDb()
 	return &SubjectRepository{
@@ -61,17 +57,17 @@ func (repository *SubjectRepository) DeleteSubject(subject *domain.Subject) erro
 	return nil
 }
 
-func (repository *SubjectRepository) SearchSubjectsByName(query string) ([]*domain.Subject, error) {
-	var searchedTopics []*domain.Subject
+func (repository *SubjectRepository) SearchSubjectsByName(UserID uint, query string) ([]*domain.Subject, error) {
+	var searchedSubjects []*domain.Subject
 
-	response := migrations.GetDb().Where("TopicName LIKE ?", "%"+query+"%").Find(&searchedTopics)
+	response := migrations.GetDb().Where("user_id = ? AND Name LIKE ?", UserID, "%"+query+"%").Find(&searchedSubjects)
 	error := response.Error
 
 	if error != nil {
 		return nil, error
 	}
 
-	return searchedTopics, nil
+	return searchedSubjects, nil
 
 }
 

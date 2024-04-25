@@ -2,9 +2,10 @@ package services
 
 import (
 	contracts "Brilliant/application/contracts/persistence"
-	Chapterdtos "Brilliant/application/dtos/chapter"
-	Lessondtos "Brilliant/application/dtos/lesson"
-	Subjctdtos "Brilliant/application/dtos/subject"
+	dtos "Brilliant/application/dtos/subject"
+	// Chapterdtos "Brilliant/application/dtos/chapter"
+	// Lessondtos "Brilliant/application/dtos/lesson"
+	// Subjctdtos "Brilliant/application/dtos/subject"
 
 	"Brilliant/domain"
 )
@@ -22,80 +23,65 @@ func NewSubjectService(subjectRepository contracts.ISubjectRepository, chapterRe
 		lessonRepository:  lessonRepository}
 }
 
-func (service *SubjectService) CreateSubject(UserId uint, subjectDTO *Subjctdtos.CreateSubjectDTO) (*Subjctdtos.SubjectDTO, error) {
-	subject, err := service.subjectRepository.CreateSubject(subjectDTO.SubjectName, UserId)
+// CreateSubject creates a new subject along with its chapters and lessons.
+func (service *SubjectService) CreateSubject(userID uint, SubjectDTO *dtos.CreateSubjectDTO) (*domain.Subject, error) {
+	// Create the subject in the repository
+	createdSubject, err := service.subjectRepository.CreateSubject(SubjectDTO.SubjectName, userID)
 	if err != nil {
 		return nil, err
 	}
 
 	// Dummy data for chapters and lessons
-	chapters := []domain.Chapter{
+	chapters := []struct {
+		Name    string
+		Lessons []string
+	}{
 		{
 			Name: "Chapter 1",
-			Lessons: []domain.Lesson{
-				{Name: "Lesson 1.1"},
-				{Name: "Lesson 1.2"},
+			Lessons: []string{
+				"Lesson 1.1",
+				"Lesson 1.2",
 			},
 		},
 		{
 			Name: "Chapter 2",
-			Lessons: []domain.Lesson{
-				{Name: "Lesson 2.1"},
-				{Name: "Lesson 2.2"},
+			Lessons: []string{
+				"Lesson 2.1",
+				"Lesson 2.2",
 			},
 		},
 	}
 
-	chaptersDTO := make([]Chapterdtos.ChapterDTO, len(chapters))
+	var domainChapters []domain.Chapter
 
-	for i, chapter := range chapters {
-		lessonDTO := make([]Lessondtos.LessonDTO, len(chapter.Lessons))
-
-		for j, lesson := range chapter.Lessons {
-			lessonDTO[j] = Lessondtos.LessonDTO{
-				LessonName: lesson.Name,
-			}
-		}
-		chaptersDTO[i] = Chapterdtos.ChapterDTO{
-			ChapterName: chapter.Name,
-			Lessons:     lessonDTO,
-		}
-	}
-
-	for i, chapterDTO := range chapters {
-		chapter, err := service.chapterRepository.CreateChapter(chapterDTO.Name, subject.ID)
+	// Create chapters and their lessons in the database
+	for _, chapterData := range chapters {
+		createdChapter, err := service.chapterRepository.CreateChapter(chapterData.Name, createdSubject.ID)
 		if err != nil {
 			return nil, err
 		}
 
-		chapterDTO.ID = chapter.ID
-
-		for j, lessonDTO := range chapterDTO.Lessons {
-			lesson, err := service.lessonRepository.CreateLesson(chapter.ID, lessonDTO.Name)
+		var domainLessons []domain.Lesson
+		for _, lessonName := range chapterData.Lessons {
+			createdLesson, err := service.lessonRepository.CreateLesson(createdChapter.ID, lessonName)
 			if err != nil {
 				return nil, err
 			}
 
-			chapterDTO.Lessons[j].ID = lesson.ID
+			domainLessons = append(domainLessons, *createdLesson) // Adding created lessons with IDs
 		}
 
-		chapters[i] = chapterDTO
+		createdChapter.Lessons = domainLessons                   // Assigning lessons with correct IDs
+		domainChapters = append(domainChapters, *createdChapter) // Adding created chapters with IDs
 	}
 
-	subjectDto := &Subjctdtos.SubjectDTO{
-		ID:                 subject.ID,
-		UserID:             subject.UserID,
-		SubjectName:        subject.Name,
-		Chapters:           chaptersDTO,
-		TextBookLink:       subject.TextBookLink,
-		ReferenceBooksLink: "",
-	}
+	createdSubject.Chapters = domainChapters // Assigning chapters with correct IDs
 
-	return subjectDto, nil
+	return createdSubject, nil
 }
 
-func (service *SubjectService) SearchSubjectsByName(query string) ([]*domain.Subject, error) {
-	subjects, err := service.subjectRepository.SearchSubjectsByName(query)
+func (service *SubjectService) SearchSubjectsByName(UserID uint, query string) ([]*domain.Subject, error) {
+	subjects, err := service.subjectRepository.SearchSubjectsByName(UserID, query)
 	if err != nil {
 		return nil, err
 	}
