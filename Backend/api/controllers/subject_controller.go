@@ -47,14 +47,16 @@ func (controller *SubjectController) CreateSubject(ctx *gin.Context) {
 // @Summary Search subjects by name
 // @Description Search for subjects by name
 // @Param query query string true "Search query"
+// @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags subjects
 // @Produce json
 // @Success 200 {array} dtos.SubjectDTO
 // @Failure 500 {object} dtos.ErrorResponse
 // @Router /subjects/search [get]
 func (controller *SubjectController) SearchSubjectsByName(ctx *gin.Context) {
+	userID, _ := ctx.Get("userID")
 	query := ctx.Query("query")
-	subjects, err := controller.subjectService.SearchSubjectsByName(query)
+	subjects, err := controller.subjectService.SearchSubjectsByName(userID.(uint), query)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
