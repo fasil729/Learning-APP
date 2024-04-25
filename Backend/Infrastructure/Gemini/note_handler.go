@@ -21,8 +21,7 @@ func NewGeminiNoteHandler() contracts.INoteHandler {
 		ctx:   context.Background(),
 	}
 }
-
-func (nh *GeminiNoteHandler) AddNoteForChapter(chapterName string, noteContent string) error {
+func (nh *GeminiNoteHandler) AddNoteForChapter(noteContent string, chapterName string) error {
 	// Generate a prompt to add a note for the chapter
 	prompt := "Add a note for the chapter " + chapterName + ". " + "Note: " + noteContent
 	_, err := nh.model.GenerateContent(nh.ctx, genai.Text(prompt))
@@ -34,7 +33,7 @@ func (nh *GeminiNoteHandler) AddNoteForChapter(chapterName string, noteContent s
 	return nil
 }
 
-func (nh *GeminiNoteHandler) AddNoteForChapterFromImage(chapterName string, imageData []byte) error {
+func (nh *GeminiNoteHandler) AddNoteForChapterFromImage(imageData []byte, chapterName string) error {
 	// Generate a prompt to add a note for the chapter from an image
 	prompt := "Add a note for the chapter " + chapterName + " from the provided image."
 	_, err := nh.model.GenerateContent(nh.ctx, genai.ImageData("jpeg", imageData), genai.Text(prompt))

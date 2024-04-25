@@ -4,8 +4,10 @@ import (
 	"context"
 	"log"
 	"strconv"
+	"strings"
 
 	"Brilliant/application/contracts/gemini"
+	"Brilliant/application/dtos/exam_prep"
 
 	"github.com/google/generative-ai-go/genai"
 )
@@ -26,7 +28,8 @@ func NewGeminiExamPrepHandler() contracts.IExamPrepHandler {
 
 func (eh *GeminiExamPrepHandler) GenerateExamPrep(dto *dtos.GenerateExamPrepDTO) ([]*genai.Candidate, error) {
 	// Generate a prompt based on the topics and study time
-	prompt := "Your exam prep topics are: " + topicsList(dto.Topics) + ". " +
+	topics := strings.Join(dto.Topics, ", ")
+	prompt := "Your exam prep topics are: " + topics + ". " +
 		"Your prompt is: " + dto.Prompt + ". " +
 		"Your study time is: " + strconv.Itoa(dto.ReadTime) + " minutes."
 	resp, err := eh.model.GenerateContent(eh.ctx, genai.Text(prompt))
