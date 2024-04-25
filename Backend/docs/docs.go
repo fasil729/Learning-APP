@@ -535,6 +535,14 @@ const docTemplate = `{
                 "summary": "Create a new lesson",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Lesson information",
                         "name": "lesson",
                         "in": "body",
@@ -574,6 +582,14 @@ const docTemplate = `{
                 ],
                 "summary": "Update a lesson",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Lesson ID",
@@ -620,6 +636,14 @@ const docTemplate = `{
                 "summary": "Delete a lesson",
                 "parameters": [
                     {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Lesson ID",
                         "name": "lessonID",
@@ -657,6 +681,14 @@ const docTemplate = `{
                 ],
                 "summary": "Get lesson content",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Lesson ID",
@@ -796,6 +828,14 @@ const docTemplate = `{
                         "description": "Search query",
                         "name": "query",
                         "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -1123,6 +1163,12 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "lessons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.LessonDTO"
+                    }
                 }
             }
         },
@@ -1299,7 +1345,7 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "referenceBookLink": {
+                "referenceBooksLink": {
                     "type": "string"
                 },
                 "subjectName": {

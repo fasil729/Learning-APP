@@ -15,6 +15,10 @@ definitions:
         type: string
       id:
         type: integer
+      lessons:
+        items:
+          $ref: '#/definitions/dtos.LessonDTO'
+        type: array
     type: object
   dtos.CreateSubjectDTO:
     properties:
@@ -129,7 +133,7 @@ definitions:
         type: array
       id:
         type: integer
-      referenceBookLink:
+      referenceBooksLink:
         type: string
       subjectName:
         type: string
@@ -516,6 +520,12 @@ paths:
       - application/json
       description: Create a new lesson with the provided information
       parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Lesson information
         in: body
         name: lesson
@@ -542,6 +552,12 @@ paths:
       - application/json
       description: Delete a lesson by ID
       parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Lesson ID
         in: path
         name: lessonID
@@ -566,6 +582,12 @@ paths:
       - application/json
       description: Update the information of a lesson by ID
       parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Lesson ID
         in: path
         name: lessonID
@@ -597,6 +619,12 @@ paths:
       - application/json
       description: Get the content of a lesson by ID
       parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Lesson ID
         in: path
         name: lessonID
@@ -689,6 +717,12 @@ paths:
       - description: Search query
         in: query
         name: query
+        required: true
+        type: string
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:
