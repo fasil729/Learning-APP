@@ -11,6 +11,7 @@ import (
 
 var model *genai.GenerativeModel
 
+
 func init() {
 	
 	ctx := context.Background()
