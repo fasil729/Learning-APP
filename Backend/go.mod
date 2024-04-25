@@ -26,6 +26,19 @@ require (
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240325203815-454cdb8f5daa // indirect
 	google.golang.org/grpc v1.62.1 // indirect
+	github.com/jinzhu/gorm v1.9.16
+	github.com/stretchr/testify v1.9.0
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/fatih/color v1.9.0 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/mattn/go-colorable v0.1.4 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/radovskyb/watcher v1.0.7 // indirect
 )
 
 require (

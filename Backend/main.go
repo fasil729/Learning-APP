@@ -3,11 +3,11 @@ package main
 import (
 	route "Brilliant/api/routes"
 	"Brilliant/config"
-	"Brilliant/persistence/migrations"
 	_ "Brilliant/docs"
+	"Brilliant/persistence/migrations"
 
-	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -28,7 +28,6 @@ func main() {
 	getDb := migrations.GetDb
 
 	router := gin.Default()
-
 
 	// Global CORS configuration
 	config := cors.DefaultConfig()

@@ -20,8 +20,8 @@ func NewExamPrepController(examPrepService *services.ExamPrepService) *ExamPrepC
 // GenerateExamPrepMaterial godoc
 // @Summary Generate exam preparation material
 // @Description Generate exam preparation material based on the provided topics and prompt
-// @Param generateDTO body dtos.GenerateExamPrepDTO true "Generate exam preparation material criteria"
 // @Param Authorization header string true "Authorization header" default(Bearer )
+// @Param generateDTO body dtos.GenerateExamPrepDTO true "Generate exam preparation material criteria"
 // @Tags exam_prep
 // @Accept json
 // @Produce json
