@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "learning-app-idt8.onrender.com",
+    "host": "localhost:8080",
     "paths": {
         "/chapters": {
             "post": {

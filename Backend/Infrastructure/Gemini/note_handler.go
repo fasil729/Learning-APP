@@ -17,7 +17,7 @@ type GeminiNoteHandler struct {
 // NewGeminiNoteHandler creates a new instance of GeminiNoteHandler and returns it as an INoteHandler
 func NewGeminiNoteHandler() contracts.INoteHandler {
 	return &GeminiNoteHandler{
-		model: model, // Assuming `model` is accessible from this scope
+		model: GetTextModel(), // Assuming `model` is accessible from this scope
 		ctx:   context.Background(),
 	}
 }

@@ -21,7 +21,7 @@ type GeminiExamPrepHandler struct {
 // NewGeminiExamPrepHandler creates a new instance of GeminiExamPrepHandler and returns it as an IExamPrepHandler
 func NewGeminiExamPrepHandler() contracts.IExamPrepHandler {
 	return &GeminiExamPrepHandler{
-		model: model, // Assuming `model` is accessible from this scope
+		model: GetTextModel(), // Assuming `model` is accessible from this scope
 		ctx:   context.Background(),
 	}
 }

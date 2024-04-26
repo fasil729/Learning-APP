@@ -1,9 +1,12 @@
 package contracts
 
-import "github.com/google/generative-ai-go/genai"
+import (
+	dtos "Brilliant/application/dtos/experiment"
+	"Brilliant/domain"
+)
 
 // IExperimentHandler defines the contract for handling experiments in Gemini.
 type IExperimentHandler interface {
-	GetExperimentsForChapter(chapterName string) ([]*genai.Candidate, error)
-	GetExperimentContent(experimentName string) ([]*genai.Candidate, error)
+	GetExperimentsForChapter(generateDTO *dtos.GenerateExperimentDTO, chapterName string) ([]*domain.Experiment, error)
+	GetExperimentContent(experimentName string, promtMessage string) ([]byte, error)
 }
