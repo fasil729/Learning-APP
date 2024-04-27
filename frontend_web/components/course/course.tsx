@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import {
   Tabs,
@@ -12,8 +13,26 @@ import Community from './community';
 import VideoComponent from '../video';
 import { CiLock } from "react-icons/ci";
 import CourseDescribe from './courseDescribe';
+import { useQuizGenerateMutation } from '@/lib/features/quiz/quizApi';
+import { useSelector } from 'react-redux';
+import { RooState } from '@/lib/store';
+
 const CourseDetailComponent = () => {
-  return (<div className="bg-[#e5e5e5] min-h-screen w-full flex xl:p-20 gap-2 lg:justify-center">
+const [generateQuiz,{isError,isSuccess,data,error}]=useQuizGenerateMutation()
+   const topics=useSelector((state:RooState) => state.quiz.topics)
+   console.log("my topic list: " , [topics])
+
+const onGenerateQuiz=async() => {
+  await generateQuiz({
+    number_of_quizzes: 0,
+    prompt: "string",
+    topics: [
+      "string"
+    ]
+  })
+};
+
+  return (<div className=" min-h-screen w-full flex xl:p-20 gap-2 lg:justify-center">
 
     <div className="w-full  lg:w-8/12  flex   justify-center px-10">
 
@@ -81,8 +100,11 @@ const CourseDetailComponent = () => {
     <div className="hidden lg:block t lg:w-4/12 relative xl:p-20">
       <div className="fixed flex justify-center">
         <CourseDescribe/>
+
       </div>
     </div>
+
+   
 
   </div>
   )
