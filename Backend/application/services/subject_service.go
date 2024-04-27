@@ -2,6 +2,7 @@ package services
 
 import (
 	contracts "Brilliant/application/contracts/persistence"
+	contract "Brilliant/application/contracts/gemini"
 	dtos "Brilliant/application/dtos/subject"
 	// Chapterdtos "Brilliant/application/dtos/chapter"
 	// Lessondtos "Brilliant/application/dtos/lesson"
@@ -14,42 +15,33 @@ type SubjectService struct {
 	subjectRepository contracts.ISubjectRepository
 	chapterRepository contracts.IChapterRepository
 	lessonRepository  contracts.ILessonRepository
+	subjectGeminiHandler contract.IGeminiSubjectHandler
 }
 
-func NewSubjectService(subjectRepository contracts.ISubjectRepository, chapterRepository contracts.IChapterRepository, lessonRepository contracts.ILessonRepository) *SubjectService {
+func NewSubjectService(subjectRepository contracts.ISubjectRepository, chapterRepository contracts.IChapterRepository, lessonRepository contracts.ILessonRepository, subjectGeminiHandler contract.IGeminiSubjectHandler) *SubjectService {
 	return &SubjectService{
 		subjectRepository: subjectRepository,
 		chapterRepository: chapterRepository,
-		lessonRepository:  lessonRepository}
+		lessonRepository:  lessonRepository,
+		subjectGeminiHandler: subjectGeminiHandler,}
 }
 
 // CreateSubject creates a new subject along with its chapters and lessons.
-func (service *SubjectService) CreateSubject(userID uint, SubjectDTO *dtos.CreateSubjectDTO) (*domain.Subject, error) {
+func (service *SubjectService) CreateSubject(userID uint, SubjectDTO *dtos.CreateSubjectDTO) (*dtos.SubjectWithChaptersDTO, error) {
 	// Create the subject in the repository
 	createdSubject, err := service.subjectRepository.CreateSubject(SubjectDTO.SubjectName, userID)
 	if err != nil {
 		return nil, err
 	}
+    
+	chapters, err := service.subjectGeminiHandler.GenerateTableOfContent(SubjectDTO.SubjectName)
+	if err != nil {
+		return nil, err
+	}
 
-	// Dummy data for chapters and lessons
-	chapters := []struct {
-		Name    string
-		Lessons []string
-	}{
-		{
-			Name: "Chapter 1",
-			Lessons: []string{
-				"Lesson 1.1",
-				"Lesson 1.2",
-			},
-		},
-		{
-			Name: "Chapter 2",
-			Lessons: []string{
-				"Lesson 2.1",
-				"Lesson 2.2",
-			},
-		},
+	subjectWithChapters := &dtos.SubjectWithChaptersDTO{
+		Subject:  createdSubject,
+		Chapters: chapters,
 	}
 
 	var domainChapters []domain.Chapter
@@ -77,7 +69,7 @@ func (service *SubjectService) CreateSubject(userID uint, SubjectDTO *dtos.Creat
 
 	createdSubject.Chapters = domainChapters // Assigning chapters with correct IDs
 
-	return createdSubject, nil
+	return subjectWithChapters, nil
 }
 
 func (service *SubjectService) SearchSubjectsByName(UserID uint, query string) ([]*domain.Subject, error) {
