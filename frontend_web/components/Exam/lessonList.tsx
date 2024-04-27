@@ -1,4 +1,3 @@
-// lessonList.tsx
 import React, { useState } from "react";
 import { lessonTestData } from "@/lib/lesson.test.data";
 import LessonLink from "./lessonLink";
@@ -30,7 +29,7 @@ export function LessonList() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-grayShade p-4 rounded-md">
       {lessonTestData.map((chapter, index) => {
         const isChapterChecked = checkedChapters[index];
 
@@ -41,9 +40,9 @@ export function LessonList() {
                 type="checkbox"
                 checked={isChapterChecked}
                 onChange={() => handleChapterCheckboxChange(index)}
-                className='text-[#4C6FFF]'
+                className='text-mainColor'
               />
-              <h2 className="text-base font-medium mb-2"> {/* Decreased font size */}
+              <h2 className="text-base font-medium mb-2 text-titleColor"> {/* Decreased font size */}
                 Chapter {index + 1} - {chapter.name}
               </h2>
             </div>
