@@ -1,6 +1,7 @@
 package gemini
 
 import (
+	"Brilliant/config"
 	"context"
 	"log"
 
@@ -10,10 +11,12 @@ import (
 
 
 func GetTextModel()  *genai.GenerativeModel {
-	apiKey := "AIzaSyBRgGXo2clQ41IpQsjzWET2xYQyBcmtjW4"
-	if apiKey == "" {
-		log.Fatal("Please set the GEMINI_API_KEY environment variable")
+	// Load environment variables
+	env, err := config.Load()
+	if err != nil {
+		panic(err)
 	}
+	apiKey := env.Gemin_Api_key
 
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))

@@ -3,6 +3,7 @@ package gemini
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"Brilliant/application/contracts/gemini"
@@ -26,8 +27,8 @@ func NewGeminiExperimentHandler() contracts.IExperimentHandler {
 	}
 }
 
-func (eh *GeminiExperimentHandler) GetExperimentsForChapter(generateDTO *dtos.GenerateExperimentDTO, chapterName string) ([]*domain.Experiment, error) {
-	resp, err := eh.model.GenerateContent(eh.ctx, genai.Text("List possible experiments for the chapter "+ chapterName + ` return the response in json format [{"ExperimentName": "Experiment 1: experiment name"}, {"ExperimentName": "Experiment 2: experiment name"}, {"ExperimentName": "Experiment 3: experiment name"}]`))
+func (eh *GeminiExperimentHandler) GetExperimentsForChapter(generateDTO *dtos.GenerateExperimentDTO, chapterName string) ([]domain.Experiment, error) {
+	resp, err := eh.model.GenerateContent(eh.ctx, genai.Text("List possible experiments for the chapter "+chapterName+` return the response in json format [{"ExperimentName": "Experiment 1: experiment name"}, {"ExperimentName": "Experiment 2: experiment name"}, {"ExperimentName": "Experiment 3: experiment name"}] make them specific for the chapter only`))
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -36,10 +37,10 @@ func (eh *GeminiExperimentHandler) GetExperimentsForChapter(generateDTO *dtos.Ge
 	// Get the response content
 	responseContent := resp.Candidates[0].Content.Parts[0]
 
-	// Convert the response content to byte
+	// Convert the response content to JSON
 	responseContentJSON, _ := json.Marshal(responseContent)
 
-	// Convert the response content from byte to string
+	// Convert the response content from JSON to string
 	var responseContentString string
 	err = json.Unmarshal(responseContentJSON, &responseContentString)
 	if err != nil {
@@ -47,22 +48,37 @@ func (eh *GeminiExperimentHandler) GetExperimentsForChapter(generateDTO *dtos.Ge
 		return nil, err
 	}
 
-	// Convert the response content to a list of domain.Experiment
-	var experiments []*domain.Experiment
-	err = json.Unmarshal([]byte(responseContentString[8:len(responseContentString)-3]), &experiments)
-	if err != nil {
+	// debug
+	fmt.Println("responseContentString: ", responseContentString)
+	
+	// Parse the JSON response directly into a slice of structs
+	var experimentsJSON []struct {
+		ExperimentName string `json:"ExperimentName"`
+	}
+	if err := json.Unmarshal([]byte(responseContentString[8:len(responseContentString) - 3]), &experimentsJSON); err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
 
-	// Set the SubjectID and ChapterID for each experiment
-	for _, exp := range experiments {
-		exp.SubjectID = generateDTO.SubjectID
-		exp.ChapterID = generateDTO.ChapterID
+	// debug 
+	fmt.Println("experimentsJSON: ", experimentsJSON)
+
+	// Build the domain.Experiment objects using the experiment names and SubjectID and ChapterID from generateDTO
+	var experiments []domain.Experiment
+	for _, exp := range experimentsJSON {
+		experiments = append(experiments, domain.Experiment{
+			ExperimentName: exp.ExperimentName,
+			SubjectID:      generateDTO.SubjectID,
+			ChapterID:      generateDTO.ChapterID,
+		})
 	}
+
+	// debug
+	fmt.Println("experiments: ", experiments)
 
 	return experiments, nil
 }
+
 
 
 func (eh *GeminiExperimentHandler) GetExperimentContent(experimentName string, promptMessage string) ([]byte, error) {

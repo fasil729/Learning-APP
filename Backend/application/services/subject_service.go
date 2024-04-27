@@ -44,30 +44,30 @@ func (service *SubjectService) CreateSubject(userID uint, SubjectDTO *dtos.Creat
 		Chapters: chapters,
 	}
 
-	// var domainChapters []domain.Chapter
+	var domainChapters []domain.Chapter
 
-	// // Create chapters and their lessons in the database
-	// for _, chapterData := range chapters {
-	// 	createdChapter, err := service.chapterRepository.CreateChapter(chapterData.Name, createdSubject.ID)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
+	// Create chapters and their lessons in the database
+	for _, chapterData := range chapters {
+		createdChapter, err := service.chapterRepository.CreateChapter(chapterData.Name, createdSubject.ID)
+		if err != nil {
+			return nil, err
+		}
 
-	// 	var domainLessons []domain.Lesson
-	// 	for _, lessonName := range chapterData.Lessons {
-	// 		createdLesson, err := service.lessonRepository.CreateLesson(createdChapter.ID, lessonName)
-	// 		if err != nil {
-	// 			return nil, err
-	// 		}
+		var domainLessons []domain.Lesson
+		for _, lessonName := range chapterData.Lessons {
+			createdLesson, err := service.lessonRepository.CreateLesson(createdChapter.ID, lessonName)
+			if err != nil {
+				return nil, err
+			}
 
-	// 		domainLessons = append(domainLessons, *createdLesson) // Adding created lessons with IDs
-	// 	}
+			domainLessons = append(domainLessons, *createdLesson) // Adding created lessons with IDs
+		}
 
-	// 	createdChapter.Lessons = domainLessons                   // Assigning lessons with correct IDs
-	// 	domainChapters = append(domainChapters, *createdChapter) // Adding created chapters with IDs
-	// }
+		createdChapter.Lessons = domainLessons                   // Assigning lessons with correct IDs
+		domainChapters = append(domainChapters, *createdChapter) // Adding created chapters with IDs
+	}
 
-	// createdSubject.Chapters = domainChapters // Assigning chapters with correct IDs
+	createdSubject.Chapters = domainChapters // Assigning chapters with correct IDs
 
 	return subjectWithChapters, nil
 }

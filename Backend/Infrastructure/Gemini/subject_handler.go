@@ -26,8 +26,25 @@ func NewGeminiSubjectHandler() contracts.IGeminiSubjectHandler {
 }
 
 func (sh *GeminiSubjectHandler) GenerateTableOfContent(subjectName string) ([]contracts.Chapter, error) {
-    resp, err := sh.model.GenerateContent(sh.ctx, genai.Text("Generate a table of content for the subject "+subjectName))
-    if err != nil {
+    resp, err := sh.model.GenerateContent(sh.ctx, genai.Text("Generate a table of content for the subject "+subjectName + ` return the response in json format [  
+    {Name: "Chapter 1: Chapter Name",
+        Lessons: [
+          "1.1 Lesson Name",
+          "1.2 Lesson Name",
+          "1.3 Lesson Name",
+          "1.4 Lesson Name"
+        ]
+      },
+      {
+       Name: "Chapter 2: Chapter Name",
+        Lessons:[
+          "2.1 Lesson Name",
+          "2.2 Lesson Name",
+          "2.3 Lesson Name",
+          "2.4 Lesson Name"
+        ]
+      }]`))
+	if err != nil {
         log.Fatal(err)
         return nil, err
     }
@@ -70,7 +87,7 @@ func (sh *GeminiSubjectHandler) GenerateTableOfContent(subjectName string) ([]co
 
 
 func (sh *GeminiSubjectHandler) GenerateLessonDetailContent(lessonName string) ([]byte, error) {
-	resp, err := sh.model.GenerateContent(sh.ctx, genai.Text("Generate detailed content for the lesson "+lessonName))
+	resp, err := sh.model.GenerateContent(sh.ctx, genai.Text("Generate detailed content with explanation and examples focus more on explantion rather than only listing the topics for the lesson "+lessonName + "inlcude images and diagrams if possible for images inclue the image in markdown format with imageurl like ![Image] (imageurl))"))
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -82,6 +99,11 @@ func (sh *GeminiSubjectHandler) GenerateLessonDetailContent(lessonName string) (
 	fmt.Println("Number of candidates: ", Number_of_candidates)
 	for i := 0; i < Number_of_candidates; i++ {
 		fmt.Println("candidate", resp.Candidates[i].Content)
+		Number_of_parts := len(resp.Candidates[i].Content.Parts)
+
+		for j := 0; j < Number_of_parts; j++ {
+			fmt.Println("part", resp.Candidates[i].Content.Parts[j])
+		}
 
 	}
 

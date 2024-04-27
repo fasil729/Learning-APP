@@ -68,21 +68,21 @@ func (service *ExperimentService) GetExperimentContent(experimentID uint, prompt
 	return content, nil
 }
 
-func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dtos.GenerateExperimentDTO) ([]*domain.Experiment, error) {
-	// For now, return three dummy experiments
+func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dtos.GenerateExperimentDTO) ([]domain.Experiment, error) {
+	// Get the experiments from Gemini
 	experiments, err := service.expermentgeminiHandler.GetExperimentsForChapter(generateDTO, generateDTO.ChapterName)
 	if err != nil {
 		return nil, err
 	}
     
 	// Save the experiments to the database and return them
-	domainExperiments := []*domain.Experiment{}
+	domainExperiments := []domain.Experiment{}
 	for _, exp := range experiments {
-		exp, err := service.experimentRepository.Create(exp)
+		exp, err := service.experimentRepository.Create(&exp)
 		if err != nil {
 			return nil, err
 		}
-		domainExperiments = append(domainExperiments, exp)
+		domainExperiments = append(domainExperiments, *exp)
 	}
 
 	return domainExperiments, nil
