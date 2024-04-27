@@ -1,8 +1,10 @@
 package routes
 
 import (
+	gemini "Brilliant/Infrastructure/Gemini"
 	"Brilliant/api/controllers"
 	"Brilliant/api/middlewares"
+	contracts "Brilliant/application/contracts/gemini"
 	"Brilliant/application/services"
 	"Brilliant/config"
 	repositories "Brilliant/persistence/repository"
@@ -10,12 +12,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
+var subjectGeminiHandler contracts.IGeminiSubjectHandler
 
 func NewSubjectRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGroup) {
 	subjectRepository := repositories.NewSubjectRepository(getDb)
 	chapterRepository := repositories.NewChapterRepository(getDb)
 	lessonRepository := repositories.NewLessonRepository(getDb)
-	subjectService := services.NewSubjectService(subjectRepository, chapterRepository, lessonRepository)
+	subjectGeminiHandler = gemini.NewGeminiSubjectHandler()
+	subjectService := services.NewSubjectService(subjectRepository, chapterRepository, lessonRepository, subjectGeminiHandler)
 	subjectController := controllers.NewSubjectController(subjectService)
 
 	authMiddleware := middlewares.AuthMiddleware(env.AccessTokenSecret)

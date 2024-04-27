@@ -13,7 +13,7 @@ import (
 
 func NewLessonRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGroup) {
 	lessonRepository := repositories.NewLessonRepository(getDb)
-	lessonService := services.NewLessonService(lessonRepository)
+	lessonService := services.NewLessonService(lessonRepository, subjectGeminiHandler)
 	lessonController := controllers.NewLessonController(lessonService)
 
 	authMiddleware := middlewares.AuthMiddleware(env.AccessTokenSecret)

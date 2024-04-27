@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { LessonList } from './lessonList'
 import { Button } from '../ui/button'
+import QuizGenerate from './quiz.generate'
 const Content = () => {
 
   const [progress, setProgress] = useState(13)
@@ -27,6 +28,7 @@ const Content = () => {
       <p className='text-gray-800 text-sm'>2 completed units of 11 available</p>
     </div>
     <div className="">
+    <QuizGenerate/>
      <LessonList/>
     </div>
 

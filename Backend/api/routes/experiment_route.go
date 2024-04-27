@@ -1,6 +1,7 @@
 package routes
 
 import (
+	gemini "Brilliant/Infrastructure/Gemini"
 	"Brilliant/api/controllers"
 	"Brilliant/api/middlewares"
 	"Brilliant/application/services"
@@ -14,7 +15,8 @@ import (
 
 func NewExperimentRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGroup) {
 	experimentRepository := repositories.NewExperimentRepository(getDb)
-	experimentService := services.NewExperimentService(experimentRepository)
+	experimentGeminiHandler := gemini.NewGeminiExperimentHandler()
+	experimentService := services.NewExperimentService(experimentRepository, experimentGeminiHandler)
 	experimentController := controllers.NewExperimentController(experimentService)
 
 	authMiddleware := middlewares.AuthMiddleware(env.AccessTokenSecret)
