@@ -26,6 +26,7 @@ const config = {
     },
     extend: {
       colors: {
+        transparent: 'rgba(0, 0, 0, 0.5)',
         primaryShade: '#F5F7F9',
         mainColor: '#4C6FFF',
         secondayColor: '#FF7800',
