@@ -64,7 +64,7 @@ export function InputForm() {
           name="bio"
           render={({ field }) => (
             <FormItem className = 'my-5' >  
-              <FormLabel>Add Note as Text</FormLabel>
+              <FormLabel>Add Note as Textyyy</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
