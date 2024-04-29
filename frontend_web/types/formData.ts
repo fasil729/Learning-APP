@@ -1,4 +1,4 @@
 export interface FormDataModel {
-    topic: string,
+    subjectName: string,
     description: string,
 }

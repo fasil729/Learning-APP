@@ -7,14 +7,14 @@ import { useGetAllTopicsQuery } from "@/lib/features/topics/topicsApi";
 import { TopicCreateForm } from "./components/topic-create-form";
 
 export default function Topics() {
-    const {data, error, isLoading} = useGetAllTopicsQuery();
+    // const {data, error, isLoading} = useGetAllTopicsQuery();
     return <div>
             <SideBar></SideBar>
             <TopHeader></TopHeader>
             <main className="ml-[18%] p-7">
                 <h1 className="text-xl text-titleColor">Topics</h1>
                 <TopicCreateForm/>
-                {isLoading && <div>Loading...</div>}
+                {/* {isLoading && <div>Loading...</div>}
                 {error && <div>{JSON.stringify(error)}</div>}
                 {data &&
                     <>
@@ -50,7 +50,7 @@ export default function Topics() {
                         </div>
                     </div>
                 </>
-            }
+            } */}
             </main>
          </div>
 }

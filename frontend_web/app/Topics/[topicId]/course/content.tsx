@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { LessonList } from './lessonList'
-import { Button } from '../ui/button'
+import { Button } from '../../../../components/ui/button'
 const Content = () => {
 
   const [progress, setProgress] = useState(13)
@@ -11,7 +11,7 @@ const Content = () => {
  
   return (<div className='p-4 md:p-10 xl:p-20 space-y-10'>
 
-    <div className="bg-[#F8F8FB] rounded-[15px] p-6 space-y-2">
+    {/* <div className="bg-[#F8F8FB] rounded-[15px] p-6 space-y-2">
       <p className='text-sm text-gray-500'>Course 1 of 6</p>
       <h4 className='text-black font-medium'>Course 1 - Introduction</h4>
       <div className="py-4 flex items-center gap-4 relative w-full ">
@@ -25,7 +25,7 @@ const Content = () => {
       <Button  className='bg-[#4C6FFF] rounded-[5px] text-white hover:text-black'>Go to Unit 3</Button>
       </div>
       <p className='text-gray-800 text-sm'>2 completed units of 11 available</p>
-    </div>
+    </div> */}
     <div className="">
      <LessonList/>
     </div>
