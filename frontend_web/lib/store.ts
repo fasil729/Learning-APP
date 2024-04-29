@@ -1,25 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit";
+import createSagaMiddlware from '@redux-saga/core';
+// import { topicsApi } from "./features/topics/topicsApi";
+import rootReducers from "./reducer";
+import rootSaga from "./sagas/root-saga";
 import { topicsApi } from "./features/topics/topicsApi";
 import { authApi } from "./features/auth/authApi";
 import {quizApi} from "./features/quiz/quizApi"
 import {quizSlice} from "./features/quiz/quizSlice"
 
 
+
+const sagaMiddleware  = createSagaMiddlware();
+
+
 export const store = configureStore({
-  reducer:{
-    quiz: quizSlice.reducer,
-    [topicsApi.reducerPath]: topicsApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [quizApi.reducerPath]: quizApi.reducer,
-    
-  
-
-
-  },
+  reducer: rootReducers,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
   devTools:false,
-  middleware: (getsDefaultMiddleware) => getsDefaultMiddleware().concat(topicsApi.middleware,authApi.middleware,quizApi.middleware)
-
 })
 
-export type RooState = ReturnType<typeof store.getState>;
+sagaMiddleware.run(rootSaga);
+
+
+export type RootState = ReturnType<typeof store.getState>;
 export  type AppDispatch = typeof store.dispatch;
