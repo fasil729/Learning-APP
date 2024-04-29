@@ -2,19 +2,23 @@ package services
 
 import (
 	contracts "Brilliant/application/contracts/persistence"
+	contract "Brilliant/application/contracts/gemini"
 	dtos "Brilliant/application/dtos/lesson"
 	"Brilliant/domain"
 	"fmt"
-	"os"
+	// "os"
 )
 
 type LessonService struct {
 	LessonRepository contracts.ILessonRepository
+	subjectGeminiHandler contract.IGeminiSubjectHandler
 }
 
-func NewLessonService(lessonRepository contracts.ILessonRepository) *LessonService {
+func NewLessonService(lessonRepository contracts.ILessonRepository, subjectGeminiHandler contract.IGeminiSubjectHandler) *LessonService {
 	return &LessonService{
 		LessonRepository: lessonRepository,
+		subjectGeminiHandler: subjectGeminiHandler,
+		
 	}
 }
 
@@ -68,26 +72,29 @@ func (service *LessonService) GetLessonContent(LessonID uint) ([]byte, error) {
 		return nil, fmt.Errorf("failed to get lesson: %w", err)
 	}
 
-	// If there's no content link, set a dummy path
-	if lesson.ContentLink == "" {
-		lesson.ContentLink = "data/lesson/lessonContent.md" // Default content path
-		_, err := service.LessonRepository.Update(lesson)
-		if err != nil {
-			return nil, fmt.Errorf("failed to update lesson with content link: %w", err)
-		}
-	}
+	// // If there's no content link, set a dummy path
+	// if lesson.ContentLink == "" {
+	// 	lesson.ContentLink = "data/lesson/lessonContent.md" // Default content path
+	// 	_, err := service.LessonRepository.Update(lesson)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to update lesson with content link: %w", err)
+	// 	}
+	// }
 
-	// Verify if the file exists
-	if _, err := os.Stat(lesson.ContentLink); os.IsNotExist(err) {
-		return nil, fmt.Errorf("content not found at path: %s", lesson.ContentLink)
-	}
+	// // Verify if the file exists
+	// if _, err := os.Stat(lesson.ContentLink); os.IsNotExist(err) {
+	// 	return nil, fmt.Errorf("content not found at path: %s", lesson.ContentLink)
+	// }
 
-	// Read the content from the file
-	content, err := os.ReadFile(lesson.ContentLink)
+	// // Read the content from the file
+	// content, err := os.ReadFile(lesson.ContentLink)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to read content file: %w", err)
+	// }
+    content, err := service.subjectGeminiHandler.GenerateLessonDetailContent(lesson.Name)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read content file: %w", err)
+		return nil, fmt.Errorf("failed to generate lesson content: %w", err)
 	}
-
 	return content, nil
 }
 

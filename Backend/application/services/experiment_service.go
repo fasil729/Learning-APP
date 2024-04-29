@@ -2,18 +2,21 @@ package services
 
 import (
 	"Brilliant/application/contracts/persistence"
+	contract "Brilliant/application/contracts/gemini"
 	"Brilliant/application/dtos/experiment"
 	"Brilliant/domain"
-	"io/ioutil"
+	// "os"
 )
 
 type ExperimentService struct {
 	experimentRepository contracts.IExperimentRepository
+	expermentgeminiHandler contract.IExperimentHandler
 }
 
-func NewExperimentService(experimentRepository contracts.IExperimentRepository) *ExperimentService {
+func NewExperimentService(experimentRepository contracts.IExperimentRepository, expermentgeminiHandler contract.IExperimentHandler) *ExperimentService {
 	return &ExperimentService{
 		experimentRepository: experimentRepository,
+		expermentgeminiHandler: expermentgeminiHandler,
 	}
 }
 
@@ -39,20 +42,25 @@ func (service *ExperimentService) GetExperimentContent(experimentID uint, prompt
 		return nil, err
 	}
 
-	if experiment.ContentLink == "" {
-		// Gemini API call will be done here
+	// if experiment.ContentLink == "" {
+	// 	// Gemini API call will be done here
 
-		// For now, return a dummy experiment
-		experiment.ContentLink = "data/experiment/generated_experiment.json"
+	// 	// For now, return a dummy experiment
+	// 	experiment.ContentLink = "data/experiment/generated_experiment.json"
 
-		// Update the experiment with the content link
-		if _, err := service.experimentRepository.Update(experiment); err != nil {
-			return nil, err
-		}
-	}
+	// 	// Update the experiment with the content link
+	// 	if _, err := service.experimentRepository.Update(experiment); err != nil {
+	// 		return nil, err
+	// 	}
+	// }
 
-	// Read the content of the JSON file
-	content, err := ioutil.ReadFile(experiment.ContentLink)
+	// // Read the content of the JSON file
+	// content, err := os.ReadFile(experiment.ContentLink)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	content, err := service.expermentgeminiHandler.GetExperimentContent(experiment.ExperimentName, promptMessage)
 	if err != nil {
 		return nil, err
 	}
@@ -60,19 +68,24 @@ func (service *ExperimentService) GetExperimentContent(experimentID uint, prompt
 	return content, nil
 }
 
-func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dtos.GenerateExperimentDTO) ([]*domain.Experiment, error) {
-	// For now, return three dummy experiments
-	experiments := []*domain.Experiment{
-		{ExperimentName: "Experiment 1", SubjectID: generateDTO.SubjectID, ChapterID: generateDTO.ChapterID},
-		{ExperimentName: "Experiment 2", SubjectID: generateDTO.SubjectID, ChapterID: generateDTO.ChapterID},
-		{ExperimentName: "Experiment 3", SubjectID: generateDTO.SubjectID, ChapterID: generateDTO.ChapterID},
+func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dtos.GenerateExperimentDTO) ([]domain.Experiment, error) {
+	// Get the experiments from Gemini
+	experiments, err := service.expermentgeminiHandler.GetExperimentsForChapter(generateDTO, generateDTO.ChapterName)
+	if err != nil {
+		return nil, err
 	}
-
+    
+	// Save the experiments to the database and return them
+	domainExperiments := []domain.Experiment{}
 	for _, exp := range experiments {
-		service.experimentRepository.Create(exp)
+		exp, err := service.experimentRepository.Create(&exp)
+		if err != nil {
+			return nil, err
+		}
+		domainExperiments = append(domainExperiments, *exp)
 	}
 
-	return experiments, nil
+	return domainExperiments, nil
 }
 
 func (service *ExperimentService) CreateExperiment(experimentDTO *dtos.ExperimentDTO) (*domain.Experiment, error) {

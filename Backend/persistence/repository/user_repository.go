@@ -37,7 +37,7 @@ func (repository *UserRepository) GetByUsername(username string) (*domain.User, 
 	}
 	return &user, nil
 }
-
+ 
 func (repository *UserRepository) FindByUsernameOrEmail(username, email string) (*domain.User, error) {
 	user := &domain.User{}
 	result := repository.database.Where("username = ? OR email = ?", username, email).First(user)

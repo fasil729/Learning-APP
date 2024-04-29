@@ -1,20 +1,24 @@
 package services
 
 import (
-	"errors"
-	"math/rand"
-	"time"
+	gemini "Brilliant/Infrastructure/Gemini"
+	"Brilliant/application/contracts/gemini"
 	"Brilliant/application/dtos/quiz"
+	"errors"
 )
 
-type QuizService struct{}
+type QuizService struct{
+	geminiQuizHandler contracts.IQuizHandler
+}
 
 
 
 
 
 func NewQuizService() *QuizService {
-	return &QuizService{}
+	return &QuizService{
+		geminiQuizHandler: gemini.NewGeminiQuizHandler(),
+	}
 }
 
 func (qs *QuizService) GenerateQuiz(dto *dtos.GenerateQuizDTO) ([]dtos.Quiz, error) {
@@ -22,16 +26,10 @@ func (qs *QuizService) GenerateQuiz(dto *dtos.GenerateQuizDTO) ([]dtos.Quiz, err
 		return nil, errors.New("topics list is empty")
 	}
 
-	rand.Seed(time.Now().UnixNano())
 
-	quizzes := make([]dtos.Quiz, dto.NumberOfQuizzes)
-	for i := 0; i < dto.NumberOfQuizzes; i++ {
-		// For simplicity, we'll generate sample quizzes here
-		quizzes[i] = dtos.Quiz{
-			Question:   "Sample question about the circulatory system",
-			Options:    []dtos.Option{{Text: "Option 1", IsAnswer: false}, {Text: "Option 2", IsAnswer: false}, {Text: "Option 3", IsAnswer: true}, {Text: "Option 4", IsAnswer: false}},
-			Explanation: "Explanation for the correct answer",
-		}
+	quizzes, err := qs.geminiQuizHandler.GenerateQuiz(dto)
+	if err != nil {
+		return nil, err
 	}
 
 	return quizzes, nil

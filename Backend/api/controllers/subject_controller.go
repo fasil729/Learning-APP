@@ -23,7 +23,7 @@ func NewSubjectController(subjectService *services.SubjectService) *SubjectContr
 // @Tags subjects
 // @Accept json
 // @Produce json
-// @Success 200 {object} dtos.SubjectDTO
+// @Success 200 {object} dtos.SubjectWithChaptersDTO
 // @Failure 400 {object} dtos.ErrorResponse
 // @Router /subjects/create [post]
 func (controller *SubjectController) CreateSubject(ctx *gin.Context) {
