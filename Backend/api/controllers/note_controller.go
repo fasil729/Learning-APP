@@ -48,24 +48,22 @@ func (controller *NoteController) AddNoteWithImage(ctx *gin.Context) {
 	}
 
 	// Get the image file from the request
-	imageFile, err := ctx.FormFile("image")
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Image file is required"})
-		return
-	}
+	imageFile, _ := ctx.FormFile("image")
+	var imageData []byte
+	if imageFile != nil {
+		// Read the image file and store it in a temporary location (for example)
+		imageFileStream, err := imageFile.Open()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 
-	// Read the image file and store it in a temporary location (for example)
-	imageFileStream, err := imageFile.Open()
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	defer imageFileStream.Close()
-	imageData, err := io.ReadAll(imageFileStream)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		defer imageFileStream.Close()
+		imageData, err = io.ReadAll(imageFileStream)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	// Create the AddNoteDTO with the text and image data
@@ -81,7 +79,8 @@ func (controller *NoteController) AddNoteWithImage(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message Note added successfully": string(content)})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Note added successfully", "content": string(content)})
+
 }
 
 // GetNotesByChapterID handles HTTP request to get notes by chapter ID

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	gemini "Brilliant/Infrastructure/Gemini"
 	"Brilliant/api/controllers"
 	"Brilliant/api/middlewares"
 	"Brilliant/application/services"
@@ -14,7 +15,8 @@ import (
 func NewNoteRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGroup) {
 	noteRepository := repositories.NewNoteRepository(getDb)
 	chapterRepository := repositories.NewChapterRepository(getDb)
-	noteService := services.NewNoteService(noteRepository, chapterRepository)
+	noteGeminiHandler := gemini.NewGeminiNoteHandler()
+	noteService := services.NewNoteService(noteRepository, chapterRepository, noteGeminiHandler)
 	noteController := controllers.NewNoteController(noteService)
 
 	authMiddleware := middlewares.AuthMiddleware(env.AccessTokenSecret)

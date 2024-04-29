@@ -1,6 +1,7 @@
 package services
 
 import (
+	contract "Brilliant/application/contracts/gemini"
 	contracts "Brilliant/application/contracts/persistence"
 	dtos "Brilliant/application/dtos/note"
 
@@ -14,12 +15,14 @@ import (
 type NoteService struct {
 	NoteRepository    contracts.INoteRepository
 	ChapterRepository contracts.IChapterRepository
+	NotegeminiHandler contract.INoteHandler
 }
 
-func NewNoteService(noteRepository contracts.INoteRepository, chapterRepository contracts.IChapterRepository) *NoteService {
+func NewNoteService(noteRepository contracts.INoteRepository, chapterRepository contracts.IChapterRepository, notegeminiHandler contract.INoteHandler) *NoteService {
 	return &NoteService{
 		NoteRepository:    noteRepository,
 		ChapterRepository: chapterRepository,
+		NotegeminiHandler: notegeminiHandler,
 	}
 }
 
@@ -34,12 +37,12 @@ func (service *NoteService) AddNote(chapterID uint, request *dtos.AddNoteDTO) ([
 	// Check if the content link exists
 	contentLink := chapter.NoteLink
 	contentFolder := fmt.Sprintf("data/chapter/%d/content", chapterID)
+
 	if contentLink == "" {
 		// Create a new Markdown file for the chapter
 		if err := os.MkdirAll(contentFolder, 0755); err != nil {
 			return nil, errors.Wrap(err, "failed to create content folder")
 		}
-
 		contentLink = filepath.Join(contentFolder, fmt.Sprintf("chapter_%d.md", chapterID))
 		if _, err := os.Create(contentLink); err != nil {
 			return nil, errors.Wrap(err, "failed to create content file")
@@ -47,36 +50,63 @@ func (service *NoteService) AddNote(chapterID uint, request *dtos.AddNoteDTO) ([
 
 		chapter.NoteLink = contentLink
 		service.NoteRepository.CreateNote(chapterID, contentLink)
-		service.ChapterRepository.Update(chapter)
-	}
 
-	// Write the text to the file
-	err = os.WriteFile(contentLink, []byte(request.Text+"\n"), 0644)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to write text to file")
-	}
+		if request.ImageData != nil {
+			newContent, err := service.NotegeminiHandler.AddNoteForChapterFromImage(request.Text, request.ImageData, chapter.Name)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to generate note from image")
+			}
 
-	// If there's an image, save the image data to a file and reference it in the Markdown file
-	if len(request.ImageData) > 0 {
-		imagePath := filepath.Join(contentFolder, "image.jpg")
-		err = os.WriteFile(imagePath, request.ImageData, 0644)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to write image to file")
+			err = os.WriteFile(contentLink, newContent, 0644)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to write text to file")
+			}
+		} else {
+			err = os.WriteFile(contentLink, []byte(request.Text), 0644)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to write text to file")
+			}
 		}
 
-		file, err := os.OpenFile(contentLink, os.O_APPEND|os.O_WRONLY, 0644)
+	} else {
+		// Append the note to the chapter content
+		file, err := os.OpenFile(contentLink, os.O_WRONLY|os.O_TRUNC, 0644)
 		if err != nil {
-			return nil, errors.Wrap(err, "failed to open file")
+			return nil, errors.Wrap(err, "failed to open content file")
 		}
 		defer file.Close()
 
-		_, err = file.WriteString("\n\n![Image](" + imagePath + ")\n")
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to write image reference to file")
-		}
-	}
+		Previouscontent, err := os.ReadFile(contentLink)
 
-	// Read the file back and return its content
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to read content file")
+		}
+		newContent, err := service.NotegeminiHandler.AddNoteForChapter(string(Previouscontent), request.Text, chapter.Name)
+
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to generate note")
+		}
+
+		if request.ImageData != nil {
+			newContentImage, err := service.NotegeminiHandler.AddNoteForChapterFromImage(string(newContent), request.ImageData, chapter.Name)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to generate note from image")
+			}
+
+			err = os.WriteFile(contentLink, newContentImage, 0644)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to write text to file")
+			}
+
+		} else {
+			_, err = file.WriteString(string(newContent) + "\n")
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to write text to file")
+			}
+
+		}
+
+	}
 	content, err := os.ReadFile(contentLink)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to read content file")
