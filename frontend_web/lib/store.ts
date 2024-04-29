@@ -3,6 +3,7 @@ import createSagaMiddlware from '@redux-saga/core';
 // import { topicsApi } from "./features/topics/topicsApi";
 import rootReducers from "./reducer";
 import rootSaga from "./sagas/root-saga";
+import { topicsApi } from "./features/topics/topicsApi";
 import { authApi } from "./features/auth/authApi";
 import {quizApi} from "./features/quiz/quizApi"
 import {quizSlice} from "./features/quiz/quizSlice"
@@ -14,9 +15,8 @@ const sagaMiddleware  = createSagaMiddlware();
 
 export const store = configureStore({
   reducer: rootReducers,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
-  // middlware: (getsDefaultMiddleware)  => getsDefaultMiddleware().concat(sagaMiddleware,authApi.middleware,quizApi.middleware)
-
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
+  devTools:false,
 })
 
 sagaMiddleware.run(rootSaga);

@@ -1,13 +1,11 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { LessonList } from './lessonList'
-import { Button } from '../../../../components/ui/button'
+import { Button } from '../../../../components/ui/button';
 import QuizGenerate from './quiz.generate'
 const Content = () => {
 
   const [progress, setProgress] = useState(13)
- 
- 
 
  
   return (<div className='p-4 md:p-10 xl:p-20 space-y-10'>
