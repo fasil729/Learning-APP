@@ -1,6 +1,9 @@
 package repositories
 
-import "gorm.io/gorm"
+import (
+	contracts "Brilliant/application/contracts/persistence"
+	"gorm.io/gorm"
+)
 
 type GenericRepository[T any] struct {
 	database *gorm.DB
@@ -43,7 +46,7 @@ func (repository *GenericRepository[T]) Update(data *T) (*T, error) {
 	return data, nil
 }
 
-func NewGenericRepository[T any](getDb func() *gorm.DB) *GenericRepository[T] {
+func NewGenericRepository[T any](getDb func() *gorm.DB) contracts.IGenericRepository[T] {
 	return &GenericRepository[T]{
 		database: getDb(),
 	}

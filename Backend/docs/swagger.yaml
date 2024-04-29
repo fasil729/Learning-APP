@@ -1,0 +1,931 @@
+definitions:
+  domain.UserRole:
+    enum:
+    - teacher
+    - student
+    - admin
+    type: string
+    x-enum-varnames:
+    - Teacher
+    - Student
+    - Admin
+  dtos.ChapterDTO:
+    properties:
+      chapterName:
+        type: string
+      id:
+        type: integer
+      lessons:
+        items:
+          $ref: '#/definitions/dtos.LessonDTO'
+        type: array
+    type: object
+  dtos.CreateSubjectDTO:
+    properties:
+      subjectName:
+        type: string
+    type: object
+  dtos.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  dtos.ExperimentDTO:
+    properties:
+      chapter_id:
+        type: integer
+      content_link:
+        type: string
+      experiment_name:
+        type: string
+      topic_id:
+        type: integer
+    type: object
+  dtos.GenerateExamPrepDTO:
+    properties:
+      prompt:
+        type: string
+      readTime:
+        type: integer
+      topics:
+        items:
+          type: string
+        type: array
+    type: object
+  dtos.GenerateExperimentDTO:
+    properties:
+      chapterID:
+        type: integer
+      promptMessage:
+        type: string
+      subjectID:
+        type: integer
+    type: object
+  dtos.GenerateQuizDTO:
+    properties:
+      number_of_quizzes:
+        type: integer
+      prompt:
+        type: string
+      topics:
+        items:
+          type: string
+        type: array
+    type: object
+  dtos.LessonDTO:
+    properties:
+      chapterName:
+        type: string
+      contentLink:
+        type: string
+      id:
+        type: integer
+    type: object
+  dtos.Option:
+    properties:
+      is_answer:
+        type: boolean
+      text:
+        type: string
+    type: object
+  dtos.Quiz:
+    properties:
+      explanation:
+        type: string
+      options:
+        items:
+          $ref: '#/definitions/dtos.Option'
+        type: array
+      question:
+        type: string
+    type: object
+  dtos.RegisterDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - role
+    - username
+    type: object
+  dtos.SignInDTO:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dtos.SubjectDTO:
+    properties:
+      chapters:
+        items:
+          $ref: '#/definitions/dtos.ChapterDTO'
+        type: array
+      id:
+        type: integer
+      referenceBooksLink:
+        type: string
+      subjectName:
+        type: string
+      textBookLink:
+        type: string
+      userId:
+        description: The ID of the user who created the subject
+        type: integer
+    type: object
+  dtos.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  dtos.UpdateUserDTO:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  dtos.UserDTO:
+    properties:
+      accessToken:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      refreshToken:
+        type: string
+      role:
+        $ref: '#/definitions/domain.UserRole'
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is the API for the Brilliant application
+  title: Brilliant Learning APP API
+  version: "1.0"
+paths:
+  /chapters:
+    post:
+      consumes:
+      - application/json
+      description: Create a new chapter with the provided information
+      parameters:
+      - description: Chapter information
+        in: body
+        name: chapter
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ChapterDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new chapter
+      tags:
+      - chapters
+  /chapters/{chapterID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a chapter by ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete a chapter
+      tags:
+      - chapters
+    put:
+      consumes:
+      - application/json
+      description: Update the information of a chapter by ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - description: Chapter information
+        in: body
+        name: chapter
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ChapterDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated the chapter
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update a chapter
+      tags:
+      - chapters
+  /examprep/generate:
+    post:
+      consumes:
+      - application/json
+      description: Generate exam preparation material based on the provided topics
+        and prompt
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Generate exam preparation material criteria
+        in: body
+        name: generateDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GenerateExamPrepDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Markdown formatted exam preparation material
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Generate exam preparation material
+      tags:
+      - exam_prep
+  /experiments/add:
+    post:
+      consumes:
+      - application/json
+      description: Add a new experiment to the database
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: New experiment data
+        in: body
+        name: addDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ExperimentDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ExperimentDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Add a new experiment
+      tags:
+      - experiments
+  /experiments/chapter/{chapterID}:
+    get:
+      description: Get a list of experiments for a specific chapter
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ExperimentDTO'
+            type: array
+        "400":
+          description: Bad Request
+      security:
+      - JWT: []
+      summary: Get experiments for a chapter
+      tags:
+      - experiments
+  /experiments/content/{experimentID}:
+    get:
+      description: Get the content for a specific experiment
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Experiment ID
+        in: path
+        name: experimentID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get content for an experiment
+      tags:
+      - experiments
+  /experiments/delete/{experimentID}:
+    delete:
+      description: Delete an experiment from the database
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Experiment ID
+        in: path
+        name: experimentID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete an experiment
+      tags:
+      - experiments
+  /experiments/generate:
+    post:
+      consumes:
+      - application/json
+      description: Generate experiments for a specific chapter based on provided criteria
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Generate experiment criteria
+        in: body
+        name: generateDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GenerateExperimentDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ExperimentDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Generate experiments for a chapter
+      tags:
+      - experiments
+  /experiments/subject/{subjectID}:
+    get:
+      description: Get a list of experiments for a specific subject
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Subject ID
+        in: path
+        name: subjectID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ExperimentDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get experiments for a subject
+      tags:
+      - experiments
+  /experiments/update/{experimentID}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing experiment in the database
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Experiment ID
+        in: path
+        name: experimentID
+        required: true
+        type: integer
+      - description: Updated experiment data
+        in: body
+        name: updateDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ExperimentDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ExperimentDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update an existing experiment
+      tags:
+      - experiments
+  /lessons:
+    post:
+      consumes:
+      - application/json
+      description: Create a new lesson with the provided information
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Lesson information
+        in: body
+        name: lesson
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.LessonDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new lesson
+      tags:
+      - lessons
+  /lessons/{lessonID}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a lesson by ID
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Lesson ID
+        in: path
+        name: lessonID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Successfully deleted the lesson
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete a lesson
+      tags:
+      - lessons
+    put:
+      consumes:
+      - application/json
+      description: Update the information of a lesson by ID
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Lesson ID
+        in: path
+        name: lessonID
+        required: true
+        type: integer
+      - description: Lesson information
+        in: body
+        name: lesson
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.LessonDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update a lesson
+      tags:
+      - lessons
+  /lessons/{lessonID}/content:
+    get:
+      consumes:
+      - application/json
+      description: Get the content of a lesson by ID
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Lesson ID
+        in: path
+        name: lessonID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get lesson content
+      tags:
+      - lessons
+  /quiz/generate:
+    post:
+      consumes:
+      - application/json
+      description: Generate a quiz based on the provided topics and prompt
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Generate quiz criteria
+        in: body
+        name: generateDTO
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GenerateQuizDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Quiz'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Generate a quiz
+      tags:
+      - quiz
+  /subjects/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new subject with the provided information
+      parameters:
+      - description: Subject creation information
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateSubjectDTO'
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SubjectDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a new subject
+      tags:
+      - subjects
+  /subjects/search:
+    get:
+      description: Search for subjects by name
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        required: true
+        type: string
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.SubjectDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Search subjects by name
+      tags:
+      - subjects
+  /users/admin/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new admin user with the provided information
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Admin user registration information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.RegisterDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Register a new admin user
+      tags:
+      - users
+  /users/delete/{id}:
+    delete:
+      description: Delete a user by ID
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Delete a user
+      tags:
+      - users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Sign in a user with the provided credentials
+      parameters:
+      - description: User sign-in information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.SignInDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Sign in a user
+      tags:
+      - users
+  /users/logout:
+    post:
+      description: Logout a user by invalidating the refresh token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Logout a user
+      tags:
+      - users
+  /users/me:
+    get:
+      description: Retrieve the profile details of the currently authenticated user
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user profile details
+          schema:
+            type: string
+      summary: Get user profile details
+      tags:
+      - users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided information
+      parameters:
+      - description: User registration information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.RegisterDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - users
+  /users/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update the information of the currently authenticated user
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User update information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateUserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Update user information
+      tags:
+      - users
+swagger: "2.0"

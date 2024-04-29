@@ -19,7 +19,7 @@ func NewUserRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGrou
 	authMiddleware := middlewares.AuthMiddleware(env.AccessTokenSecret)
 
 	// Auth routes
-	authGroup := group.Group("/auth")
+	authGroup := group.Group("/users")
 	{
 		authGroup.POST("/register", userController.RegisterUser)
 		authGroup.POST("/admin/register", authMiddleware, middlewares.RoleMiddleware("admin"), userController.RegisterAdmin)

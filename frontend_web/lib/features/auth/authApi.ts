@@ -1,30 +1,48 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/',
-    headers: {Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDMzMzQzNywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.gEZC9qbBV8Qf8m_vOxAXOtGeUV8dGm327H14en5EVag`}
-})
+    baseUrl: 'https://learning-app-idt8.onrender.com/'
+});
 
 export const authApi = createApi({
-    baseQuery,
+    reducerPath: 'authApi',
+    baseQuery: baseQuery,
     endpoints: (builder) => ({
-        signUp: builder.mutation({
-            query: () => ''
+        signUp: builder.mutation<any,any>({
+            query: (userData) => ({
+                url: 'users/register',
+                method: 'POST',
+                body: userData,
+            }),
         }),
-
-        login: builder.mutation({
-            query: () => ''
+        login: builder.mutation<any, any>({
+            query: (loginData) => ({
+                url: 'users/login',
+                method: 'POST',
+                body: loginData,
+            }),
         }),
-
         logout: builder.mutation({
-            query: () => ''
-        })
-    })
-})
-
+            query: () => ({
+                url: 'api/logout',
+                method: 'POST',
+            }),
+        }),
+        getAuthData: builder.query({
+            query: (token) => ({
+                url: 'api/auth-details',
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+        }),
+    }),
+});
 
 export const {
     useSignUpMutation,
     useLoginMutation,
-    useLogoutMutation
+    useLogoutMutation,
+    useGetAuthDataQuery
 } = authApi;

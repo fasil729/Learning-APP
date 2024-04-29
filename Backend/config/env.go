@@ -15,6 +15,7 @@ type Env struct {
 	RefreshTokenExpiryHour    int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
 	AccessTokenSecret         string `mapstructure:"ACCESS_TOKEN_SECRET"`
 	RefreshTokenSecret        string `mapstructure:"REFRESH_TOKEN_SECRET"`
+	Gemin_Api_key		  string `mapstructure:"GEMINI_API_KEY"`
 }
 
 func Load() (*Env, error) {
@@ -30,6 +31,7 @@ func Load() (*Env, error) {
 		RefreshTokenExpiryHour: getEnvAsInt("REFRESH_TOKEN_EXPIRY_HOUR", 24),
 		AccessTokenSecret:      os.Getenv("ACCESS_TOKEN_SECRET"),
 		RefreshTokenSecret:     os.Getenv("REFRESH_TOKEN_SECRET"),
+		Gemin_Api_key: 		os.Getenv("GEMINI_API_KEY"),
 	}, nil
 }
 
