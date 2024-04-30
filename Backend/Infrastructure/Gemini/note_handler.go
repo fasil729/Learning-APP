@@ -27,7 +27,11 @@ func NewGeminiNoteHandler() contracts.INoteHandler {
 }
 func (nh *GeminiNoteHandler) AddNoteForChapter(previousContent string, noteContent string, chapterName string) ([]byte, error) {
 	// Generate a prompt to add a note for the chapter
-	prompt := "merge a new note and  the previous note which are both about the chapter " + chapterName + ". " + "PreviousNote: " + previousContent + ". " + "NewNote: " + noteContent + "." + "The merged note should be coherent and informative. and Give the merged markdown note without replacing the previous content"
+	prompt := "Merge the following notes into one comprehensive markdown note about the chapter " + chapterName + ". " +
+		"Retain all relevant details from the previous note while incorporating new information in a coherent and logical manner. " +
+		"Previous Note: " + previousContent + ". New Note: " + noteContent + ". " +
+		"Ensure the merged note maintains context and completeness without replacing the previous content."
+
 	response, err := nh.model.GenerateContent(nh.ctx, genai.Text(prompt))
 	if err != nil {
 		log.Fatal(err)
@@ -53,7 +57,7 @@ func (nh *GeminiNoteHandler) AddNoteForChapter(previousContent string, noteConte
 
 func (nh *GeminiNoteHandler) AddNoteForChapterFromImage(previousContent string, imageData []byte, chapterName string) ([]byte, error) {
 	// Generate a prompt to add a note for the chapter from an image
-	prompt := "merge the text from the provided image with the previous content which are both the chapter " + chapterName + "previousContent:" + previousContent + "The note should be coherent and informative. and Give the merged markdown note without replacing the previous content"
+	prompt := "merge the text from the provided image with the previous content which are both about the chapter " + chapterName + "previousContent:" + previousContent + "The note should be coherent and informative. and Give the merged markdown note without replacing the previous content"
 	response, err := nh.ImageModel.GenerateContent(nh.ctx, genai.ImageData("png", imageData), genai.Text(prompt))
 	if err != nil {
 		log.Fatal(err)
