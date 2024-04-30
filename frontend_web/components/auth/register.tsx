@@ -1,22 +1,20 @@
 "use client";
-import React from "react";
-import { Button } from "../ui/button";
+import React from 'react';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { useSignUpMutation } from '@/lib/features/auth/authApi';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import ErrorMessage from '../messages/errorMessage';
+import SuccessMessage from '../messages/successMessage';
 import {
   Form,
-  FormControl,
   FormField,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import SuccessMessage from "../messages/successMessage";
-import ErrorMessage from "../messages/errorMessage";
-import { useSignUpMutation } from "@/lib/features/auth/authApi";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+} from '../ui/form';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -67,15 +65,16 @@ const RegisterComponent = () => {
       <div className="flex justify-center h-screen">
         <div
           className="hidden bg-cover lg:block lg:w-2/3"
-          style={{ backgroundImage: "url(/main-bg23.jpg)" }}
+          style={{ backgroundImage: "url(/images2.jpeg)" }}
         >
           <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
             <div>
-              <h2 className="text-2xl font-bold text-white sm:text-3xl">
+              {/* <h2 className="text-2xl font-bold text-white sm:text-3xl">
                 Brilliant
-              </h2>
-              <p className="max-w-xl mt-3 text-gray-300">
-                Let Explore The World Of Learning. Start your journey today and
+              </h2> */}
+              <p className="max-w-xl text-[20px] mt-3 text-gray-300">
+              
+              Sign up To Brilliant Wep App and Explore The World Of Learning. Start your journey today and
                 unlock endless possibilities for growth and development.
               </p>
             </div>
@@ -91,9 +90,7 @@ const RegisterComponent = () => {
                   alt=""
                 />
               </div>
-              <p className="mt-3 text-gray-500 dark:text-gray-300">
-                Create an account to start learning
-              </p>
+              
             </div>
             <div className="mt-8">
               <Form {...form}>
