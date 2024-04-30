@@ -26,7 +26,7 @@ export function LessonList(props: Props) {
                 <AccordionTrigger>{chapter.name}</AccordionTrigger>
                 <AccordionContent>
                   {chapter.lessons.map((lesson: any, ind: number) => {
-                    return <LessonLink key={ind} name={`${lesson}`} url={`/${lesson}`} status={lesson} />
+                    return <LessonLink key={ind} name={`${lesson}`} url={`/topics/1/lesson/${lesson}`} status={lesson} />
                   })}
                 </AccordionContent>
               </AccordionItem>

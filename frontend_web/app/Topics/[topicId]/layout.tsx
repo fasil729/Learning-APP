@@ -12,17 +12,11 @@ export default function TopicDetailLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <AppProvider>
-      <body className={inter.className + " " + "body-color"}>
         <div className="flex">
         <TopicSideBar/>
         <div className='ml-[21%]'>
           { children }
         </div>
         </div>
-        </body>
-      </AppProvider>
-    </html>
   );
 }

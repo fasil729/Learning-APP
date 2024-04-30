@@ -1,7 +1,5 @@
-import { cookies } from "next/headers";
 
 export default function TopHeader() {
-    const cookieStore = cookies()
     return <nav className="ml-[18%] bg-white h-[6.2rem] flex justify-end items-center px-14 gap-20">
                 <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                     <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
@@ -28,7 +26,7 @@ export default function TopHeader() {
                              <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="user" className="w-10 h-10 rounded-full"/>
                          </div>
                          <div>
-                             <h3>{cookieStore.get('username')?.toString() || 'UserName'}</h3>
+                             <h3>{localStorage.getItem('username')}</h3>
                          </div>
                      </div>
                  </div>
