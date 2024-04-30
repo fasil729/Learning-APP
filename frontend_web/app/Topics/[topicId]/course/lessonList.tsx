@@ -11,23 +11,25 @@ import { Chapter, TopicState } from "@/types/topic";
 
 export function LessonList() {
   
-  const topic = useSelector((state: TopicState) => state.topic);
-  console.log(topic);
-  if (topic.isLoading)
+  const {isSuccess, isLoading, errors, data} = useSelector((state: any) => state.subjects.topic);
+  console.log(data);
+
+  if (isLoading)
     return <div>...Loading</div>
 
    return (<Accordion type="single" collapsible className="w-full">
-            {lessonTestData.map((chapter, index) => {
+            {data.Chapters && data.Chapters.map((chapter: any, index: number) => {
               return <AccordionItem key={index} value={`${index}`} className="data-[state=open]:border-none">
-                <AccordionTrigger>Course {index + 1} - {chapter.name}</AccordionTrigger>
+                <AccordionTrigger>{chapter.name}</AccordionTrigger>
                 <AccordionContent>
-                  {chapter.lessons.map((lesson, ind) => {
-                    return <LessonLink key={ind} name={`U${ind + 1}: ${lesson.lesson_name}`} url={`/${lesson.id}`} status={lesson.status} />
+                  {chapter.lessons.map((lesson: any, ind: number) => {
+                    return <LessonLink key={ind} name={`${lesson}`} url={`/${lesson}`} status={lesson} />
                   })}
                 </AccordionContent>
               </AccordionItem>
             })}
-            {topic.data && topic.data.chapters.map((chapter: Chapter, index: number) => <p key={index}>{chapter.name}</p>)}
+            {/* {isSuccess && data.chapters.map((chapter, index) => <p key={index}>{chapter.name}</p>)} */}
+            {/* {topic && topic.data && topic.data.chapters.map((chapter: Chapter, index: number) => <p key={index}>{chapter.name}</p>)} */}
           </Accordion>
           )
 }
