@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../../globals.css";
 import AppProvider from "@/app/provider";
 import { TopicSideBar } from "./components/sideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Learning App",
-  description: " learning app with Ai integration",
-};
 
 export default function TopicDetailLayout({
   children,
@@ -22,7 +17,9 @@ export default function TopicDetailLayout({
       <body className={inter.className + " " + "body-color"}>
         <div className="flex">
         <TopicSideBar/>
-        {children}
+        <div className='ml-[21%]'>
+          { children }
+        </div>
         </div>
         </body>
       </AppProvider>

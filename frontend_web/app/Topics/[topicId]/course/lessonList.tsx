@@ -9,16 +9,19 @@ import LessonLink from "./lessonLink"
 import { useSelector } from "react-redux"
 import { Chapter, TopicState } from "@/types/topic";
 
-export function LessonList() {
-  
-  const {isSuccess, isLoading, errors, data} = useSelector((state: any) => state.subjects.topic);
-  console.log(data);
 
-  if (isLoading)
+interface Props {
+  isLoading: boolean,
+  data: any,
+  errors: any
+}
+export function LessonList(props: Props) {
+
+  if (props.data.isLoading)
     return <div>...Loading</div>
 
    return (<Accordion type="single" collapsible className="w-full">
-            {data.Chapters && data.Chapters.map((chapter: any, index: number) => {
+            {props.data.Chapters && props.data.Chapters.map((chapter: any, index: number) => {
               return <AccordionItem key={index} value={`${index}`} className="data-[state=open]:border-none">
                 <AccordionTrigger>{chapter.name}</AccordionTrigger>
                 <AccordionContent>

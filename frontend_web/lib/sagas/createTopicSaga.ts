@@ -9,7 +9,6 @@ import { Topic } from '@/types/topic';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 const token=localStorage.getItem("accessToken")
-console.log(token);
 
 function* createSubjectSaga(action: PayloadAction<any>) {
     let response: AxiosResponse;
@@ -18,7 +17,7 @@ function* createSubjectSaga(action: PayloadAction<any>) {
             action.payload,
             {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDQ3OTI3OCwicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.odLQP8H_yBXuAWMilh_LU_XUi4YO6BIoYfihXjFeCNs`
+                Authorization: `Bearer ${token}`
             }
             }
         );
