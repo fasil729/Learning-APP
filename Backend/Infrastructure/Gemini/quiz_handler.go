@@ -29,11 +29,11 @@ func NewGeminiQuizHandler() contracts.IQuizHandler  {
 
 func (qh *GeminiQuizHandler) GenerateQuiz(dto *dtos.GenerateQuizDTO) ([]dtos.Quiz, error) {
 	// Generate a prompt based on the topics
-	quizPrompt := "Generate " + strconv.Itoa(dto.NumberOfQuizzes) + " quiz(es) for the topic(s) " + topicsList(dto.Topics) + ` return the response in json format [{
+	quizPrompt := "Generate " + strconv.Itoa(dto.NumberOfQuizzes) + " quizes for the topics " + topicsList(dto.Topics) + ` return the response in json format [{
 		Question:   "question",
 		Options:    [{Text: "Option 1", IsAnswer: false}, {Text: "Option 2", IsAnswer: false}, {Text: "Option 3", IsAnswer: true}, {Text: "Option 4", IsAnswer: false}}],
 		Explanation: "Explanation for the correct answer",
-	}]`
+	}]` + " make them specific for the topics only and return the response only in the requested format."  
 
 	resp, err := qh.model.GenerateContent(qh.ctx, genai.Text(quizPrompt))
 	if err != nil {
