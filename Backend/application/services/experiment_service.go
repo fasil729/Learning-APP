@@ -1,21 +1,20 @@
 package services
 
 import (
-	"Brilliant/application/contracts/persistence"
 	contract "Brilliant/application/contracts/gemini"
-	"Brilliant/application/dtos/experiment"
+	contracts "Brilliant/application/contracts/persistence"
+	dtos "Brilliant/application/dtos/experiment"
 	"Brilliant/domain"
-	// "os"
 )
 
 type ExperimentService struct {
-	experimentRepository contracts.IExperimentRepository
+	experimentRepository   contracts.IExperimentRepository
 	expermentgeminiHandler contract.IExperimentHandler
 }
 
 func NewExperimentService(experimentRepository contracts.IExperimentRepository, expermentgeminiHandler contract.IExperimentHandler) *ExperimentService {
 	return &ExperimentService{
-		experimentRepository: experimentRepository,
+		experimentRepository:   experimentRepository,
 		expermentgeminiHandler: expermentgeminiHandler,
 	}
 }
@@ -74,7 +73,7 @@ func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dto
 	if err != nil {
 		return nil, err
 	}
-    
+
 	// Save the experiments to the database and return them
 	domainExperiments := []domain.Experiment{}
 	for _, exp := range experiments {
@@ -89,42 +88,42 @@ func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dto
 }
 
 func (service *ExperimentService) CreateExperiment(experimentDTO *dtos.ExperimentDTO) (*domain.Experiment, error) {
-    experiment := &domain.Experiment{
-        ExperimentName: experimentDTO.ExperimentName,
-        SubjectID:      experimentDTO.SubjectID,
-        ChapterID:      experimentDTO.ChapterID,
-    }
-    exp, err := service.experimentRepository.Create(experiment)
-    if err != nil {
-        return nil, err
-    }
-    return exp, nil
+	experiment := &domain.Experiment{
+		ExperimentName: experimentDTO.ExperimentName,
+		SubjectID:      experimentDTO.SubjectID,
+		ChapterID:      experimentDTO.ChapterID,
+	}
+	exp, err := service.experimentRepository.Create(experiment)
+	if err != nil {
+		return nil, err
+	}
+	return exp, nil
 }
 
 func (service *ExperimentService) UpdateExperiment(experimentID uint, experimentDTO *dtos.ExperimentDTO) (*domain.Experiment, error) {
-    experiment, err := service.experimentRepository.GetById(experimentID)
+	experiment, err := service.experimentRepository.GetById(experimentID)
 
 	if err != nil {
-        return nil, err
-    }
+		return nil, err
+	}
 
 	experiment.ExperimentName = experimentDTO.ExperimentName
-    exp, err := service.experimentRepository.Update(experiment)
-    if err != nil {
-        return nil, err
-    }
-    return exp, nil
+	exp, err := service.experimentRepository.Update(experiment)
+	if err != nil {
+		return nil, err
+	}
+	return exp, nil
 }
 
 func (service *ExperimentService) DeleteExperiment(experimentID uint) error {
-    experiment, err := service.experimentRepository.GetById(experimentID)
-    if err != nil {
-        return err
-    }
+	experiment, err := service.experimentRepository.GetById(experimentID)
+	if err != nil {
+		return err
+	}
 
-    if _, err := service.experimentRepository.Delete(experiment); err != nil {
-        return err
-    }
+	if _, err := service.experimentRepository.Delete(experiment); err != nil {
+		return err
+	}
 
-    return nil
+	return nil
 }

@@ -1,10 +1,12 @@
 package controllers
 
 import (
-	"Brilliant/application/dtos/exam_prep"
+	dtos "Brilliant/application/dtos/exam_prep"
 	"Brilliant/application/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	// "strings"
 )
 
 type ExamPrepController struct {
@@ -35,11 +37,11 @@ func (controller *ExamPrepController) GenerateExamPrepMaterial(ctx *gin.Context)
 		return
 	}
 
-	material, err := controller.examPrepService.GenerateExamPrepMaterial(&generateDTO)
+	materials, err := controller.examPrepService.GenerateExamPrepMaterial(&generateDTO)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	ctx.String(http.StatusOK, material)
+	ctx.JSON(http.StatusOK, string(materials))
+	// ctx.String(http.StatusOK, strings.Join(materials, ""))
 }
