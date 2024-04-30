@@ -92,7 +92,7 @@ func (controller *NoteController) AddNoteWithImage(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} dtos.SuccessResponse "Notes retrieved successfully"
 // @Failure 400 {object} dtos.ErrorResponse "Invalid chapter ID"
-// @Router /chapters/{chapterID}/notes [get]
+// @Router /chapters/{chapterID}/note [get]
 func (controller *NoteController) GetNoteByChapterID(ctx *gin.Context) {
 	chapterIDStr := ctx.Param("chapterID")
 	chapterID, err := strconv.ParseUint(chapterIDStr, 10, 64)
