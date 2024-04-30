@@ -23,7 +23,7 @@ func NewNoteRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGrou
 
 	noteGroup := group.Group("", authMiddleware)
 	{
-		noteGroup.POST("/chapters/:chapterID/notes", noteController.AddNoteWithImage)
+		noteGroup.POST("/chapters/:chapterID/notes", noteController.AddNote)
 		noteGroup.GET("/chapters/:chapterID/notes", noteController.GetNoteByChapterID)
 
 		// Add other routes as needed
