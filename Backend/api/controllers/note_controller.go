@@ -32,7 +32,7 @@ func NewNoteController(noteService *services.NoteService) *NoteController {
 // @Success 200 {object} dtos.SuccessResponse "Note added successfully"
 // @Failure 400 {object} dtos.ErrorResponse "Invalid chapter ID or missing
 // @Router /chapters/{chapterID}/notes [post]
-func (controller *NoteController) AddNoteWithImage(ctx *gin.Context) {
+func (controller *NoteController) AddNote(ctx *gin.Context) {
 	chapterIDStr := ctx.Param("chapterID")
 	chapterID, err := strconv.ParseUint(chapterIDStr, 10, 64)
 	if err != nil {
