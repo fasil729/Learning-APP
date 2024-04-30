@@ -52,7 +52,7 @@ export const TopicSideBar  = () => {
                 <AccordionTrigger>{chapter.name}</AccordionTrigger>
                 <AccordionContent className="pl-8">
                   {chapter.lessons.map((lesson: any, ind: number) => {
-                    return <LessonLink key={ind} name={`${lesson}`} url={`/topics/1/lessons/${lesson}`} status={lesson} />
+                    return <LessonLink key={ind} name={`${lesson}`} url={`/topics/1/lesson/${lesson}`} status={lesson} />
                   })}
                 </AccordionContent>
               </AccordionItem>

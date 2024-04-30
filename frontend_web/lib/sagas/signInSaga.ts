@@ -1,7 +1,6 @@
 import { put, takeLatest } from "redux-saga/effects";
 import { signInAction, signInFailureAction, signInSuccessAction } from "../features/auth/authSlice";
 import axios, { AxiosResponse } from "axios";
-import { cookies } from "next/headers";
 
 function *signInSaga(action: any) {
     let response: AxiosResponse;
@@ -9,11 +8,13 @@ function *signInSaga(action: any) {
     try {
         response = yield axios.post(`https://learning-app-idt8.onrender.com/users/login`,
         action.payload);
-        cookies().set("accessToken", response.data?.accessToken, { secure: true });
-        cookies().set("username", response.data?.username, { secure: true })
+        console.log(response.data);
+        localStorage.setItem("accessToken", response.data?.accessToken);
+        localStorage.setItem("username", response.data?.username);
         yield put(signInSuccessAction(response.data));
 
     }catch (error) {
+        console.log(error);
         yield put(signInFailureAction());
     }
 }
