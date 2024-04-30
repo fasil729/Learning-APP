@@ -4,9 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
 import { z } from 'zod';
 
-import { useLoginMutation } from '@/lib/features/auth/authApi';
+import { signInAction } from '@/lib/features/auth/authSlice';
+import { User } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import ErrorMessage from '../messages/errorMessage';
@@ -26,10 +31,9 @@ const formSchema = z.object({
 });
 
 const LoginComponent = () => {
-  const [login, { isError, isLoading, isSuccess, data, error }] =
-    useLoginMutation();
-
+  const dispatch = useDispatch();
   const router = useRouter();
+  var { isLoading, isAuthenticated, errors } = useSelector((state: any) => state.auth.data);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,23 +44,12 @@ const LoginComponent = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("iserror: " + isError, error, data);
-    console.log("value: " + values);
-    await login({
-      username: values.username,
-      password: values.password,
-    });
-    console.log("iserror: " + isError, error, data);
-
-    
+    var user: User = {username: values.username, password: values.password}
+    dispatch(signInAction(user));
   };
 
-
-  if (isSuccess) {
-    router.push("/topics");
-  }
-  if (data && data?.accessToken) {
-    localStorage.setItem("accessToken", data.accessToken);
+  if (isAuthenticated) {
+    router.push("/Topics")
   }
 
   return (
@@ -138,12 +131,12 @@ const LoginComponent = () => {
                       </div>
                     )}
                   />
-                  {isSuccess ? (
+                  {isAuthenticated ? (
                     <SuccessMessage message="Logged In Successfully" />
                   ) : (
                     ""
                   )}
-                  {isError ? (
+                  {errors ? (
                     <ErrorMessage message="Incorrect username or password" />
                   ) : (
                     ""
@@ -160,7 +153,7 @@ const LoginComponent = () => {
                 </form>
               </Form>
               <p className="mt-6 text-sm text-center text-gray-400">
-                Don't have an account yet?{" "}
+                Dont have an account yet?{" "}
                 <Link href="/register">
                   <p className="text-blue-500 focus:outline-none focus:underline hover:underline">
                     Sign up

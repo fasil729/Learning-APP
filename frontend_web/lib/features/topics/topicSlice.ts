@@ -10,8 +10,12 @@ const topicInitalState = {
     },
     topic: {
         isLoading: false,
-        data: null,
+        data: {
+          chapters: null,
+          subject: null,
+        },
         errors: null,
+        isSuccess: false,
     }
 };
 
@@ -19,18 +23,19 @@ export const topicSlice = createSlice({
     name: 'subjects',
     initialState: topicInitalState,
     reducers: {
-        createSubjectAction: (state: TopicState, action: PayloadAction<FormDataModel | null>) => {
-            state.topic.data = null;
+        createSubjectAction: (state: any, action: PayloadAction<FormDataModel | null>) => {
+            state.topic.data = action.payload;
             state.topic.errors = "";
             state.topic.isLoading = true;
           },
       
-          createSubjectSuccessAction: (state: TopicState, action: PayloadAction<Topic | null>) => {
+          createSubjectSuccessAction: (state: any, action: PayloadAction<Topic | null>) => {
             state.topic.isLoading = false;
             state.topic.data = action.payload;
+            state.topic.isSuccess = true;
             console.log(action.payload);
           },
-          createSubjectFailureAction: (state: TopicState, action: PayloadAction) => {
+          createSubjectFailureAction: (state: any) => {
             state.topic.isLoading = false;
             state.topic.errors = "error encountered"
           },
