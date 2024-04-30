@@ -9,4 +9,5 @@ type Chapter struct {
 	Note        Note         `gorm:"foreignKey:ChapterID"`
 	Lessons     []Lesson     `gorm:"foreignKey:ChapterID"`
 	Experiments []Experiment `gorm:"foreignKey:ChapterID"`
+	NoteLink    string
 }

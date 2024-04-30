@@ -2,45 +2,80 @@ package gemini
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
+	contracts "Brilliant/application/contracts/gemini"
+
 	"github.com/google/generative-ai-go/genai"
-	"Brilliant/application/contracts/gemini"
 )
 
 // GeminiNoteHandler implements INoteHandler
 type GeminiNoteHandler struct {
-	model *genai.GenerativeModel
-	ctx   context.Context
+	model      *genai.GenerativeModel
+	ImageModel *genai.GenerativeModel
+	ctx        context.Context
 }
 
 // NewGeminiNoteHandler creates a new instance of GeminiNoteHandler and returns it as an INoteHandler
 func NewGeminiNoteHandler() contracts.INoteHandler {
 	return &GeminiNoteHandler{
-		model: GetTextModel(), // Assuming `model` is accessible from this scope
-		ctx:   context.Background(),
+		model:      GetTextModel(),
+		ImageModel: GetImageModel(), // Assuming `model` is accessible from this scope
+		ctx:        context.Background(),
 	}
 }
-func (nh *GeminiNoteHandler) AddNoteForChapter(noteContent string, chapterName string) error {
+func (nh *GeminiNoteHandler) AddNoteForChapter(previousContent string, noteContent string, chapterName string) ([]byte, error) {
 	// Generate a prompt to add a note for the chapter
-	prompt := "Add a note for the chapter " + chapterName + ". " + "Note: " + noteContent
-	_, err := nh.model.GenerateContent(nh.ctx, genai.Text(prompt))
+	prompt := "Merge the following notes into one comprehensive markdown note about the chapter " + chapterName + ". " +
+		"Retain all relevant details from the previous note while incorporating new information in a coherent and logical manner. " +
+		"Previous Note: " + previousContent + ". New Note: " + noteContent + ". " +
+		"Ensure the merged note maintains context and completeness without replacing the previous content."
+
+	response, err := nh.model.GenerateContent(nh.ctx, genai.Text(prompt))
 	if err != nil {
 		log.Fatal(err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	responseContent := response.Candidates[0].Content.Parts[0]
+
+	// Convert the response content to byte
+	responseContentJSON, _ := json.Marshal(responseContent)
+
+	// Convert the response content from byte to string
+	var responseContentString string
+	err = json.Unmarshal(responseContentJSON, &responseContentString)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	return []byte(responseContentString), nil
+
 }
 
-func (nh *GeminiNoteHandler) AddNoteForChapterFromImage(imageData []byte, chapterName string) error {
+func (nh *GeminiNoteHandler) AddNoteForChapterFromImage(previousContent string, imageData []byte, chapterName string) ([]byte, error) {
 	// Generate a prompt to add a note for the chapter from an image
-	prompt := "Add a note for the chapter " + chapterName + " from the provided image."
-	_, err := nh.model.GenerateContent(nh.ctx, genai.ImageData("jpeg", imageData), genai.Text(prompt))
+	prompt := "merge the text from the provided image with the previous content which are both about the chapter " + chapterName + "previousContent:" + previousContent + "The note should be coherent and informative. and Give the merged markdown note without replacing the previous content"
+	response, err := nh.ImageModel.GenerateContent(nh.ctx, genai.ImageData("png", imageData), genai.Text(prompt))
 	if err != nil {
 		log.Fatal(err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	responseContent := response.Candidates[0].Content.Parts[0]
+
+	// Convert the response content to byte
+	responseContentJSON, _ := json.Marshal(responseContent)
+
+	// Convert the response content from byte to string
+	var responseContentString string
+	err = json.Unmarshal(responseContentJSON, &responseContentString)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	return []byte(responseContentString), nil
 }

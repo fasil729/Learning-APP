@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
+import { IoCheckmarkSharp } from 'react-icons/io5';
 import { MdOutlinePlayCircle } from "react-icons/md";
-import { IoCheckmarkSharp } from "react-icons/io5";
-import { Checkbox } from '../ui/checkbox';
+
 
 interface LessonLinkProps{
   url: string;
@@ -21,7 +21,6 @@ const LessonLink:React.FC<LessonLinkProps> = ({url,status,name}) => {
 
       {status==="completed"?<IoCheckmarkSharp className='text-[#30A876]' size={20}/>:''}
      </Link>
-
   )
 }
 

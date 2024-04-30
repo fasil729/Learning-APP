@@ -23,25 +23,19 @@ export default function Home() {
           </p>
           <div className="flex-col md:flex-row hidden md:flex gap-5">
             <Link
-              href="/courses"
+              href="/login"
               className="rounded-[20px] group relative bg-blue-500 hover:bg-blue-400 px-5 py-3 text-lg text-white max-w-[200px]"
             >
-              Browse Courses
+              Login
             </Link>
             <Link
-              href="/tutorials"
+              href="/register"
               className="rounded-[20px] group relative bg-transparent px-5 border border-white py-3 text-lg text-white max-w-[200px]"
             >
               <div className="absolute rounded-[20px] z-[1] bg-white inset-0 opacity-0 group-hver:opacity-20" />
-              Tutorials
+              Sign Up
             </Link>
-            <Link
-              href="/contact"
-              className="rounded-[20px] group relative bg-transparent border border-white px-5 py-3 text-lg text-white max-w-[200px]"
-            >
-              <div className="absolute rounded-[20px] z-[1] bg-white inset-0 opacity-0 group-hver:opacity-20" />
-              Contact Us
-            </Link>
+            
           </div>
         </div>
       </div>

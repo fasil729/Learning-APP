@@ -1,6 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { IoAdd, IoSearch } from "react-icons/io5";
 
 export default function TopHeader() {
     // return <div className="ml-[18%] bg-white h-[6.2rem] flex justify-between items-center px-14 ">

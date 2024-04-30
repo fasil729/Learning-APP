@@ -258,6 +258,76 @@ paths:
       summary: Update a chapter
       tags:
       - chapters
+  /chapters/{chapterID}/notes:
+    get:
+      description: Get all notes belonging to the chapter specified by the chapter
+        ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notes retrieved successfully
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Invalid chapter ID
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get notes by chapter ID
+      tags:
+      - notes
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a note with text and image to the chapter specified by the
+        chapter ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Text content of the note
+        in: formData
+        name: text
+        required: true
+        type: string
+      - description: Image file
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Note added successfully
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Invalid chapter ID or missing
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Add a note with text and image to a chapter
+      tags:
+      - notes
   /examprep/generate:
     post:
       consumes:
