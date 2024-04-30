@@ -70,17 +70,18 @@ func (service *NoteService) AddNote(chapterID uint, request *dtos.AddNoteDTO) ([
 
 	} else {
 		// Append the note to the chapter content
+		Previouscontent, err := os.ReadFile(contentLink)
+
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to read content file")
+		}
+
 		file, err := os.OpenFile(contentLink, os.O_WRONLY|os.O_TRUNC, 0644)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to open content file")
 		}
 		defer file.Close()
 
-		Previouscontent, err := os.ReadFile(contentLink)
-
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to read content file")
-		}
 		newContent, err := service.NotegeminiHandler.AddNoteForChapter(string(Previouscontent), request.Text, chapter.Name)
 
 		if err != nil {
