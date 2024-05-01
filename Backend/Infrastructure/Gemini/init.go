@@ -27,7 +27,25 @@ func GetTextModel() *genai.GenerativeModel {
 	// defer client.Close()
 
 	model := client.GenerativeModel("gemini-pro")
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+		{
+			Category:  genai.HarmCategoryHateSpeech,
+			Threshold: genai.HarmBlockMediumAndAbove,
+		},
+		{
+			Category:  genai.HarmCategorySexuallyExplicit,
+			Threshold: genai.HarmBlockMediumAndAbove,
+		},
 
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockMediumAndAbove,
+		},
+	}
 	return model
 }
 
@@ -49,5 +67,24 @@ func GetImageModel() *genai.GenerativeModel {
 
 	model := client.GenerativeModel("gemini-pro-vision")
 
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockOnlyHigh,
+		},
+		{
+			Category:  genai.HarmCategoryHateSpeech,
+			Threshold: genai.HarmBlockMediumAndAbove,
+		},
+		{
+			Category:  genai.HarmCategorySexuallyExplicit,
+			Threshold: genai.HarmBlockMediumAndAbove,
+		},
+
+		{
+			Category:  genai.HarmCategoryDangerousContent,
+			Threshold: genai.HarmBlockMediumAndAbove,
+		},
+	}
 	return model
 }
