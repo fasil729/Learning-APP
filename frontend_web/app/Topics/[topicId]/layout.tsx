@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import AppProvider from "@/app/provider";
-import { TopicSideBar } from "./components/sideBar";
+import { Inter } from 'next/font/google';
+
+import TopHeader from '@/components/shared/top_header/top_header';
+
+import { TopicSideBar } from './components/sideBar';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,8 +14,10 @@ export default function TopicDetailLayout({
 }>) {
   return (
         <div className="flex">
+          
         <TopicSideBar/>
         <div className='ml-[21%]'>
+        <TopHeader></TopHeader>
           { children }
         </div>
         </div>
