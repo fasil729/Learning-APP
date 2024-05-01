@@ -1,8 +1,9 @@
 'use client';
-// import SideBar from '@/components/shared/sideBar/sideBar';
-import TopHeader from '@/components/shared/top_header/top_header';
-
-import { TopicCreateForm } from './components/topic-create-form';
+import SideBar from "@/components/shared/sideBar/sideBar";
+import TopHeader from "@/components/shared/top_header/top_header";
+import TopicCard from "@/components/ui/topicCard";
+import { topics } from "./topics";
+import { TopicCreateForm } from "./components/topic-create-form";
 
 export default function Topics() {
         // const {data, error, isLoading} = useGetAllTopicsQuery();

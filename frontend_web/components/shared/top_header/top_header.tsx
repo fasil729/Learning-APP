@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 export default function TopHeader() {
     return <nav className=" bg-white h-[6.2rem] flex justify-between  items-center px-14 gap-20">
@@ -34,7 +34,7 @@ export default function TopHeader() {
                              <img src="/profile1.png" alt="user" className="w-10 h-10 rounded-full"/>
                          </div>
                          <div>
-                             <h3>{localStorage.getItem('username')}</h3>
+                             <h3>Fasika</h3>
                          </div>
                      </div>
                  </div>
