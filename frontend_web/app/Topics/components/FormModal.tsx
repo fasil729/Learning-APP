@@ -1,15 +1,26 @@
+import { useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+import Modal from 'react-modal';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import { z } from 'zod';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { createSubjectAction } from '@/lib/features/topics/topicSlice';
+import { createSubjectAction, createSuccessFlag } from '@/lib/features/topics/topicSlice';
 import { FormDataModel } from '@/types/formData';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import Modal from 'react-modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { z } from 'zod';
 
 const schema = z.object({
   name: z.string({ required_error: "Name is required" }).min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 255 characters long" }).refine(value => value.trim() !== "", "Name cannot be empty"),
@@ -20,6 +31,7 @@ interface Props {
   modalIsOpen: boolean;
   closeModal: () => void;
 }
+
 
 export const FormModal = (props: Props) => {
   const [formValues, setFormValues] = useState({
@@ -59,6 +71,7 @@ export const FormModal = (props: Props) => {
 
   if (isSuccess) {
     router.push('/topics/1')
+    dispatch(createSuccessFlag());
   }
 
   return <Modal isOpen={props.modalIsOpen}
@@ -84,7 +97,7 @@ export const FormModal = (props: Props) => {
         </CardContent>
         <CardFooter className="flex justify-around">
           <Button variant="outline" onClick={handleCloseForm}>Cancel</Button>
-          <Button className=' bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
+          <Button className='bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
         </CardFooter>
       </form>
     </Card>

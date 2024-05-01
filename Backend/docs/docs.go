@@ -336,7 +336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/experiments/chapter/{chapterID}": {
+        "/experiments/chapter/{chapterName}": {
             "get": {
                 "security": [
                     {
@@ -353,9 +353,9 @@ const docTemplate = `{
                 "summary": "Get experiments for a chapter",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Chapter ID",
-                        "name": "chapterID",
+                        "type": "string",
+                        "description": "Chapter Name",
+                        "name": "chapterName",
                         "in": "path",
                         "required": true
                     },

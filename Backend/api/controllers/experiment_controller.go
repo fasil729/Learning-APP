@@ -22,7 +22,7 @@ func NewExperimentController(experimentService *services.ExperimentService) *Exp
 // GetExperimentsPerChapter godoc
 // @Summary Get experiments for a chapter
 // @Description Get a list of experiments for a specific chapter
-// @Param chapterID path integer true "Chapter ID"
+// @Param chapterName path string true "Chapter Name"
 // @securityDefinitions.apiKey token
 // @Param Authorization header string true "Authorization header" default(Bearer )
 // @name Authorization
@@ -31,16 +31,16 @@ func NewExperimentController(experimentService *services.ExperimentService) *Exp
 // @Produce json
 // @Success 200 {array} dtos.ExperimentDTO
 // @Failure 400
-// @Router /experiments/chapter/{chapterID} [get]
+// @Router /experiments/chapter/{chapterName} [get]
 func (controller *ExperimentController) GetExperimentsPerChapter(ctx *gin.Context) {
-	chapterIDStr := ctx.Param("chapterID")
-	chapterID, err := strconv.ParseUint(chapterIDStr, 10, 64)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid chapterID"})
-		return
-	}
+	chapterName := ctx.Param("chapterName")
+	// chapterID, err := strconv.ParseUint(chapterIDStr, 10, 64)
+	// if err != nil {
+	// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid chapterID"})
+	// 	return
+	// }
 
-	experiments, err := controller.experimentService.GetExperimentsPerChapter(uint(chapterID))
+	experiments, err := controller.experimentService.GetExperimentsPerChapter(chapterName, "")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -19,8 +19,19 @@ func NewExperimentService(experimentRepository contracts.IExperimentRepository, 
 	}
 }
 
-func (service *ExperimentService) GetExperimentsPerChapter(chapterID uint) ([]*domain.Experiment, error) {
-	experiments, err := service.experimentRepository.GetByChapterID(chapterID)
+func (service *ExperimentService) GetExperimentsPerChapter(chapterName string, promptMessage string) ([]domain.Experiment, error) {
+	// experiments, err := service.experimentRepository.GetByChapterID(chapterID)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return experiments, nil
+	experimentDto := &dtos.GenerateExperimentDTO{
+		ChapterName:   chapterName,
+		PromptMessage: promptMessage,
+	}
+
+	experiments, err := service.expermentgeminiHandler.GetExperimentsForChapter(experimentDto)
+
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +80,7 @@ func (service *ExperimentService) GetExperimentContent(experimentName string, pr
 
 func (service *ExperimentService) GenerateExperimentsPerChapter(generateDTO *dtos.GenerateExperimentDTO) ([]domain.Experiment, error) {
 	// Get the experiments from Gemini
-	experiments, err := service.expermentgeminiHandler.GetExperimentsForChapter(generateDTO, generateDTO.ChapterName)
+	experiments, err := service.expermentgeminiHandler.GetExperimentsForChapter(generateDTO)
 	if err != nil {
 		return nil, err
 	}
