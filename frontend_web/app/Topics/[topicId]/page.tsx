@@ -1,5 +1,6 @@
-import CourseDetailComponent from '@/app/topics/[topicId]/course/course'
-import React from 'react'
+import React from 'react';
+
+import CourseDetailComponent from './course/course';
 
 const CourseDetailPage = () => {
   return (<CourseDetailComponent/>
