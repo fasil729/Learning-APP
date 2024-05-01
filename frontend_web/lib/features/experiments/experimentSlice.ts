@@ -4,29 +4,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const experimentInitalState = {
    isLoading: false,
-   data : {
-    contentLink: null,
-    experimentName: null,
-    topicName: null,
-   },
+   data : null,
    errors: null
 };
 
 export const experimentSlice = createSlice({
-    name: 'subjects',
+    name: 'experiments',
     initialState: experimentInitalState,
     reducers: {
-        createExperimentAction: (state: any, action: PayloadAction<FormDataModel | null>) => {
-            state.topic.data = action.payload;
-            state.topic.errors = "";
-            state.topic.isLoading = true;
+        createExperimentAction: (state: any, action: PayloadAction<any>) => {
+            state.isLoading = true;
+            state.data.experimentName = null;
           },
       
-          createExperimentSuccessAction: (state: any, action: PayloadAction<Topic | null>) => {
-            state.topic.isLoading = false;
-            state.topic.data = action.payload;
-            state.topic.isSuccess = true;
-            console.log(action.payload);
+          createExperimentSuccessAction: (state: any, action: PayloadAction<any>) => {
+            state.isLoading = false;
+            state.data.experimentname = action.payload.experiment_name
           },
           createExperimentFailureAction: (state: any) => {
             state.topic.isLoading = false;
@@ -61,10 +54,9 @@ export const experimentSlice = createSlice({
             state.isLoading = false;
             state.errors = action.payload
           }
-
     }
 })
 
-export const { createExperimentAction, createExperimentSuccessAction, createExperimentFailureAction } = experimentSlice.actions;
+export const { createExperimentAction, createExperimentSuccessAction, createExperimentFailureAction, getExperimentsForChapterAction, getExperimentsForChapterSuccessAction, getExperimentsForChapterFailureAction } = experimentSlice.actions;
 
 export default experimentSlice.reducer;

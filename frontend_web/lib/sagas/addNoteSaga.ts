@@ -13,9 +13,9 @@ function *AddNoteSaga(action: PayloadAction<any>) {
                 Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDQ4NjM2OSwicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.FIR3HRHzFvorWuv0eMIOmVD2XaQB5TDss3swfXVtFCE`
             }
         });
-        put(addNoteSuccessAction(response.data))
+        yield put(addNoteSuccessAction(response.data))
     } catch(error) {
-        put(addNoteFailureAction(error));
+        yield put(addNoteFailureAction(error));
     }
 }
 

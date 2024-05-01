@@ -8,13 +8,11 @@ function *signInSaga(action: any) {
     try {
         response = yield axios.post(`https://learning-app-idt8.onrender.com/users/login`,
         action.payload);
-        console.log(response.data);
         localStorage.setItem("accessToken", response.data?.accessToken);
         localStorage.setItem("username", response.data?.username);
         yield put(signInSuccessAction(response.data));
 
     }catch (error) {
-        console.log(error);
         yield put(signInFailureAction());
     }
 }

@@ -3,7 +3,6 @@ import SideBar from "@/components/shared/sideBar/sideBar";
 import TopHeader from "@/components/shared/top_header/top_header";
 import TopicCard from "@/components/ui/topicCard";
 import { topics } from "./topics";
-import { useGetAllTopicsQuery } from "@/lib/features/topics/topicsApi";
 import { TopicCreateForm } from "./components/topic-create-form";
 
 export default function Topics() {
