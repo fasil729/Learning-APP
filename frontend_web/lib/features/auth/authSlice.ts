@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const topicInitalState = {
       isLoading: false,
       data: {
-          token: localStorage.getItem('token'),
+          token: null,
           isAuthenticated: false,
           user: null
       },

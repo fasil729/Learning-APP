@@ -336,7 +336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/experiments/chapter/{chapterID}": {
+        "/experiments/chapter/{chapterName}": {
             "get": {
                 "security": [
                     {
@@ -353,9 +353,9 @@ const docTemplate = `{
                 "summary": "Get experiments for a chapter",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Chapter ID",
-                        "name": "chapterID",
+                        "type": "string",
+                        "description": "Chapter Name",
+                        "name": "chapterName",
                         "in": "path",
                         "required": true
                     },
@@ -1482,7 +1482,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "learning-app-idt8.onrender.com",
+	Host:             "localhost:8080",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Brilliant Learning APP API",
