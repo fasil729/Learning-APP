@@ -9,9 +9,6 @@ export const  TopicCreateForm = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const closeModal = () => setModalIsOpen(false);
 
-    // function closeModal() {
-    //     setModalIsOpen(false);
-    // }
 
     return <div className= "h-[6.2rem] flex gap-10 items-center px-10">
                 <Input type="email" className="w-1/5" placeholder="Search Topics"></Input>

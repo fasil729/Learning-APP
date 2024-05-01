@@ -28,7 +28,7 @@ export const FormModal = (props: Props) => {
   });
 
   const dispatch = useDispatch();
-  const topic = useSelector((state: any) => state.topic?.topic);
+  const {isSuccess, isLoading, errors} = useSelector((state: any) => state.subjects.topic);
   const router = useRouter();
 
   function onValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -55,7 +55,10 @@ export const FormModal = (props: Props) => {
     const formData: FormDataModel = { subjectName: formValues.topic, description: formValues.description }
 
     dispatch(createSubjectAction(formData));
-    router.push('/topics/1');
+  }
+
+  if (isSuccess) {
+    router.push('/topics/1')
   }
 
   return <Modal isOpen={props.modalIsOpen}
@@ -81,8 +84,7 @@ export const FormModal = (props: Props) => {
         </CardContent>
         <CardFooter className="flex justify-around">
           <Button variant="outline" onClick={handleCloseForm}>Cancel</Button>
-          <Button className=' bg-mainColor' type='submit'>Create</Button>
-          {topic && <div>topic {topic.data}</div>}
+          <Button className=' bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
         </CardFooter>
       </form>
     </Card>

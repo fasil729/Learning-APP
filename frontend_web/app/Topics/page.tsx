@@ -7,7 +7,6 @@ import { useGetAllTopicsQuery } from "@/lib/features/topics/topicsApi";
 import { TopicCreateForm } from "./components/topic-create-form";
 
 export default function Topics() {
-    // const {data, error, isLoading} = useGetAllTopicsQuery();
     return <div>
             <SideBar></SideBar>
             <TopHeader></TopHeader>
