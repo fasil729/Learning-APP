@@ -29,3 +29,12 @@ export async function getExamPrepDetail(payload: { prompt: string, readTime: num
   
   return res.json();
 }
+
+
+export async function getExperimentDetial(experimentName: string) {
+  const res = await fetch(`https://learning-app-idt8.onrender.com/experiments/${experimentName}/content`, {headers: {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDY1NzAyNywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.sn3TEh8GxP8jD5DmLUmNuQRraspepshIQrcBNPEUiBc`
+    }});
+  console.log(res);
+  return res.json();
+}

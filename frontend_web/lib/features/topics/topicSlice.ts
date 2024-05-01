@@ -39,9 +39,12 @@ export const topicSlice = createSlice({
             state.topic.isLoading = false;
             state.topic.errors = "error encountered"
           },
+          createSuccessFlag: (state: any) => {
+            state.topic.isSuccess = false;
+          }
     }
 })
 
-export const { createSubjectAction, createSubjectSuccessAction, createSubjectFailureAction } = topicSlice.actions;
+export const { createSubjectAction, createSubjectSuccessAction, createSubjectFailureAction, createSuccessFlag } = topicSlice.actions;
 
 export default topicSlice.reducer;
