@@ -1,37 +1,28 @@
 "use client"
-import { Button } from '@/components/ui/button'
 import React from 'react'
-import Quiz from "..//../public/quiz.jpg"
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import QuizContent from './quiz-content'
+import QuizPrompt from './quiz-prompt'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/lib/store'
+import QuizComponent from '@/components/quiz/quiz'
+
 
 const StartQuizPage = () => {
   const router=useRouter();
-  return (<div className=' h-screen w-full flex justify-center items-center'>
+  const quizData=useSelector((state:RootState)=>state.quiz.quizData)
+  return (<>
+  {quizData.length?<QuizComponent/>:<div className=' min-h-screen py-20 flex flex-col justify-center items-center justify-center items-center'>
 
-    <div className="flex  flex-col gap-4 justify-center items-center w-max">
-      <div className=" min-w-max  overflow-hidden">
-<Image height={400} width={500} src={Quiz} alt='quiz banner' className=' object-cover'/>
-      </div>
+  <div className="w-full md:w-11/12 lg:w-10/12 xl:w-8/12 ">
+  <QuizPrompt/>
+</div>
+<div className="w-full md:w-11/12 lg:w-10/12 xl:w-8/12 ">
+<QuizContent/>
+</div>
 
-      <h1 className=' font-semibold text-xl'>Get Started With Your Quizes</h1>
-      <Button 
-      onClick={()=>{
-        router.push("/start-quiz/quiz");
-      }}
-      className='w-full 
-      px-3 py-2 
-      bg-[#153462] 
-      text-lg
-       text-white
-       hover:bg-[#153462] 
-       hover:bg-opacity-85 
-       rounded-[10px]
-       transition
-       duration-300
-       '>Start</Button>
-    </div>
-  </div>
+  </div>}
+  </>
   )
 }
 

@@ -15,7 +15,7 @@ const sagaMiddleware  = createSagaMiddlware();
 
 export const store = configureStore({
   reducer: rootReducers,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware,quizApi.middleware),
   devTools:false,
 })
 

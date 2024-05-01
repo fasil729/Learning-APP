@@ -1,12 +1,17 @@
 "use client"
-import { quizdata } from '@/lib/quizData'
+
 import React, { useEffect, useState } from 'react'
 import { GiCheckMark } from "react-icons/gi";
 import { Button } from '../ui/button';
 import QuizResult from './quizResult';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/store';
+import { GiCancel } from "react-icons/gi";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 const QuizComponent = () => {
+  const quizdata=useSelector((state:RootState)=>state.quiz.quizData)
   const [selected,setSelected] = useState<number>(0)
-  const [selectedQuestion,setSelectedQuestion] = useState(quizdata[0])
+  const [selectedQuestion,setSelectedQuestion] = useState<any>(quizdata[0])
   useEffect(()=>{
     setSelectedQuestion(quizdata[selected])
   },[selected])
@@ -40,11 +45,11 @@ const QuizComponent = () => {
   const [selectedChoices, setSelectedChoices] = useState<any>({});
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(new Set());
 
-
+  
   const onSelectionChanged = (
     questionId: number,
     choiceIndex: string,
-    isAnswer: boolean
+    is_answer: boolean
   ) => {
     setAnsweredQuestions((prev)=>prev.add(questionId))
   
@@ -53,14 +58,14 @@ const QuizComponent = () => {
       [questionId]: {
         
         choiceIndex,
-        isCorrect: isAnswer,
+        is_answer: is_answer,
       },
     };
     setSelectedChoices(updatedChoices);
 
     // Calculate score
     const newScore = Object.values(updatedChoices).reduce(
-      (acc: number, choice: any) => (choice.isCorrect ? acc + 1 : acc),
+      (acc: number, choice: any) => (choice.is_answer ? acc + 1 : acc),
       0
     );
     setScore(newScore);
@@ -81,27 +86,27 @@ const QuizComponent = () => {
   <div className="w-full  lg:w-8/12  flex  flex-col gap-10 items-center justify-center px-10">
 
   {isSelectedAll? <div className="w-full space-y-10">
-<QuizResult score={score} quizLength={quizdata.length}/>
+<QuizResult score={score} quizLength={quizdata?.length}/>
   
   <div className=" space-y-4  border-2 rounded-[10px] p-4 md:p-8 w-full">
-   {quizdata.map((quiz,index)=>{
+   {quizdata?.map((quiz:any,index)=>{
     return <div className="" key={index}>
 
     
    <div className="flex w-full justify-between ">
      <div className="space-y-4">
        <h4 className='text-[#153462] text-lg font-semibold'>Question {index+1}</h4>
-       <p>{quiz.question}</p>
+       <p>{quiz?.question}</p>
      </div>
     
-     <p className='  '>3 point</p>
+  
    </div>
 
    <div className="p-2 mt-10">
      <p className="text-[#BDBDBD] py-2">
      <span className=''>OPTIONS :</span> <span className='text-sm'>Select any one of the following</span>
      </p>
-     {quiz.chooses.map((choose,ind)=>{
+     {quiz.options.map((choose:any,ind:number)=>{
        return <div key={ind} className={`flex 
        gap-3 items-center p-2
        m-2
@@ -109,14 +114,14 @@ const QuizComponent = () => {
        ${
         (
           selectedChoices[index + 1] &&
-          choose.isAnswer &&
+          choose.is_answer &&
           "bg-green-200 dark:bg-green-700") ||
-        (isSelectedAll && choose.isAnswer && "bg-green-200 dark:bg-green-700")
+        (isSelectedAll && choose.is_answer && "bg-green-200 dark:bg-green-700")
       } ${
         selectedChoices[index + 1]?.choiceIndex ===
           ind.toString() &&
         
-        selectedChoices[index + 1]?.isCorrect
+        selectedChoices[index + 1]?.is_answer
           ? "bg-green-200 dark:bg-green-700"
           : 
             selectedChoices[index + 1]?.choiceIndex ===
@@ -134,7 +139,7 @@ const QuizComponent = () => {
            onSelectionChanged(
              index+ 1,
              ind.toString(),
-             choose.isAnswer
+             choose.is_answer
            );
          }}
           className={`h-5 w-5 border border-[#54BAB9] 
@@ -145,21 +150,50 @@ const QuizComponent = () => {
             selectedChoices[index + 1]?.choiceIndex ===
             ind.toString() &&
           
-          selectedChoices[index + 1]?.isCorrect
+          selectedChoices[index + 1]?.is_answer
              ? "bg-[#54BAB9] text-white "
              :selectedChoices[index + 1]?.choiceIndex ===
-             ind.toString()? "bg-red-700":""
+             ind.toString()? "bg- transparent":""
          }
           `}>
            {
-             selectedChoices[index + 1]?.choiceIndex ===
-             ind.toString()?<GiCheckMark size={16}/>:""
+              selectedChoices[index + 1]?.choiceIndex ===
+              ind.toString() &&
+            
+            selectedChoices[index + 1]?.is_answer?<GiCheckMark size={16}/>: selectedChoices[index + 1]?.choiceIndex ===
+            ind.toString()?<GiCancel className='text-red-700' size={16}/>:""
            }
            
           </button>
 
-          <p>{choose.chooce}</p></div>
+          <p>{choose.text}</p></div>
+
+
+
      })}
+
+
+
+{(selectedChoices[index + 1]) ||
+  isSelectedAll ? (
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1" className="border-none">
+        <AccordionTrigger className="hover:no-underline justify-start">
+          
+          <p className="text-[16px]">
+          Explanation
+          </p>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="px-2 py-4 bg-slate-100 dark:bg-gray-700">
+          <p className="text-[14px]">{quiz.explanation}</p>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ) : (
+    ""
+  )}
    </div>
     </div>
    })}
@@ -173,17 +207,18 @@ const QuizComponent = () => {
    <div className="flex w-full justify-between ">
      <div className="space-y-4">
        <h4 className='text-[#153462] text-lg font-semibold'>Question {selected+1}</h4>
-       <p>{selectedQuestion.question}</p>
+       <p>{selectedQuestion?.question}</p>
      </div>
-    
-     <p className='  '>3 point</p>
+   
    </div>
 
    <div className="p-2 mt-10">
      <p className="text-[#BDBDBD] py-2">
      <span className=''>OPTIONS :</span> <span className='text-sm'>Select any one of the following</span>
      </p>
-     {selectedQuestion.chooses.map((choose,ind)=>{
+     <div className="">
+      
+     {selectedQuestion?.options.map((choose:any,ind:number)=>{
        return <div key={ind} className="flex 
        gap-3 items-center py-1">
           <button 
@@ -191,7 +226,7 @@ const QuizComponent = () => {
            onSelectionChanged(
              selected+ 1,
              ind.toString(),
-             choose.isAnswer
+             choose.is_answer
            );
          }}
           className={`h-5 w-5 border border-[#54BAB9] 
@@ -212,8 +247,9 @@ const QuizComponent = () => {
            
           </button>
 
-          <p>{choose.chooce}</p></div>
+          <p>{choose.text}</p></div>
      })}
+     </div>
    </div>
          
    
@@ -298,7 +334,7 @@ const QuizComponent = () => {
      className='text-lg font-medium p-1 
       rounded-[5px] text-center text-[#2FD790] 
       border bg-[#2FD790] 
-      bg-opacity-15 w-8'>1</button>
+      bg-opacity-15 w-8'>{answeredQuestions.size}</button>
       <p>Answered</p>
  </div>
 
@@ -307,7 +343,7 @@ const QuizComponent = () => {
      className='text-lg font-medium p-1 
       rounded-[5px] text-center text-black
       border bg-[#F0EEED] 
-      bg-opacity-15 w-8'>1</button>
+      bg-opacity-15 w-8'>{quizdata.length-answeredQuestions.size}</button>
       <p>Not Answered</p>
       </div>
   </div>

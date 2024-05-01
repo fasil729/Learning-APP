@@ -5,7 +5,8 @@ export const quizSlice=createSlice({
     initialState:{
         number_of_quizzes: 5,
         prompt: "",
-        topics: []
+        topics: [],
+        quizData:[]
       },
 
     reducers:{
@@ -17,7 +18,11 @@ export const quizSlice=createSlice({
         },
         useTopicList(state, action) {
             state.topics = action.payload.topics;
+          },
+          setQuizData(state, action) {
+            state.quizData = action.payload.quizData;
           }
+
 
     }
 
@@ -25,6 +30,6 @@ export const quizSlice=createSlice({
 });
 
 
-export const {useGenerateQuiz,useTopicList}=quizSlice.actions;
+export const {useGenerateQuiz,useTopicList,setQuizData}=quizSlice.actions;
 
 export default quizSlice.reducer;
