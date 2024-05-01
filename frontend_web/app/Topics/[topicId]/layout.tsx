@@ -13,10 +13,11 @@ export default function TopicDetailLayout({
   children: React.ReactNode;
 }>) {
   return (
-        <div className="flex">
-          
+        <div className="flex ">
+          <div className='flex-none w-[26%]'> 
         <TopicSideBar/>
-        <div className='ml-[21%]'>
+        </div>
+        <div className='grow'>
         <TopHeader></TopHeader>
           { children }
         </div>

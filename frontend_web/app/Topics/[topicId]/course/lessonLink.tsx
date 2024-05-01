@@ -13,10 +13,9 @@ interface LessonLinkProps{
 }
 const LessonLink:React.FC<LessonLinkProps> = ({url,status,name}) => {
   return (
-     <Link href={url}  className="hover:text-[#4C6FFF] flex justify-between transition duration-300 ">
-     <div className='flex gap-2'>
-        <MdOutlinePlayCircle className='text-[#4C6FFF]' size={20}/>
-        <p>{name}</p>
+     <Link href={url}  className=" flex justify-between transition duration-300 ">
+     <div className='flex gap-2 p-2'>
+        <p className='text-[18px]'>{name}</p>
       </div>
 
       {status==="completed"?<IoCheckmarkSharp className='text-[#30A876]' size={20}/>:''}

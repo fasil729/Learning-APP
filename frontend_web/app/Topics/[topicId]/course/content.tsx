@@ -17,7 +17,7 @@ const Content = (props: Props) => {
   console.log(data);
 
  
-  return (<div className='p-4 md:p-10 xl:p-20 space-y-10'>
+  return (<div className='px-[100px] py-1 space-y-1'>
 {/* 
     <div className="bg-[#F8F8FB] rounded-[15px] p-6 space-y-2">
       <p className='text-sm text-gray-500'>Course 1 of 6</p>
@@ -36,6 +36,7 @@ const Content = (props: Props) => {
     </div> */}
     <div className="">
     <QuizGenerate/>
+    <div className='mb-5 text-[25px] font-semibold'>Content</div>
      <LessonList isLoading={props.isLoading} data={props.data} errors={props.data}/>
     </div>
 

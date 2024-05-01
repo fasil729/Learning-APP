@@ -23,7 +23,7 @@ export function LessonList(props: Props) {
    return (<Accordion type="single" collapsible className="w-full">
             {props.data.Chapters && props.data.Chapters.map((chapter: any, index: number) => {
               return <AccordionItem key={index} value={`${index}`} className="data-[state=open]:border-none">
-                <AccordionTrigger>{chapter.name}</AccordionTrigger>
+                <AccordionTrigger className= 'text-[21px]'>{chapter.name}</AccordionTrigger>
                 <AccordionContent>
                   {chapter.lessons.map((lesson: any, ind: number) => {
                     return <LessonLink key={ind} name={`${lesson}`} url={`/topics/1/lesson/${lesson}`} status={lesson} />

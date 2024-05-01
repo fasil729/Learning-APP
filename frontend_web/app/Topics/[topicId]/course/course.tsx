@@ -38,7 +38,7 @@ const CourseDetailComponent = () => {
             <VideoComponent />
           </div> */}
 
-          <h1 className='font-semibold text-lg'>{data.Subject?.Name ?? "Test topic"}</h1>
+          <h1 className='font-semibold text-xl'>{data.Subject?.Name.toUpperCase() ?? "Test topic"}</h1>
           {/* <p className='text-gray-600 text-sm'>By  <span className='text-gray-800 text-base'>Simon Shaw</span>, Illustrator and 3D designer</p> */}
 
           <div className="py-10 w-full">
