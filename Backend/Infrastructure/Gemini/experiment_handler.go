@@ -27,8 +27,8 @@ func NewGeminiExperimentHandler() contracts.IExperimentHandler {
 	}
 }
 
-func (eh *GeminiExperimentHandler) GetExperimentsForChapter(generateDTO *dtos.GenerateExperimentDTO, chapterName string) ([]domain.Experiment, error) {
-	resp, err := eh.model.GenerateContent(eh.ctx, genai.Text("List possible experiments for the chapter "+chapterName+` return the response in json format [{"ExperimentName": "Experiment 1: experiment name"}, {"ExperimentName": "Experiment 2: experiment name"}, {"ExperimentName": "Experiment 3: experiment name"}] make them specific for the chapter only`))
+func (eh *GeminiExperimentHandler) GetExperimentsForChapter(generateDTO *dtos.GenerateExperimentDTO) ([]domain.Experiment, error) {
+	resp, err := eh.model.GenerateContent(eh.ctx, genai.Text("List possible experiments for the chapter "+generateDTO.ChapterName+` return the response in json format [{"ExperimentName": "Experiment 1: experiment name"}, {"ExperimentName": "Experiment 2: experiment name"}, {"ExperimentName": "Experiment 3: experiment name"}] make them specific for the chapter only`))
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
