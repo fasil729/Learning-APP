@@ -35,11 +35,11 @@ func (service *ExperimentService) GetExperimentsPerSubject(subjectID uint) ([]*d
 	return experiments, nil
 }
 
-func (service *ExperimentService) GetExperimentContent(experimentID uint, promptMessage string) ([]byte, error) {
-	experiment, err := service.experimentRepository.GetById(experimentID)
-	if err != nil {
-		return nil, err
-	}
+func (service *ExperimentService) GetExperimentContent(experimentName string, promptMessage string) ([]byte, error) {
+	// experiment, err := service.experimentRepository.GetById(experimentID)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// if experiment.ContentLink == "" {
 	// 	// Gemini API call will be done here
@@ -59,7 +59,7 @@ func (service *ExperimentService) GetExperimentContent(experimentID uint, prompt
 	// 	return nil, err
 	// }
 
-	content, err := service.expermentgeminiHandler.GetExperimentContent(experiment.ExperimentName, promptMessage)
+	content, err := service.expermentgeminiHandler.GetExperimentContent(experimentName, promptMessage)
 	if err != nil {
 		return nil, err
 	}

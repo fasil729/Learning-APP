@@ -60,3 +60,13 @@ func (repository *ChapterRepository) GetChapterByID(chapterID uint) (*domain.Cha
 
 	return chapter, nil
 }
+
+func (repository *ChapterRepository) GetChapterByName(chapterName string) (*domain.Chapter, error) {
+	chapter := &domain.Chapter{}
+	err := repository.database.Where("name = ?", chapterName).First(chapter).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return chapter, nil
+}

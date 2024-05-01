@@ -1,8 +1,8 @@
 package services
 
 import (
-	contracts "Brilliant/application/contracts/persistence"
 	contract "Brilliant/application/contracts/gemini"
+	contracts "Brilliant/application/contracts/persistence"
 	dtos "Brilliant/application/dtos/lesson"
 	"Brilliant/domain"
 	"fmt"
@@ -10,15 +10,14 @@ import (
 )
 
 type LessonService struct {
-	LessonRepository contracts.ILessonRepository
+	LessonRepository     contracts.ILessonRepository
 	subjectGeminiHandler contract.IGeminiSubjectHandler
 }
 
 func NewLessonService(lessonRepository contracts.ILessonRepository, subjectGeminiHandler contract.IGeminiSubjectHandler) *LessonService {
 	return &LessonService{
-		LessonRepository: lessonRepository,
+		LessonRepository:     lessonRepository,
 		subjectGeminiHandler: subjectGeminiHandler,
-		
 	}
 }
 
@@ -65,12 +64,12 @@ func (service *LessonService) DeleteLesson(lessonId uint) error {
 }
 
 // GetLessonContent retrieves content from a file, simulating an API call in the future.
-func (service *LessonService) GetLessonContent(LessonID uint) ([]byte, error) {
+func (service *LessonService) GetLessonContent(LessonName string) ([]byte, error) {
 	// Fetch the lesson from the repository
-	lesson, err := service.LessonRepository.GetById(LessonID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get lesson: %w", err)
-	}
+	// lesson, err := service.LessonRepository.GetById(LessonID)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to get lesson: %w", err)
+	// }
 
 	// // If there's no content link, set a dummy path
 	// if lesson.ContentLink == "" {
@@ -91,7 +90,7 @@ func (service *LessonService) GetLessonContent(LessonID uint) ([]byte, error) {
 	// if err != nil {
 	// 	return nil, fmt.Errorf("failed to read content file: %w", err)
 	// }
-    content, err := service.subjectGeminiHandler.GenerateLessonDetailContent(lesson.Name)
+	content, err := service.subjectGeminiHandler.GenerateLessonDetailContent(LessonName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate lesson content: %w", err)
 	}
