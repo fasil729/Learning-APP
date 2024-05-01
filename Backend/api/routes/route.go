@@ -24,6 +24,9 @@ func Setup(env *config.Env, getDb func() *gorm.DB, gin *gin.Engine) {
 	// setup chapter routes
 	NewChapterRouter(env, getDb, publicRouter)
 
+	// setup note routes
+	NewNoteRouter(env, getDb, publicRouter)
+
 	// Setup experiment routes
 	NewExperimentRouter(env, getDb, publicRouter)
 

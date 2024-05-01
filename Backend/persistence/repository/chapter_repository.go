@@ -51,3 +51,22 @@ func (repository *ChapterRepository) DeleteChapter(chapter *domain.Chapter) erro
 
 	return nil
 }
+
+func (repository *ChapterRepository) GetChapterByID(chapterID uint) (*domain.Chapter, error) {
+	chapter, err := repository.GetById(chapterID)
+	if err != nil {
+		return nil, err
+	}
+
+	return chapter, nil
+}
+
+func (repository *ChapterRepository) GetChapterByName(chapterName string) (*domain.Chapter, error) {
+	chapter := &domain.Chapter{}
+	err := repository.database.Where("name = ?", chapterName).First(chapter).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return chapter, nil
+}

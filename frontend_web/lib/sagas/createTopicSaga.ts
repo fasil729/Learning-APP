@@ -1,32 +1,35 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import axios, { AxiosResponse } from 'axios';
 import {
-    createSubjectSuccessAction,
-    createSubjectFailureAction,
-    createSubjectAction,
-} from "../features/topics/topicSlice";
-import axios, { Axios, AxiosResponse } from 'axios';
-import { Topic } from '@/types/topic';
+  put,
+  takeLatest,
+} from 'redux-saga/effects';
+
 import { PayloadAction } from '@reduxjs/toolkit';
 
+import {
+  createSubjectAction,
+  createSubjectFailureAction,
+  createSubjectSuccessAction,
+} from '../features/topics/topicSlice';
 
-function* createSubjectSaga(action: PayloadAction<Topic>) {
-    console.log("here creating subject");
-    console.log(action.payload);
+const token=localStorage.getItem("accessToken")
+console.log(token);
+
+function* createSubjectSaga(action: PayloadAction<any>) {
     let response: AxiosResponse;
+    const token = localStorage.getItem("accessToken")
     try {
         response = yield axios.post(`https://learning-app-idt8.onrender.com/subjects/create`,
             action.payload,
             {
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDM5MTY0NSwicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.QRRebYPcQkN4_Tzciryc3XepYWlstmhCCM9zOTijFa0`
+                Authorization: `Bearer ${token}`
             }
             }
         );
-        console.log(response)
         yield put(createSubjectSuccessAction(response.data));
     } catch (error) {
-        yield put(createSubjectFailureAction());   
-        console.log(error) 
+        yield put(createSubjectFailureAction());    
     }
 }
 

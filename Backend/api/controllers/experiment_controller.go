@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"Brilliant/application/dtos/experiment"
+	dtos "Brilliant/application/dtos/experiment"
 	"Brilliant/application/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 )
 
 type ExperimentController struct {
@@ -22,7 +22,7 @@ func NewExperimentController(experimentService *services.ExperimentService) *Exp
 // GetExperimentsPerChapter godoc
 // @Summary Get experiments for a chapter
 // @Description Get a list of experiments for a specific chapter
-// @Param chapterID path integer true "Chapter ID"
+// @Param chapterName path string true "Chapter Name"
 // @securityDefinitions.apiKey token
 // @Param Authorization header string true "Authorization header" default(Bearer )
 // @name Authorization
@@ -30,17 +30,17 @@ func NewExperimentController(experimentService *services.ExperimentService) *Exp
 // @Tags experiments
 // @Produce json
 // @Success 200 {array} dtos.ExperimentDTO
-// @Failure 400 
-// @Router /experiments/chapter/{chapterID} [get]
+// @Failure 400
+// @Router /experiments/chapter/{chapterName} [get]
 func (controller *ExperimentController) GetExperimentsPerChapter(ctx *gin.Context) {
-	chapterIDStr := ctx.Param("chapterID")
-	chapterID, err := strconv.ParseUint(chapterIDStr, 10, 64)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid chapterID"})
-		return
-	}
+	chapterName := ctx.Param("chapterName")
+	// chapterID, err := strconv.ParseUint(chapterIDStr, 10, 64)
+	// if err != nil {
+	// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid chapterID"})
+	// 	return
+	// }
 
-	experiments, err := controller.experimentService.GetExperimentsPerChapter(uint(chapterID))
+	experiments, err := controller.experimentService.GetExperimentsPerChapter(chapterName, "")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -57,7 +57,7 @@ func (controller *ExperimentController) GetExperimentsPerChapter(ctx *gin.Contex
 // @Tags experiments
 // @Produce json
 // @Success 200 {array} dtos.ExperimentDTO
-// @Failure 400 {object} dtos.ErrorResponse 
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /experiments/subject/{subjectID} [get]
 func (controller *ExperimentController) GetExperimentsPerSubject(ctx *gin.Context) {
 	subjectIDStr := ctx.Param("subjectID")
@@ -76,26 +76,25 @@ func (controller *ExperimentController) GetExperimentsPerSubject(ctx *gin.Contex
 	ctx.JSON(http.StatusOK, experiments)
 }
 
-
 // GetExperimentContent godoc
 // @Summary Get content for an experiment
 // @Description Get the content for a specific experiment
 // @Param Authorization header string true "Authorization header" default(Bearer )
-// @Param experimentID path integer true "Experiment ID"
+// @Param experimentName path string true "Experiment Name"
 // @Tags experiments
 // @Produce json
 // @Success 200 {object} dtos.SuccessResponse
-// @Failure 400 {object} dtos.ErrorResponse 
-// @Router /experiments/content/{experimentID} [get]
+// @Failure 400 {object} dtos.ErrorResponse
+// @Router /experiments/{experimentName}/content [get]
 func (controller *ExperimentController) GetExperimentContent(ctx *gin.Context) {
-	experimentIDStr := ctx.Param("experimentID")
-	experimentID, err := strconv.ParseUint(experimentIDStr, 10, 64)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid experimentID"})
-		return
-	}
+	experimentName := ctx.Param("experimentName")
+	// experimentID, err := strconv.ParseUint(experimentIDStr, 10, 64)
+	// if err != nil {
+	// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid experimentID"})
+	// 	return
+	// }
 
-	content, err := controller.experimentService.GetExperimentContent(uint(experimentID), "")
+	content, err := controller.experimentService.GetExperimentContent(experimentName, "")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -113,7 +112,7 @@ func (controller *ExperimentController) GetExperimentContent(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} dtos.ExperimentDTO
-// @Failure 400 {object} dtos.ErrorResponse  
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /experiments/generate [post]
 func (controller *ExperimentController) GenerateExperimentsPerChapter(ctx *gin.Context) {
 	var generateDTO dtos.GenerateExperimentDTO
@@ -140,7 +139,7 @@ func (controller *ExperimentController) GenerateExperimentsPerChapter(ctx *gin.C
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.ExperimentDTO
-// @Failure 400 {object} dtos.ErrorResponse  
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /experiments/add [post]
 func (controller *ExperimentController) AddExperiment(ctx *gin.Context) {
 	var addDTO dtos.ExperimentDTO
@@ -168,7 +167,7 @@ func (controller *ExperimentController) AddExperiment(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.ExperimentDTO
-// @Failure 400 {object} dtos.ErrorResponse 
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /experiments/update/{experimentID} [put]
 func (controller *ExperimentController) UpdateExperiment(ctx *gin.Context) {
 	experimentIDStr := ctx.Param("experimentID")
@@ -201,7 +200,7 @@ func (controller *ExperimentController) UpdateExperiment(ctx *gin.Context) {
 // @Tags experiments
 // @Produce json
 // @Success 200 {object} dtos.SuccessResponse
-// @Failure 400 {object} dtos.ErrorResponse 
+// @Failure 400 {object} dtos.ErrorResponse
 // @Router /experiments/delete/{experimentID} [delete]
 func (controller *ExperimentController) DeleteExperiment(ctx *gin.Context) {
 	experimentIDStr := ctx.Param("experimentID")

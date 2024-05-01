@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"Brilliant/application/dtos/lesson"
+	dtos "Brilliant/application/dtos/lesson"
 	"Brilliant/application/services"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -17,24 +18,21 @@ func NewLessonController(lessonService *services.LessonService) *LessonControlle
 }
 
 // @Summary Get lesson content
-// @Description Get the content of a lesson by ID
+// @Description Get the content of a lesson by Name
 // @Param Authorization header string true "Authorization header" default(Bearer )
 // @Tags lessons
 // @Accept  json
 // @Produce  json
-// @Param lessonID path int true "Lesson ID"
+// @Param lessonName path string true "Lesson Name"
 // @Success 200 {object} dtos.SuccessResponse
 // @Failure 400 {object} dtos.ErrorResponse "Bad request"
-// @Router /lessons/{lessonID}/content [get]
+// @Router /lessons/{lessonName}/content [get]
 func (controller *LessonController) GetLessonContent(ctx *gin.Context) {
-	lessonIDstr := ctx.Param("lessonID")
-	lessonID, err := strconv.ParseUint(lessonIDstr, 10, 64)
-	if err != nil {
-		ctx.JSON(400, gin.H{"error": "Invalid lesson ID format"})
-		return
-	}
+	lessonName := ctx.Param("lessonName")
+	fmt.Println("At the controller", lessonName)
+	// lessonID, err := strconv.ParseUint(lessonIDstr, 10, 64)
 
-	lessonContent, err := controller.lessonService.GetLessonContent(uint(lessonID))
+	lessonContent, err := controller.lessonService.GetLessonContent(lessonName)
 	if err != nil {
 		ctx.JSON(500, gin.H{"error": "Could not retrieve lesson content. Please try again later."})
 		return

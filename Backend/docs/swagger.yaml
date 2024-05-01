@@ -54,12 +54,12 @@ definitions:
     type: object
   dtos.GenerateExperimentDTO:
     properties:
-      chapterID:
-        type: integer
-      promptMessage:
+      chapterName:
+        description: ChapterID      uint
         type: string
-      subjectID:
-        type: integer
+      promptMessage:
+        description: SubjectID     uint
+        type: string
     type: object
   dtos.GenerateQuizDTO:
     properties:
@@ -124,24 +124,6 @@ definitions:
     required:
     - password
     - username
-    type: object
-  dtos.SubjectDTO:
-    properties:
-      chapters:
-        items:
-          $ref: '#/definitions/dtos.ChapterDTO'
-        type: array
-      id:
-        type: integer
-      referenceBooksLink:
-        type: string
-      subjectName:
-        type: string
-      textBookLink:
-        type: string
-      userId:
-        description: The ID of the user who created the subject
-        type: integer
     type: object
   dtos.SuccessResponse:
     properties:
@@ -258,6 +240,77 @@ paths:
       summary: Update a chapter
       tags:
       - chapters
+  /chapters/{chapterID}/note:
+    get:
+      description: Get all notes belonging to the chapter specified by the chapter
+        ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notes retrieved successfully
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Invalid chapter ID
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get notes by chapter ID
+      tags:
+      - notes
+  /chapters/{chapterID}/notes:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a note with text and image to the chapter specified by the
+        chapter ID
+      parameters:
+      - description: Chapter ID
+        in: path
+        name: chapterID
+        required: true
+        type: integer
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Text content of the note
+        in: formData
+        name: text
+        required: true
+        type: string
+      - description: Image file
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Note added successfully
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Invalid chapter ID or missing
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Add a note with text and image to a chapter
+      tags:
+      - notes
   /examprep/generate:
     post:
       consumes:
@@ -291,6 +344,35 @@ paths:
       summary: Generate exam preparation material
       tags:
       - exam_prep
+  /experiments/{experimentName}/content:
+    get:
+      description: Get the content for a specific experiment
+      parameters:
+      - default: Bearer
+        description: Authorization header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Experiment Name
+        in: path
+        name: experimentName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get content for an experiment
+      tags:
+      - experiments
   /experiments/add:
     post:
       consumes:
@@ -323,15 +405,15 @@ paths:
       summary: Add a new experiment
       tags:
       - experiments
-  /experiments/chapter/{chapterID}:
+  /experiments/chapter/{chapterName}:
     get:
       description: Get a list of experiments for a specific chapter
       parameters:
-      - description: Chapter ID
+      - description: Chapter Name
         in: path
-        name: chapterID
+        name: chapterName
         required: true
-        type: integer
+        type: string
       - default: Bearer
         description: Authorization header
         in: header
@@ -352,35 +434,6 @@ paths:
       security:
       - JWT: []
       summary: Get experiments for a chapter
-      tags:
-      - experiments
-  /experiments/content/{experimentID}:
-    get:
-      description: Get the content for a specific experiment
-      parameters:
-      - default: Bearer
-        description: Authorization header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Experiment ID
-        in: path
-        name: experimentID
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/dtos.ErrorResponse'
-      summary: Get content for an experiment
       tags:
       - experiments
   /experiments/delete/{experimentID}:
@@ -613,11 +666,11 @@ paths:
       summary: Update a lesson
       tags:
       - lessons
-  /lessons/{lessonID}/content:
+  /lessons/{lessonName}/content:
     get:
       consumes:
       - application/json
-      description: Get the content of a lesson by ID
+      description: Get the content of a lesson by Name
       parameters:
       - default: Bearer
         description: Authorization header
@@ -625,11 +678,11 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Lesson ID
+      - description: Lesson Name
         in: path
-        name: lessonID
+        name: lessonName
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -702,7 +755,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.SubjectDTO'
+            $ref: '#/definitions/dtos.SuccessResponse'
         "400":
           description: Bad Request
           schema:
@@ -732,7 +785,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dtos.SubjectDTO'
+              $ref: '#/definitions/dtos.SuccessResponse'
             type: array
         "500":
           description: Internal Server Error

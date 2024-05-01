@@ -138,6 +138,108 @@ const docTemplate = `{
                 }
             }
         },
+        "/chapters/{chapterID}/note": {
+            "get": {
+                "description": "Get all notes belonging to the chapter specified by the chapter ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notes"
+                ],
+                "summary": "Get notes by chapter ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chapter ID",
+                        "name": "chapterID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notes retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid chapter ID",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/chapters/{chapterID}/notes": {
+            "post": {
+                "description": "Add a note with text and image to the chapter specified by the chapter ID",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notes"
+                ],
+                "summary": "Add a note with text and image to a chapter",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Chapter ID",
+                        "name": "chapterID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Text content of the note",
+                        "name": "text",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file",
+                        "name": "image",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Note added successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid chapter ID or missing",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/examprep/generate": {
             "post": {
                 "description": "Generate exam preparation material based on the provided topics and prompt",
@@ -234,7 +336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/experiments/chapter/{chapterID}": {
+        "/experiments/chapter/{chapterName}": {
             "get": {
                 "security": [
                     {
@@ -251,9 +353,9 @@ const docTemplate = `{
                 "summary": "Get experiments for a chapter",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Chapter ID",
-                        "name": "chapterID",
+                        "type": "string",
+                        "description": "Chapter Name",
+                        "name": "chapterName",
                         "in": "path",
                         "required": true
                     },
@@ -278,49 +380,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request"
-                    }
-                }
-            }
-        },
-        "/experiments/content/{experimentID}": {
-            "get": {
-                "description": "Get the content for a specific experiment",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "experiments"
-                ],
-                "summary": "Get content for an experiment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer",
-                        "description": "Authorization header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Experiment ID",
-                        "name": "experimentID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.ErrorResponse"
-                        }
                     }
                 }
             }
@@ -520,6 +579,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/experiments/{experimentName}/content": {
+            "get": {
+                "description": "Get the content for a specific experiment",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "experiments"
+                ],
+                "summary": "Get content for an experiment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Experiment Name",
+                        "name": "experimentName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/lessons": {
             "post": {
                 "description": "Create a new lesson with the provided information",
@@ -667,9 +769,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/lessons/{lessonID}/content": {
+        "/lessons/{lessonName}/content": {
             "get": {
-                "description": "Get the content of a lesson by ID",
+                "description": "Get the content of a lesson by Name",
                 "consumes": [
                     "application/json"
                 ],
@@ -690,9 +792,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Lesson ID",
-                        "name": "lessonID",
+                        "type": "string",
+                        "description": "Lesson Name",
+                        "name": "lessonName",
                         "in": "path",
                         "required": true
                     }
@@ -800,7 +902,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.SubjectDTO"
+                            "$ref": "#/definitions/dtos.SuccessResponse"
                         }
                     },
                     "400": {
@@ -845,7 +947,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dtos.SubjectDTO"
+                                "$ref": "#/definitions/dtos.SuccessResponse"
                             }
                         }
                     },
@@ -1225,14 +1327,13 @@ const docTemplate = `{
         "dtos.GenerateExperimentDTO": {
             "type": "object",
             "properties": {
-                "chapterID": {
-                    "type": "integer"
-                },
-                "promptMessage": {
+                "chapterName": {
+                    "description": "ChapterID      uint",
                     "type": "string"
                 },
-                "subjectID": {
-                    "type": "integer"
+                "promptMessage": {
+                    "description": "SubjectID     uint",
+                    "type": "string"
                 }
             }
         },
@@ -1330,33 +1431,6 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "dtos.SubjectDTO": {
-            "type": "object",
-            "properties": {
-                "chapters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.ChapterDTO"
-                    }
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "referenceBooksLink": {
-                    "type": "string"
-                },
-                "subjectName": {
-                    "type": "string"
-                },
-                "textBookLink": {
-                    "type": "string"
-                },
-                "userId": {
-                    "description": "The ID of the user who created the subject",
-                    "type": "integer"
                 }
             }
         },

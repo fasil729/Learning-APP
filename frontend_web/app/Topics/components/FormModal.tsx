@@ -1,15 +1,26 @@
+import { useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+import Modal from 'react-modal';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import { z } from 'zod';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createSubjectAction } from '@/lib/features/topics/topicSlice';
 import { FormDataModel } from '@/types/formData';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import Modal from 'react-modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { z } from 'zod';
 
 const schema = z.object({
   name: z.string({ required_error: "Name is required" }).min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 255 characters long" }).refine(value => value.trim() !== "", "Name cannot be empty"),
@@ -21,6 +32,7 @@ interface Props {
   closeModal: () => void;
 }
 
+
 export const FormModal = (props: Props) => {
   const [formValues, setFormValues] = useState({
     topic: "",
@@ -28,7 +40,7 @@ export const FormModal = (props: Props) => {
   });
 
   const dispatch = useDispatch();
-  const topic = useSelector((state: any) => state.topic?.topic);
+  const {isSuccess, isLoading, errors} = useSelector((state: any) => state.subjects.topic);
   const router = useRouter();
 
   function onValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -55,7 +67,10 @@ export const FormModal = (props: Props) => {
     const formData: FormDataModel = { subjectName: formValues.topic, description: formValues.description }
 
     dispatch(createSubjectAction(formData));
-    router.push('/topics/1');
+  }
+
+  if (isSuccess) {
+    router.push('/Topics/1')
   }
 
   return <Modal isOpen={props.modalIsOpen}
@@ -81,8 +96,7 @@ export const FormModal = (props: Props) => {
         </CardContent>
         <CardFooter className="flex justify-around">
           <Button variant="outline" onClick={handleCloseForm}>Cancel</Button>
-          <Button className=' bg-mainColor' type='submit'>Create</Button>
-          {topic && <div>topic {topic.data}</div>}
+          <Button className=' bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
         </CardFooter>
       </form>
     </Card>

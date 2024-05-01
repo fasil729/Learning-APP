@@ -88,3 +88,5 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240401170217-c3f982113cda // indirect
 )
+
+require github.com/pkg/errors v0.9.1

@@ -12,7 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
 func NewExperimentRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGroup) {
 	experimentRepository := repositories.NewExperimentRepository(getDb)
 	experimentGeminiHandler := gemini.NewGeminiExperimentHandler()
@@ -23,13 +22,12 @@ func NewExperimentRouter(env *config.Env, getDb func() *gorm.DB, group *gin.Rout
 
 	experimentGroup := group.Group("/experiments", authMiddleware)
 	{
-		experimentGroup.GET("/chapter/:chapterID", experimentController.GetExperimentsPerChapter)
+		experimentGroup.GET("/chapter/:chapterName", experimentController.GetExperimentsPerChapter)
 		experimentGroup.GET("/subject/:subjectID", experimentController.GetExperimentsPerSubject)
-		experimentGroup.GET("/content/:experimentID", experimentController.GetExperimentContent)
+		experimentGroup.GET("/:experimentName/content", experimentController.GetExperimentContent)
 		experimentGroup.POST("/generate", experimentController.GenerateExperimentsPerChapter)
 		experimentGroup.POST("", experimentController.AddExperiment)
 		experimentGroup.PUT("/:experimentID", experimentController.UpdateExperiment)
 		experimentGroup.DELETE("/:experimentID", experimentController.DeleteExperiment)
 	}
 }
-
