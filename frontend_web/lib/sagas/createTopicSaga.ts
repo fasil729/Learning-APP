@@ -8,10 +8,10 @@ import axios, { Axios, AxiosResponse } from 'axios';
 import { Topic } from '@/types/topic';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-const token=localStorage.getItem("accessToken")
 
 function* createSubjectSaga(action: PayloadAction<any>) {
     let response: AxiosResponse;
+    const token = localStorage.getItem("accessToken")
     try {
         response = yield axios.post(`https://learning-app-idt8.onrender.com/subjects/create`,
             action.payload,
