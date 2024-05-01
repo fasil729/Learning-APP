@@ -25,7 +25,7 @@ export function Callout({
         })}
         {...props}
       >
-        {icon && <span className="mr-4 text-2xl">{icon}</span>}
+        {icon && <span className=" mr-4 text-2xl">{icon}</span>}
         <div>{children}</div>
       </div>
     )
@@ -206,7 +206,7 @@ const components = {
     code: ({ className, ...props }) => (
       <code
         className={cn(
-          "relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm ",
+          "relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm text-white",
           className
         )}
         {...props}
@@ -215,6 +215,7 @@ const components = {
     Callout,
     MdxCard,
     Image: Test,
+    ImagePlaceholder: Test
 
 }
 
