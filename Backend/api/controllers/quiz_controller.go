@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"Brilliant/application/dtos/quiz"
+	dtos "Brilliant/application/dtos/quiz"
 	"Brilliant/application/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type QuizController struct {

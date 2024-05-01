@@ -138,7 +138,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/chapters/{chapterID}/notes": {
+        "/chapters/{chapterID}/note": {
             "get": {
                 "description": "Get all notes belonging to the chapter specified by the chapter ID",
                 "produces": [
@@ -179,7 +179,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/chapters/{chapterID}/notes": {
             "post": {
                 "description": "Add a note with text and image to the chapter specified by the chapter ID",
                 "consumes": [
@@ -334,7 +336,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/experiments/chapter/{chapterID}": {
+        "/experiments/chapter/{chapterName}": {
             "get": {
                 "security": [
                     {
@@ -351,9 +353,9 @@ const docTemplate = `{
                 "summary": "Get experiments for a chapter",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Chapter ID",
-                        "name": "chapterID",
+                        "type": "string",
+                        "description": "Chapter Name",
+                        "name": "chapterName",
                         "in": "path",
                         "required": true
                     },
@@ -378,49 +380,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request"
-                    }
-                }
-            }
-        },
-        "/experiments/content/{experimentID}": {
-            "get": {
-                "description": "Get the content for a specific experiment",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "experiments"
-                ],
-                "summary": "Get content for an experiment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer",
-                        "description": "Authorization header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Experiment ID",
-                        "name": "experimentID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.ErrorResponse"
-                        }
                     }
                 }
             }
@@ -620,6 +579,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/experiments/{experimentName}/content": {
+            "get": {
+                "description": "Get the content for a specific experiment",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "experiments"
+                ],
+                "summary": "Get content for an experiment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer",
+                        "description": "Authorization header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Experiment Name",
+                        "name": "experimentName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/lessons": {
             "post": {
                 "description": "Create a new lesson with the provided information",
@@ -767,9 +769,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/lessons/{lessonID}/content": {
+        "/lessons/{lessonName}/content": {
             "get": {
-                "description": "Get the content of a lesson by ID",
+                "description": "Get the content of a lesson by Name",
                 "consumes": [
                     "application/json"
                 ],
@@ -790,9 +792,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Lesson ID",
-                        "name": "lessonID",
+                        "type": "string",
+                        "description": "Lesson Name",
+                        "name": "lessonName",
                         "in": "path",
                         "required": true
                     }
@@ -900,7 +902,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.SubjectDTO"
+                            "$ref": "#/definitions/dtos.SuccessResponse"
                         }
                     },
                     "400": {
@@ -945,7 +947,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dtos.SubjectDTO"
+                                "$ref": "#/definitions/dtos.SuccessResponse"
                             }
                         }
                     },
@@ -1325,14 +1327,13 @@ const docTemplate = `{
         "dtos.GenerateExperimentDTO": {
             "type": "object",
             "properties": {
-                "chapterID": {
-                    "type": "integer"
-                },
-                "promptMessage": {
+                "chapterName": {
+                    "description": "ChapterID      uint",
                     "type": "string"
                 },
-                "subjectID": {
-                    "type": "integer"
+                "promptMessage": {
+                    "description": "SubjectID     uint",
+                    "type": "string"
                 }
             }
         },
@@ -1433,33 +1434,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.SubjectDTO": {
-            "type": "object",
-            "properties": {
-                "chapters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.ChapterDTO"
-                    }
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "referenceBooksLink": {
-                    "type": "string"
-                },
-                "subjectName": {
-                    "type": "string"
-                },
-                "textBookLink": {
-                    "type": "string"
-                },
-                "userId": {
-                    "description": "The ID of the user who created the subject",
-                    "type": "integer"
-                }
-            }
-        },
         "dtos.SuccessResponse": {
             "type": "object",
             "properties": {
@@ -1508,7 +1482,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "learning-app-idt8.onrender.com",
+	Host:             "localhost:8080",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Brilliant Learning APP API",

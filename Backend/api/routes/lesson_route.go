@@ -20,7 +20,7 @@ func NewLessonRouter(env *config.Env, getDb func() *gorm.DB, group *gin.RouterGr
 
 	lessonGroup := group.Group("/lessons", authMiddleware)
 	{
-		lessonGroup.GET("/:lessonID/content", lessonController.GetLessonContent)
+		lessonGroup.GET("/:lessonName/content", lessonController.GetLessonContent)
 		lessonGroup.POST("/addLesson", lessonController.AddLesson)
 		lessonGroup.PUT("/updateLesson/:lessonID", lessonController.UpdateLesson)
 		lessonGroup.DELETE("/deleteLesson/:lessonID", lessonController.DeleteLesson)
