@@ -1,9 +1,10 @@
+'use client'
 
 export default function TopHeader() {
     return <nav className=" bg-white h-[6.2rem] flex justify-between  items-center px-14 gap-20">
                 
                 <div className="flex ">
-                    <a href="#" className="block  h-[80px] w-[80px] py-2 px-3 text-black text-[20px]  hover:bg-gray-100 rounded "><img src='profile1.png' alt='logo' /></a>
+                    <a href="#" className="block  h-[80px] w-[80px] py-2 px-3 text-black text-[20px]  hover:bg-gray-100 rounded "><img src='/profile1.png' alt='logo' /></a>
                     </div>
                 <div  >
                    <div className="   flex flex-col ">
@@ -30,7 +31,7 @@ export default function TopHeader() {
                         <div className=" gap-9">
                      <div className="flex gap-4">
                         <div>
-                             <img src="profile1.png" alt="user" className="w-10 h-10 rounded-full"/>
+                             <img src="/profile1.png" alt="user" className="w-10 h-10 rounded-full"/>
                          </div>
                          <div>
                              <h3>{localStorage.getItem('username')}</h3>
