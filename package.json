@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "react-hook-form": "^7.51.3",
     "react-modal": "^3.16.1"
   }
 }
