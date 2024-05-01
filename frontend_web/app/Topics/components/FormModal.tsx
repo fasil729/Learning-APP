@@ -85,7 +85,7 @@ export const FormModal = (props: Props) => {
         </CardContent>
         <CardFooter className="flex justify-around">
           <Button variant="outline" onClick={handleCloseForm}>Cancel</Button>
-          <Button className=' bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
+          <Button className='bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
         </CardFooter>
       </form>
     </Card>
