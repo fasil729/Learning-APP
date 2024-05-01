@@ -1,8 +1,7 @@
 'use client';
 
 export default function TopHeader() {
-    return <nav className=" bg-white h-[6.2rem] flex justify-between  items-center px-14 gap-20">
-                
+return <nav className="bg-white h-[6.2rem] flex justify-between items-center px-14 gap-20 ">                
                 <div className="flex ">
                     <a href="#" className="block  h-[80px] w-[80px] py-2 px-3 text-black text-[20px]  hover:bg-gray-100 rounded "><img src='/profile1.png' alt='logo' /></a>
                     </div>
