@@ -20,10 +20,8 @@ export const TopicSideBar = () => {
 
 
   function onExperimentRequest(chapterName: string) {
-    console.log("experiment request")
     dispatch(getExperimentsForChapterAction(chapterName));
     router.push(`/experiments?chapterName=${chapterName}`);
-    console.log("chapterName", chapterName)
   }
 
   function onGenerateQuiz() {
@@ -46,15 +44,15 @@ export const TopicSideBar = () => {
               return <LessonLink key={ind} name={`${lesson}`} url={`/topics/1/lesson/${lesson}`} status={lesson} />
             })}
             <div className="pl-[2%]">
-              <ExperimentButton message="Experiments" onClick={() => onExperimentRequest(chapter.name)} />
+              <ExperimentButton message="Experiments" clickEvent={onExperimentRequest} chapterName={chapter.name}/>
             </div>
           </AccordionContent>
         </AccordionItem>
       }
       )}
       <div className="flex flex-col w-1/2 gap-3 m-auto mb-[120px]">
-        <Button onClick={() => onGenerateQuiz()}>Generate Quiz</Button>
-        <Button onClick={() => onExamGenerate()}>Exam Preparation</Button>
+        <Button className="bg-mainColor" onClick={() => onGenerateQuiz()}>Generate Quiz</Button>
+        <Button className="bg-mainColor" onClick={() => onExamGenerate()}>Exam Preparation</Button>
       </div>
     </Accordion>
   </aside>

@@ -142,7 +142,7 @@ const ExamPrepContent = () => {
                     : ""
                 }`}
               >
-                Chapter {index + 1} - {chapter.name}
+              {chapter.name}
               </AccordionTrigger>
             </div>
             <AccordionContent className="px-4 space-y-3">

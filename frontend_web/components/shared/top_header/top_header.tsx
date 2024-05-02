@@ -1,8 +1,12 @@
 'use client';
 
+import { Button } from "@/components/ui/button";
+import { logoutAction } from "@/lib/features/auth/authSlice";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
 
 export default function TopHeader() {
+    const dispatch = useDispatch();
 return <nav className="sticky bg-white h-[6.2rem] flex justify-between items-center px-14 gap-20 ">                
                 <div className="flex ">
                     <a href="#" className="block  h-[80px] w-[80px] py-2 px-3 text-black text-[20px]  hover:bg-gray-100 rounded "><img src='/profile11.jpg'  className="h-[60px] w-[60px] rounded-full" alt='logo' /></a>
@@ -27,7 +31,9 @@ return <nav className="sticky bg-white h-[6.2rem] flex justify-between items-cen
                          </div>
                          <div>
                              <h3>Fasika</h3>
+                             
                          </div>
+                         <Button className="bg-mainColor w-[40%]" onClick={() => {dispatch(logoutAction())}}>Logout</Button>
                      </div>
                  </div>
                         </li>

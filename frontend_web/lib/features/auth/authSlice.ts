@@ -49,6 +49,11 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.errors = "error encountered"
           },
+          logoutAction: (state: any) => {
+            state.data.isAuthenticated = false;
+            state.data.accessToken = null;
+            state.data.user = null;
+          }
     }
 })
 
@@ -58,7 +63,8 @@ export const {
     signInFailureAction,
     signUpAction,
     signUpSuccessAction,
-    signUpFailureAction
+    signUpFailureAction,
+    logoutAction
 } = authSlice.actions;
 
 export default authSlice.reducer;

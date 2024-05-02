@@ -4,14 +4,13 @@ import axios, { AxiosResponse } from "axios";
 
 function* signInSaga(action: any) {
     let response: AxiosResponse;
+    console.log("signing in")
 
     try {
         response = yield axios.post(`https://learning-app-idt8.onrender.com/users/login`,
         action.payload);
-        console.log(response.data);
         localStorage.setItem("accessToken", response.data?.accessToken);
         localStorage.setItem("username", response.data?.username);
-        console.log("after setting data")
         yield put(signInSuccessAction(response.data));
 
     }catch (error) {

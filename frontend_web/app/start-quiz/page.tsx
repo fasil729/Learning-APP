@@ -9,20 +9,23 @@ import QuizComponent from '@/components/quiz/quiz'
 
 
 const StartQuizPage = () => {
-  const router=useRouter();
-  const quizData=useSelector((state:RootState)=> state.quiz.quizData);
-  const state = useSelector((state) => state);
+  const router = useRouter();
+  const quizData = useSelector((state: RootState) => state.quiz.quizData);
+  const authStatus = useSelector((state: any) => state.auth.data.isAuthenticated);
+
+  if (!authStatus)
+        router.push("/login")
   return (<>
-  {quizData && quizData.length?<QuizComponent/>:<div className=' min-h-screen py-20 flex flex-col justify-center items-center justify-center items-center'>
+    {quizData && quizData.length ? <QuizComponent /> : <div className=' min-h-screen py-20 flex flex-col  justify-center items-center'>
 
-  <div className="w-full md:w-11/12 lg:w-10/12 xl:w-8/12 ">
-  <QuizPrompt/>
-</div>
-<div className="w-full md:w-11/12 lg:w-10/12 xl:w-8/12 ">
-<QuizContent/>
-</div>
+      <div className="w-full md:w-11/12 lg:w-10/12 xl:w-8/12 ">
+        <QuizPrompt />
+      </div>
+      <div className="w-full md:w-11/12 lg:w-10/12 xl:w-8/12 ">
+        <QuizContent />
+      </div>
 
-  </div>}
+    </div>}
   </>
   )
 }

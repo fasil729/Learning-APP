@@ -7,13 +7,12 @@ const nextConfig = {
         'picsum.photos',
     ],
       },
-};
 
 async headers() {
         return [
             {
                 // matching all API routes
-                source: "/api/:path*",
+                source: "/learning-app-idt8.onrender.com/:path*",
                 headers: [
                     { key: "Access-Control-Allow-Credentials", value: "true" },
                     { key: "Access-Control-Allow-Origin", value: "*" }, // replace this your actual origin

@@ -10,9 +10,9 @@ import ChapterContent from '@/components/chapter-content'
 const StartExamPrep = () => {
   const router=useRouter();
   
-  return (<>
+  return (<div className='w-full md:w-11/12 lg:w-10/12 xl:w-8/12 m-auto'>
     <ChapterContent/>
-  </>
+  </div>
   )
 }
 

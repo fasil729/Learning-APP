@@ -20,7 +20,6 @@ export default function ExamPrepDetail(props: { searchParams?: SearchParams }) {
   const data = getExamPrepDetail({ prompt: searchParams.prompt, readTime, topics });
 
   // debug 
-//   console.log("data", data);
 
   return  <CustomMDX source={data} />
 }
