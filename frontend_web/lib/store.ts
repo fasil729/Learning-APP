@@ -28,7 +28,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware,quizApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware, quizApi.middleware),
   devTools:false,
 })
 

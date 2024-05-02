@@ -15,12 +15,12 @@ import { Button } from "@/components/ui/button";
 
 export const TopicSideBar = () => {
   const { isSuccess, isLoading, errors, data } = useSelector((state: any) => state.subjects.topic);
-  console.log(data)
   const dispatch = useDispatch();
   const router = useRouter();
 
 
   function onExperimentRequest(chapterName: string) {
+    console.log("experiment request")
     dispatch(getExperimentsForChapterAction(chapterName));
     router.push(`/experiments?chapterName=${chapterName}`);
     console.log("chapterName", chapterName)
@@ -52,7 +52,7 @@ export const TopicSideBar = () => {
         </AccordionItem>
       }
       )}
-      <div className="flex flex-col w-1/2 gap-3 m-auto">
+      <div className="flex flex-col w-1/2 gap-3 m-auto mb-[120px]">
         <Button onClick={() => onGenerateQuiz()}>Generate Quiz</Button>
         <Button onClick={() => onExamGenerate()}>Exam Preparation</Button>
       </div>

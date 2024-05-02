@@ -18,14 +18,17 @@ export const quizSlice=createSlice({
         },
         useTopicList(state, action) {
             state.topics = action.payload.topics;
-          },
+        },
           setQuizData(state, action) {
             state.quizData = action.payload.quizData;
-          }
+        },
+        resetQuizData: (state) => {
+          state.quizData = [];
+        }
     }
 });
 
 
-export const {useGenerateQuiz,useTopicList,setQuizData}=quizSlice.actions;
+export const {useGenerateQuiz,useTopicList,setQuizData, resetQuizData}=quizSlice.actions;
 
 export default quizSlice.reducer;

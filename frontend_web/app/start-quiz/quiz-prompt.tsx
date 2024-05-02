@@ -17,14 +17,21 @@ import { RootState } from "@/lib/store";
 const QuizPrompt = () => {
   const [prompt, setPrompt] = useState("")
   const [quizNo, setQuizNo] = useState(5)
+  // const [topics, set]
   const dispatch = useDispatch();
+  // console.log("genereting quiz");
+  // console.log("prompt", prompt);
+  // console.log("quizNo", quizNo);
+
+  const quizdata = useSelector((state: RootState) => state.quiz);
 
   useEffect(() => {
     dispatch(useGenerateQuiz({
+      number_of_quizzes: quizNo,
       prompt: prompt,
-      number_of_quizzes: quizNo
-    }))
-  }, [dispatch, prompt, quizNo]);
+      topics: quizdata.topics ?? [""]
+  }))
+  }, [dispatch, prompt, quizNo, quizdata]);
 
 
 
@@ -33,12 +40,11 @@ const QuizPrompt = () => {
   useEffect(() => {
     setClose(topis?.length)
   }, [topis])
-  const quizdata = useSelector((state: RootState) => state.quiz)
 
 
   const [QuizPrompt, { isError, isSuccess, data, isLoading, error }] = useQuizGenerateMutation();
 
-  console.log("quizData", data);
+  console.log("quizData", quizdata);
   console.log("quizError", error);
 
   const onGenerateQuiz = async () => {
