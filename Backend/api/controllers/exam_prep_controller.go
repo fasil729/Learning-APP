@@ -5,6 +5,7 @@ import (
 	"Brilliant/application/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"fmt"
 )
 
 type ExamPrepController struct {
@@ -34,12 +35,17 @@ func (controller *ExamPrepController) GenerateExamPrepMaterial(ctx *gin.Context)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+    // debug
+	fmt.Println("in generate exam prep", generateDTO)
 	material, err := controller.examPrepService.GenerateExamPrepMaterial(&generateDTO)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	// debug
+	fmt.Println("in generate exam prep material", material)
+
+	ctx.Header("Content-Type", "text/plain")
 	ctx.String(http.StatusOK, material)
 }
