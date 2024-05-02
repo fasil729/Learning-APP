@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const topicInitalState = {
       isLoading: false,
       data: {
-          token: localStorage.getItem('token'),
+          token: null,
           isAuthenticated: false,
           user: null
       },
@@ -24,6 +24,7 @@ export const authSlice = createSlice({
           },
       
           signInSuccessAction: (state: any, action: PayloadAction<UserResponse | null>) => {
+            console.log("here singin in user")
             state.data = action.payload;
             state.data.isAuthenticated = true;            
             state.isLoading = false;
@@ -48,6 +49,11 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.errors = "error encountered"
           },
+          logoutAction: (state: any) => {
+            state.data.isAuthenticated = false;
+            state.data.accessToken = null;
+            state.data.user = null;
+          }
     }
 })
 
@@ -57,7 +63,8 @@ export const {
     signInFailureAction,
     signUpAction,
     signUpSuccessAction,
-    signUpFailureAction
+    signUpFailureAction,
+    logoutAction
 } = authSlice.actions;
 
 export default authSlice.reducer;
