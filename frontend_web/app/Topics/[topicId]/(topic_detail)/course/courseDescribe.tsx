@@ -8,7 +8,7 @@ import { GrDocumentDownload } from "react-icons/gr";
 import { IoIosPhonePortrait } from "react-icons/io";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FiBarChart } from "react-icons/fi";
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 interface ContentListProps{
   icon:IconType;
   name:string;
