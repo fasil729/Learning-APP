@@ -70,7 +70,7 @@ func GetImageModel() *genai.GenerativeModel {
 	model.SafetySettings = []*genai.SafetySetting{
 		{
 			Category:  genai.HarmCategoryHarassment,
-			Threshold: genai.HarmBlockOnlyHigh,
+			Threshold: genai.HarmBlockMediumAndAbove,
 		},
 		{
 			Category:  genai.HarmCategoryHateSpeech,
