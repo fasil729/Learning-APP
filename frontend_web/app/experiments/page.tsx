@@ -1,9 +1,6 @@
 'use client';
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import Content from "../topics/[topicId]/course/content";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import LessonLink from "../topics/[topicId]/course/lessonLink";
-import Link from "next/link";
 
 
 interface Props {
@@ -13,6 +10,11 @@ interface Props {
 
 export default function Page({ searchParams: { chapterName } }: Props) {
     const { isLoading, data, errors } = useSelector((state: any) => state.experiment);
+    const authStatus = useSelector((state: any) => state.auth.data.isAuthenticated);
+    const router = useRouter();
+
+    if (!authStatus)
+        router.push("/login")
 
     if (isLoading)
         return <div>Loading...</div>

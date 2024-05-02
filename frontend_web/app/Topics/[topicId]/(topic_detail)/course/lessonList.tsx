@@ -37,7 +37,7 @@ export function LessonList(props: Props) {
                     return <LessonLink key={ind} name={`${lesson}`} url={`/topics/1/lesson/${lesson}`} status={lesson} />
                   })}
                   <div className="pl-[2%]">
-                    <ExperimentButton message="Experiments" onClick={() => onExperimentRequest(chapter.name)} />
+                    <ExperimentButton message="Experiments" clickEvent={onExperimentRequest} chapterName={chapter.name} />
                   </div>
                 </AccordionContent>
               </AccordionItem>

@@ -10,7 +10,6 @@ import { FaChevronRight } from "react-icons/fa6";
 import Information from './information';
 import Content from './content';
 import Community from './community';
-import VideoComponent from '../../../../components/video';
 import { CiLock } from "react-icons/ci";
 import CourseDescribe from './courseDescribe';
 import { useDispatch, useSelector } from 'react-redux';

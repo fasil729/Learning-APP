@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { LessonList } from './lessonList'
-import { Button } from '../../../../components/ui/button';
+import { LessonList } from './lessonList';
 import QuizGenerate from './quiz.generate'
 import { useSelector } from 'react-redux';
 
