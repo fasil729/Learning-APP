@@ -12,9 +12,9 @@ export default function Topics() {
     const router = useRouter();
 
     if (!authStatus)
-        router.push("/login");
-
+        router.push("/login")
     return <div>
+            {/* <SideBar></SideBar> */}
             <TopHeader></TopHeader>
             <main className="ml-[18%] p-7">
                 <h1 className="text-xl text-titleColor px-10">Topics</h1>
