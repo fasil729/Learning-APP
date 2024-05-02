@@ -44,10 +44,6 @@ const QuizContent = () => {
 
 
 
-
-
-
-
   const handleCheckboxChange = (event: any, lesson: string) => {
     if (event.target.checked) {
       // If checkbox is checked, add the lesson to the checkedLessons array
@@ -60,40 +56,68 @@ const QuizContent = () => {
 
   console.log("topics", checkedLessons)
 
-  return (<Accordion type="multiple" defaultValue={['0', '1', '2']} className="w-full bg-white shadow p-10">
-    {data?.Chapters?.map((chapter: any, index: number) => {
-      return <AccordionItem key={index} value={`${index}`} className="m-2 p-2 data-[state=open]:border-none">
+  return ( <Accordion
+    type="multiple"
+    defaultValue={["0", "1", "2"]}
+    className="w-full bg-white shadow p-10"
+  >
+    {data?.Chapters?.map((chapter: any, index: number) => (
+      <AccordionItem
+        key={index}
+        value={`${index}`}
+        className="m-2 p-2 data-[state=open]:border-none"
+      >
         <div className="flex gap-2">
           <input
             type="checkbox"
             name={`lesson_${index}`}
-            checked={data?.Chapter?.lessons.every((lesson: string) => checkedLessons.includes(lesson))}
-            onChange={(event) => handleChapterChange(event, data?.Chapter?.lessons)}
+            checked={chapter.lessons.every((lesson: any) =>
+              checkedLessons.includes(lesson)
+            )}
+            onChange={(event) =>
+              handleChapterChange(event, chapter.lessons)
+            }
             className="h-4 mt-5 w-4"
           />
-
-
-          <AccordionTrigger className={`${chapter.lessons.every((lesson: string) => checkedLessons.includes(lesson)) ? 'text-blue-500' : ''}`}>{chapter.name}</AccordionTrigger></div>
-        <AccordionContent className='px-4 space-y-3  '>
-          {chapter.lessons.map((lesson: string, ind: number) => {
-            return <div key={ind} className="hover:text-[#4C6FFF] flex gap-2 transition duration-300 ">
+          <AccordionTrigger
+            className={`${
+              chapter.lessons.every((lesson: any) =>
+                checkedLessons.includes(lesson)
+              )
+                ? "text-blue-500"
+                : ""
+            }`}
+          >
+            {chapter.name}
+          </AccordionTrigger>
+        </div>
+        <AccordionContent className="px-4 space-y-3">
+          {chapter.lessons.map((lesson: any, ind: number) => (
+            <div
+              key={ind}
+              className="hover:text-[#4C6FFF] flex gap-2 transition duration-300"
+            >
               <input
                 type="checkbox"
                 name={`lesson_${ind}`}
-
                 checked={checkedLessons.includes(lesson)}
                 onChange={(event) => handleCheckboxChange(event, lesson)}
-                className="h-4 w-4" />
-              <div className='flex gap-6'>
-
-                <p className={`pl-2 ${checkedLessons.includes(lesson) ? 'text-blue-500' : ''}`}>{lesson}</p>
+                className="h-4 w-4"
+              />
+              <div className="flex gap-6">
+                <p
+                  className={`pl-2 ${
+                    checkedLessons.includes(lesson) ? "text-blue-500" : ""
+                  }`}
+                >
+                  {lesson}
+                </p>
               </div>
             </div>
-          })}
+          ))}
         </AccordionContent>
       </AccordionItem>
-    })}
-
+    ))}
   </Accordion>
   )
 }
