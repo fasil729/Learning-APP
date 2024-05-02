@@ -8,7 +8,7 @@ import { quizApi } from './features/quiz/quizApi';
 
 const rootReducers = combineReducers({
     subjects: subjectesReducer,
-    [quizApi.reducerPath]:quizApi.reducer,
+    // [quizApi.reducerPath]:quizApi.reducer,
 
     quiz: quizSlice,
     auth: authSlice,
