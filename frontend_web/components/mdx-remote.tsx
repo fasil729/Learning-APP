@@ -4,6 +4,7 @@ import { Test } from './test'
 import { twMerge } from "tailwind-merge"
 import { ClassValue, clsx } from "clsx"
 import Link from 'next/link'
+import ImagePopup from './imagePopUp'
 
 interface CalloutProps {
     icon?: string
@@ -214,8 +215,8 @@ const components = {
     ),
     Callout,
     MdxCard,
-    Image: Test,
-    ImagePlaceholder: Test
+    Image: ImagePopup,
+    ImagePlaceholder: ImagePopup,
 
 }
 

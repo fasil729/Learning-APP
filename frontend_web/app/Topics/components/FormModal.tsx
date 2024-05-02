@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { createSubjectAction } from '@/lib/features/topics/topicSlice';
+import { createSubjectAction, createSuccessFlag } from '@/lib/features/topics/topicSlice';
 import { FormDataModel } from '@/types/formData';
 
 const schema = z.object({
@@ -70,7 +70,8 @@ export const FormModal = (props: Props) => {
   }
 
   if (isSuccess) {
-    router.push('/Topics/1')
+    router.push('/topics/1')
+    dispatch(createSuccessFlag());
   }
 
   return <Modal isOpen={props.modalIsOpen}
@@ -96,7 +97,7 @@ export const FormModal = (props: Props) => {
         </CardContent>
         <CardFooter className="flex justify-around">
           <Button variant="outline" onClick={handleCloseForm}>Cancel</Button>
-          <Button className=' bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
+          <Button className='bg-mainColor' type='submit' disabled={isLoading}>Create</Button>
         </CardFooter>
       </form>
     </Card>

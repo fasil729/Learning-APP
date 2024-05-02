@@ -13,13 +13,16 @@ export default function TopicDetailLayout({
   children: React.ReactNode;
 }>) {
   return (
-        <div className="flex ">
-          <div className='flex-none w-[26%]'> 
-        <TopicSideBar/>
+        <div className=" ">
+          
+        <div className='sticky top-0 z-50 h-[100px]'><TopHeader></TopHeader>
         </div>
+        <div className='flex'>
+        <div className='flex-none w-[26%]'><TopicSideBar/></div>
         <div className='grow'>
-        <TopHeader></TopHeader>
+        
           { children }
+        </div>
         </div>
         </div>
   );

@@ -4,8 +4,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { useEffect, useState } from "react";
-import { Input } from "../../../../components/ui/input";
-import { Button } from "../../../../components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useGenerateQuiz } from "@/lib/features/quiz/quizSlice";
 import { useQuizGenerateMutation } from "@/lib/features/quiz/quizApi";
 
