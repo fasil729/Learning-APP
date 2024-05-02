@@ -23,7 +23,7 @@ function* createSubjectSaga(action: PayloadAction<any>) {
             action.payload,
             {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDczODcyMSwicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.t8VP9Q2tCPObDQlHWVyaXt1EePHuGe76KOTPGzvrZPs`
             }
             }
         );

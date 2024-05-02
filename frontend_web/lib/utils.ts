@@ -16,20 +16,24 @@ export async function getTopicDetail(lessonName: string) {
 }
 
 export async function getExamPrepDetail(payload: { prompt: string, readTime: number, topics: string[] }) {
+  console.log("payload", payload);
   const res = await fetch('https://learning-app-idt8.onrender.com/examprep/generate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDcyOTQzMywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.x2fnIkRpC8DuSmeSkRjBYxS6tyz3bw0rHBG16UNsdKY'
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDcyODE1Nywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.OQQ1gcLWtFqrUwcFhZb_XMCRhmL8XKA1jg7briLpa8g'
     },
     body: JSON.stringify(payload)
   });
-  
+
   if (!res.ok) {
     throw new Error(`Failed to fetch exam prep detail: ${res.statusText}`);
   }
-  
-  return res.json();
+
+  const text = await res.text();
+  console.log("response body text", text);
+
+  return text;
 }
 
 

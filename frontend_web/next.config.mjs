@@ -2,7 +2,14 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async headers() {
+    images: {
+        domains: ['img.freepik.com', 
+        'picsum.photos',
+    ],
+      },
+};
+
+async headers() {
         return [
             {
                 // matching all API routes
