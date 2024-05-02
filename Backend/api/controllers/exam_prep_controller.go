@@ -42,6 +42,9 @@ func (controller *ExamPrepController) GenerateExamPrepMaterial(ctx *gin.Context)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, string(materials))
+
+	// If content is text, set the appropriate headers
+	ctx.Header("Content-Type", "text/plain")
+	ctx.String(200, string(materials))
 	// ctx.String(http.StatusOK, strings.Join(materials, ""))
 }
