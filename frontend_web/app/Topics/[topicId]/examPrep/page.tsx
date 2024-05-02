@@ -1,11 +1,26 @@
 import { CustomMDX } from '@/components/mdx-remote';
-import { useSelector } from 'react-redux';
+import { getExamPrepDetail } from '@/lib/utils';
 
+interface SearchParams {
+  prompt: string;
+  readTime: string;
+  topics: string;
+}
 
+export default function ExamPrepDetail(props: { searchParams?: SearchParams }) {
+  const { searchParams } = props;
 
-// console.log("this page slug data");
-export default async function LessonDetail() {
-    const { isSuccess, errors, data } = useSelector((state: any) => state.examPrep);
+  if (!searchParams) {
+    return <div>Loading...</div>; // Or handle the case when searchParams is undefined
+  }
 
-    return <CustomMDX  source={data}/>
+  const readTime = Number(searchParams.readTime) || 0;
+  const topics = searchParams.topics.split(',').map(topic => topic.trim());
+
+  const data = getExamPrepDetail({ prompt: searchParams.prompt, readTime, topics });
+
+  // debug 
+//   console.log("data", data);
+
+  return  <CustomMDX source={data} />
 }

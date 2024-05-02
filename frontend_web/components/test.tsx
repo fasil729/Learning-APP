@@ -1,7 +1,14 @@
-import React from 'react'
+import React from 'react';
+import fs from 'fs'
 
-export const Test = () => {
+const Test = ({ data }: { data: string }) => {
+  // Write data to file
+  fs.writeFileSync('content/examPrep.md', JSON.stringify(data, null, 2));
   return (
-    <div>Test</div>
-  )
-}
+    <div>
+    
+    </div>
+  );
+};
+
+export default Test;

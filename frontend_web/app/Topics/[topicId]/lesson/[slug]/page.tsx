@@ -5,6 +5,7 @@
 // import path from 'path';
 import { CustomMDX } from '@/components/mdx-remote';
 import { getTopicDetail } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 
 interface Props {
@@ -16,5 +17,11 @@ interface Props {
 export default async function LessonDetail({params: { slug }} : Props) {
     var data = await getTopicDetail(slug);
 
-    return <CustomMDX  source={data}/>
+    console.log("data", data);
+    return (<div className='p-[20px]'><CustomMDX  source={data}/>
+    <div className='flex gap-[3%] py-[3%]'>
+        <Button>Generate Quiz</Button>
+        <Button>Exam Preparation</Button>
+    </div>
+</div> )
 }
