@@ -24,6 +24,7 @@ export const authSlice = createSlice({
           },
       
           signInSuccessAction: (state: any, action: PayloadAction<UserResponse | null>) => {
+            console.log("here singin in user")
             state.data = action.payload;
             state.data.isAuthenticated = true;            
             state.isLoading = false;

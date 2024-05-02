@@ -3,8 +3,8 @@ import authSlice from './features/auth/authSlice';
 import quizSlice from './features/quiz/quizSlice';
 import lessonSlice from './features/topics/lessonSlice';
 import subjectesReducer from './features/topics/topicSlice';
-import {quizApi} from "./features/quiz/quizApi"
 import experimentSlice from './features/experiments/experimentSlice';
+import { quizApi } from './features/quiz/quizApi';
 
 const rootReducers = combineReducers({
     subjects: subjectesReducer,

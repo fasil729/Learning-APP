@@ -19,8 +19,7 @@ export default async function LessonDetail({params: { slug }} : Props) {
 
     return <div className='p-[20px]'><CustomMDX  source={data}/>
             <div className='flex gap-[3%] py-[3%]'>
-                <Button>Generate Quiz</Button>
-                <Button>Exam Preparation</Button>
+                
             </div>
         </div>  
 }

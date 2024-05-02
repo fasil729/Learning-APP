@@ -34,6 +34,8 @@ const LoginComponent = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   var { isLoading, isAuthenticated, errors } = useSelector((state: any) => state.auth.data);
+  const state = useSelector((state) => state);
+  console.log(state)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +51,7 @@ const LoginComponent = () => {
   };
 
   if (isAuthenticated) {
-    router.push("/Topics")
+    router.push("/topics")
   }
 
   return (

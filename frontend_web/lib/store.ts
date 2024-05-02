@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddlware from '@redux-saga/core';
-// import { topicsApi } from "./features/topics/topicsApi";
 import rootReducers from "./reducer";
 import rootSaga from "./sagas/root-saga";
 import { authApi } from "./features/auth/authApi";

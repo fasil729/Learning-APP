@@ -7,9 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export async function getTopicDetail(lessonName: string) {
   const res = await fetch(`https://learning-app-idt8.onrender.com/lessons/${lessonName}/content`, {headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDY1NzAyNywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.sn3TEh8GxP8jD5DmLUmNuQRraspepshIQrcBNPEUiBc`
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDcyOTY1NSwicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.2RtUilKyapz9WVzd84wSgVmTrjOhpH-gjr3HHFXE5OM`
   }});
-  console.log(res);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch topic detail: ${res.statusText}`);
+  }
   return res.text();
 }
 
@@ -18,7 +20,7 @@ export async function getExamPrepDetail(payload: { prompt: string, readTime: num
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDY1NzAyNywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.sn3TEh8GxP8jD5DmLUmNuQRraspepshIQrcBNPEUiBc'
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDcyOTQzMywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.x2fnIkRpC8DuSmeSkRjBYxS6tyz3bw0rHBG16UNsdKY'
     },
     body: JSON.stringify(payload)
   });
@@ -33,7 +35,7 @@ export async function getExamPrepDetail(payload: { prompt: string, readTime: num
 
 export async function getExperimentDetial(experimentName: string) {
   const res = await fetch(`https://learning-app-idt8.onrender.com/experiments/${experimentName}/content`, {headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDY1NzAyNywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.sn3TEh8GxP8jD5DmLUmNuQRraspepshIQrcBNPEUiBc`
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2lsQGdtYWlsLmNvbSIsImV4cCI6MTcxNDcyOTQzMywicm9sZSI6InN0dWRlbnQiLCJzdWIiOjIsInVzZXJuYW1lIjoiZmFzaWwifQ.x2fnIkRpC8DuSmeSkRjBYxS6tyz3bw0rHBG16UNsdKY`
     }});
   console.log(res);
   return res.json();
