@@ -7,7 +7,7 @@ interface SearchParams {
   topics: string;
 }
 
-export default function ExamPrepDetail(props: { searchParams?: SearchParams }) {
+export default async function ExamPrepDetail(props: { searchParams?: SearchParams }) {
   const { searchParams } = props;
 
   if (!searchParams) {
@@ -17,9 +17,9 @@ export default function ExamPrepDetail(props: { searchParams?: SearchParams }) {
   const readTime = Number(searchParams.readTime) || 0;
   const topics = searchParams.topics.split(',').map(topic => topic.trim());
 
-  const data = getExamPrepDetail({ prompt: searchParams.prompt, readTime, topics });
+  const data = await getExamPrepDetail({ prompt: searchParams.prompt, readTime, topics });
 
-  // debug 
-
-  return  <CustomMDX source={data} />
+  return <div className='px-[20px] py-[20px]'>
+            <CustomMDX  source={data}/>
+          </div>
 }

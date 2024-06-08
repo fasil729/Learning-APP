@@ -6,7 +6,10 @@ export default function TopicCard(props: any) {
         className="relative mx-3 mt-3 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
         <img
            src={props.src}
-            alt={props.alt} />
+            alt={props.alt} 
+            className="w-[20rem] h-[200px] object-cover"
+            />
+
         <div
             className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60">
         </div>
